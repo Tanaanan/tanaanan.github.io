@@ -1,0 +1,258 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <title>Tanaanan Chalermpan - Experience Gallery</title>
+
+  <meta name="author" content="Tanaanan Chalermpan">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="images/favicon/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" type="text/css" href="stylesheet.css">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+    }
+
+    .section-heading {
+      margin-top: 20px;
+      margin-bottom: 15px;
+      color: #333;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 5px;
+    }
+
+    .slider-container {
+      position: relative;
+      width: 100%;
+      margin-bottom: 30px;
+    }
+
+    .slider {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      gap: 15px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      /* Firefox */
+      border-radius: 8px;
+    }
+
+    .slider::-webkit-scrollbar {
+      display: none;
+      /* Safari and Chrome */
+    }
+
+    .slider img {
+      scroll-snap-align: start;
+      flex: 0 0 100%;
+      width: 100%;
+      max-height: 500px;
+      object-fit: cover;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .slider-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(255, 255, 255, 0.8);
+      color: #333;
+      border: 1px solid #ddd;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      font-size: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.2s;
+    }
+
+    .slider-btn:hover {
+      background-color: rgba(255, 255, 255, 1);
+    }
+
+    .slider-btn.prev {
+      left: 10px;
+    }
+
+    .slider-btn.next {
+      right: 10px;
+    }
+
+    .slider-footnote {
+      text-align: right;
+      font-size: 14px;
+      color: #666;
+      margin-top: 8px;
+      padding-right: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <table
+    style="width:100%;max-width:800px;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
+    <tbody>
+      <tr style="padding:0px">
+        <td style="padding:0px">
+          <!-- Navigation Bar -->
+          <table
+            style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
+            <tbody>
+              <tr>
+                <td style="padding:16px 16px 0 16px;width:100%;text-align:right;font-size:16px;">
+                  <a href="index.html">Home</a> &nbsp;/&nbsp; <strong><a href="experience.html"
+                      style="color: #000; text-decoration: none;">Experience Gallery</a></strong> &nbsp;/&nbsp; <a href="japan-university-match.html">Japan U Match</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table
+            style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
+            <tbody>
+              <tr style="padding:0px">
+                <td style="padding:2.5%;width:100%;vertical-align:middle">
+                  <p class="name" style="text-align: center; font-size: 32px; margin-bottom: 0;">
+                    Experience Gallery
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table
+            style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
+            <tbody>
+              <tr>
+                <td style="padding:16px;width:100%;vertical-align:middle">
+
+                  <h2 class="section-heading">KU-HCAI Laboratory: Moderate Meeting, Generation 1–2</h2>
+                  <div class="slider-container">
+                    <div class="slider">
+                      <img src="images/HCAI_meeting_1.png" alt="HCAI Meeting 1">
+                      <img src="images/HCAI_meeting_2.png" alt="HCAI Meeting 2">
+                      <img src="images/HCAI_meeting_3.png" alt="HCAI Meeting 3">
+                    </div>
+                    <button class="slider-btn prev" onclick="scrollSlider(this, -1)">&#10094;</button>
+                    <button class="slider-btn next" onclick="scrollSlider(this, 1)">&#10095;</button>
+                  </div>
+
+                  <h2 class="section-heading">Machine Learning Systems: Teaching Assistant (Mar 2026)</h2>
+                  <div class="slider-container">
+                    <div class="slider">
+                      <img src="images/ML_lab_teach_2.jpeg" alt="ML Lab Teaching 1">
+                      <img src="images/ML_lab_teach_1.jpeg" alt="ML Lab Teaching 2">
+                      <img src="images/ML_lab_teach_3.jpg" alt="ML Lab Teaching 3">
+                    </div>
+                    <button class="slider-btn prev" onclick="scrollSlider(this, -1)">&#10094;</button>
+                    <button class="slider-btn next" onclick="scrollSlider(this, 1)">&#10095;</button>
+                  </div>
+
+                  <h2 class="section-heading">IPU Laboratory, NECTEC, NSTDA: Research Assistant (2024–2026)</h2>
+                  <div class="slider-container">
+                    <div class="slider">
+                      <img src="images/NECTEC_RA_1.png" alt="NECTEC RA 1">
+                      <img src="images/NECTEC_RA_4.jpg" alt="NECTEC RA 4">
+                      <img src="images/NECTEC_RA_2.jpg" alt="NECTEC RA 2">
+                      <img src="images/NECTEC_RA_3.png" alt="NECTEC RA 3">
+                    </div>
+                    <button class="slider-btn prev" onclick="scrollSlider(this, -1)">&#10094;</button>
+                    <button class="slider-btn next" onclick="scrollSlider(this, 1)">&#10095;</button>
+                  </div>
+
+                  <h2 class="section-heading">I-New Gen Award: Agriculture Field (Feb 2023)</h2>
+                  <div class="slider-container">
+                    <div class="slider">
+                      <img src="images/I_new_gen_5.jpg" alt="I New Gen 5">
+                      <img src="images/I_new_gen_2.jpg" alt="I New Gen 2">
+                      <img src="images/I_new_gen_4.jpg" alt="I New Gen 4">
+                      <img src="images/I_new_gen_1.jpg" alt="I New Gen 1">
+                      <img src="images/I_new_gen_3.jpg" alt="I New Gen 3">
+                      
+                      
+                    </div>
+                    <button class="slider-btn prev" onclick="scrollSlider(this, -1)">&#10094;</button>
+                    <button class="slider-btn next" onclick="scrollSlider(this, 1)">&#10095;</button>
+                  </div>
+
+                  <h2 class="section-heading">STEAMs Co-Creation Project: Medical Field (Nov 2022)</h2>
+                  <div class="slider-container">
+                    <div class="slider">
+                      <img src="images/STEAMs_Scholar_4.jpg" alt="STEAMs Scholar 4">
+                      <img src="images/STEAMs_Scholar_3.jpg" alt="STEAMs Scholar 3">
+                      <img src="images/STEAMs_Scholar_2.jpg" alt="STEAMs Scholar 2">
+                      <img src="images/STEAMs_Scholar_1.jpg" alt="STEAMs Scholar 1">
+                    </div>
+                    <button class="slider-btn prev" onclick="scrollSlider(this, -1)">&#10094;</button>
+                    <button class="slider-btn next" onclick="scrollSlider(this, 1)">&#10095;</button>
+                  </div>
+
+                  
+
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table
+            style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
+            <tbody>
+              <tr>
+                <td style="padding:0px">
+                  <br>
+                  <p style="text-align:right;font-size:12px;color:#888;">
+                    This page adapted from <a href="https://github.com/jonbarron/jonbarron_website"
+                      style="color:#888;">Jon Barron's site</a>.
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </td>
+      </tr>
+  </table>
+  <script>
+    function scrollSlider(btn, dir) {
+      const container = btn.parentElement.querySelector('.slider');
+      const scrollAmount = container.clientWidth + 15; // container width + gap
+      container.scrollBy({ left: dir * scrollAmount, behavior: 'smooth' });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.slider-container').forEach(container => {
+        const slider = container.querySelector('.slider');
+        const imgs = slider.querySelectorAll('img');
+        const total = imgs.length;
+
+        if (total > 1) {
+          const footnote = document.createElement('div');
+          footnote.className = 'slider-footnote';
+          footnote.innerHTML = `Image <span class="current">1</span> / ${total}`;
+          container.appendChild(footnote);
+
+          slider.addEventListener('scroll', () => {
+            const index = Math.round(slider.scrollLeft / (slider.clientWidth + 15));
+            const currentElement = footnote.querySelector('.current');
+            if (currentElement) {
+              currentElement.innerText = Math.min(Math.max(index + 1, 1), total);
+            }
+          });
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
