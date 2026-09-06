@@ -1,464 +1,578 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>Tanaanan Chalermpan</title>
+<meta name="author" content="Tanaanan Chalermpan">
+<meta name="description" content="Tanaanan Chalermpan — undergraduate AI researcher at Kasetsart University, working on resource-constrained applied AI for healthcare deployment.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" href="images/favicon/favicon.ico" type="image/x-icon">
 
-  <title>Tanaanan Chalermpan</title>
+<style>
+  :root {
+    --bg: #faf9f6;
+    --ink: #1b1b1b;
+    --muted: #6b6b68;
+    --rule: #dedcd4;
+    --accent: #2a5c63;
+    --accent-soft: #e8eeee;
+    --max: 700px;
+  }
 
-  <meta name="author" content="Tanaanan Chalermpan">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="shortcut icon" href="images/favicon/favicon.ico" type="image/x-icon">
-  <link rel="stylesheet" type="text/css" href="stylesheet.css">
+  * { box-sizing: border-box; }
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
-    }
+  html { scroll-behavior: smooth; }
 
-    .section-heading {
-      margin-top: 20px;
-      margin-bottom: 10px;
-      color: #333;
-      border-bottom: 1px solid #ccc;
-      padding-bottom: 5px;
-    }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
 
-    .item {
-      margin-bottom: 15px;
-    }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover, a:focus-visible { text-decoration: underline; }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
 
-    .item-title {
-      font-weight: bold;
-      color: #222;
-    }
+  .wrap {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 20px 64px;
+  }
 
-    .item-meta {
-      font-style: italic;
-      color: #666;
-      margin-bottom: 5px;
-    }
+  /* ---------- top nav ---------- */
+  .topnav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 4px;
+    flex-wrap: wrap;
+    padding: 22px 0 0;
+    font-size: 14px;
+  }
+  .topnav a { color: var(--muted); padding: 4px 2px; }
+  .topnav a.current { color: var(--ink); font-weight: 600; }
+  .topnav .sep { color: var(--rule); padding: 4px 2px; }
 
-    .item-desc {
-      color: #444;
-    }
+  /* ---------- hero ---------- */
+  .hero {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    padding: 40px 0 20px;
+  }
+  .hero-photo {
+    flex: 0 0 132px;
+    width: 132px;
+    height: 132px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--accent-soft);
+  }
+  .hero-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .hero-text h1 {
+    font-size: 28px;
+    margin: 0 0 4px;
+    letter-spacing: -0.01em;
+  }
+  .hero-text .role {
+    color: var(--muted);
+    font-size: 15px;
+    margin: 0 0 14px;
+  }
+  .bio { margin: 0 0 16px; max-width: 62ch; }
 
-    ul {
-      margin-top: 5px;
-      padding-left: 20px;
-    }
-  </style>
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 0;
+    font-size: 15px;
+  }
+  .links a { padding: 2px 10px 2px 0; }
+  .links span.sep { color: var(--rule); padding: 2px 10px 2px 0; }
+
+  /* ---------- quick jump ---------- */
+  .jumpnav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 18px 0 10px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 36px;
+  }
+  .jumpnav a {
+    font-size: 13px;
+    color: var(--muted);
+    padding: 6px 10px;
+    border-radius: 999px;
+  }
+  .jumpnav a:hover, .jumpnav a:focus-visible {
+    background: var(--accent-soft);
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  /* ---------- sections ---------- */
+  section { margin-bottom: 44px; scroll-margin-top: 16px; }
+  section:last-of-type { margin-bottom: 0; }
+
+  h2.section-heading {
+    font-size: 13px;
+    text-transform: none;
+    letter-spacing: 0.02em;
+    color: var(--muted);
+    margin: 0 0 18px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .item { margin-bottom: 20px; }
+  .item:last-child { margin-bottom: 0; }
+  .item-title { font-weight: 600; color: var(--ink); }
+  .item-meta { color: var(--muted); font-size: 14.5px; margin-top: 2px; }
+  .item-desc { color: #3a3a38; margin-top: 6px; font-size: 15px; }
+  .item-footnote { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+  ul.bullets {
+    margin: 8px 0 0;
+    padding-left: 18px;
+  }
+  ul.bullets li { margin-bottom: 4px; font-size: 15px; color: #3a3a38; }
+  ul.bullets li:last-child { margin-bottom: 0; }
+
+  /* ---------- grouped org (timeline) ---------- */
+  .org-group { margin-bottom: 24px; }
+  .org-group:last-child { margin-bottom: 0; }
+  .org-name { font-weight: 600; margin-bottom: 10px; }
+  .org-stints {
+    border-left: 2px solid var(--rule);
+    padding-left: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .stint-role { font-weight: 500; font-size: 15px; }
+  .stint-meta { color: var(--muted); font-size: 13.5px; margin-top: 1px; }
+
+  /* ---------- plain lists (honors / skills) ---------- */
+  ul.plain { margin: 0; padding-left: 18px; }
+  ul.plain li { margin-bottom: 12px; font-size: 15px; }
+  ul.plain li:last-child { margin-bottom: 0; }
+  ul.skills { padding-left: 0; list-style: none; }
+  ul.skills li { margin-bottom: 8px; font-size: 15px; }
+
+  footer {
+    margin-top: 56px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    font-size: 12.5px;
+    color: var(--muted);
+    text-align: right;
+  }
+  footer a { color: var(--muted); }
+
+  @media (max-width: 560px) {
+    .hero { flex-direction: column; text-align: center; gap: 18px; }
+    .bio { max-width: none; }
+    .links { justify-content: center; }
+    .topnav { justify-content: center; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+</style>
 </head>
 
 <body>
-  <table
-    style="width:100%;max-width:800px;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
-    <tbody>
-      <tr style="padding:0px">
-        <td style="padding:0px">
-          <!-- Navigation Bar -->
-          <table
-            style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
-            <tbody>
-              <tr>
-                <td style="padding:16px 16px 0 16px;width:100%;text-align:right;font-size:16px;">
-                  <strong><a href="index.html" style="color: #000; text-decoration: none;">Home</a></strong>
-                  &nbsp;/&nbsp; <a href="experience.html">Experience Gallery</a> &nbsp;/&nbsp; <a
-                    href="japan-university-match.html">Japan U Match</a> &nbsp;/&nbsp; <a href="unix-os-lecture.html">Unix OS Lecture</a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+  <div class="wrap">
 
-          <table
-            style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
-            <tbody>
-              <tr style="padding:0px">
-                <td style="padding:2.5%;width:63%;vertical-align:middle">
-                  <p class="name" style="text-align: center; font-size: 32px;">
-                    Tanaanan Chalermpan
-                  </p>
-                  <p>
-                    I am Tanaanan Chalermpan (M), an undergraduate researcher in Artificial Intelligence at Kasetsart University, focused on resource-constrained applied AI, building interpretable, lightweight models for real-world healthcare deployment. Since my first year, I have pursued continuous research experience across NECTEC, AIIH, and KU-HCAI, contributing first-authored work spanning clinical deployment and statistical methodology. I am committed to interdisciplinary research and knowledge dissemination in AI's responsible and practical use.
-                  </p>
-                  <p style="text-align:center">
-                    <a href="mailto:mjsalyjoh@gmail.com">Email</a> &nbsp;/&nbsp;
-                    <a href="https://dblp.org/pid/422/7898.html">DBLP</a> &nbsp;/&nbsp;
-                    <a href="https://scholar.google.com/citations?user=aBo9SSwAAAAJ&hl=en">Google Scholar</a>
-                    &nbsp;/&nbsp;
-                    <a href="https://orcid.org/my-orcid?orcid=0009-0003-0587-7813">ORCID</a> &nbsp;/&nbsp;
-                    <a href="https://www.researchgate.net/profile/Tanaanan-Chalermpan">ResearchGate</a> &nbsp;/&nbsp;
-                    <a
-                      href="https://drive.google.com/drive/folders/14lDk2zQsHE1Ug96M2cBLJoHDUWxIlSg7?usp=sharing">CV</a>
-                  </p>
-                </td>
-                <td style="padding:2.5%;width:37%;max-width:37%">
-                  <a href="images/tanaanan.webp"><img
-                      style="width:100%;max-width:100%;object-fit: cover; border-radius: 50%;" alt="profile photo"
-                      src="images/tanaanan.webp" class="hoverZoomLink"></a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+    <!-- Navigation -->
+    <nav class="topnav" aria-label="Site">
+      <a href="index.html" class="current">Home</a>
+      <span class="sep">/</span>
+      <a href="experience.html">Experience Gallery</a>
+      <span class="sep">/</span>
+      <a href="japan-university-match.html">Japan U Match</a>
+      <span class="sep">/</span>
+      <a href="unix-os-lecture.html">Unix OS Lecture</a>
+    </nav>
 
-          <table
-            style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
-            <tbody>
-              <tr>
-                <td style="padding:16px;width:100%;vertical-align:middle">
-                  <h2 class="section-heading">Education</h2>
+    <!-- Hero -->
+    <header class="hero">
+      <div class="hero-photo">
+        <a href="images/tanaanan.webp">
+          <img src="images/tanaanan.webp" alt="Portrait of Tanaanan Chalermpan">
+        </a>
+      </div>
+      <div class="hero-text">
+        <h1>Tanaanan Chalermpan</h1>
+        <p class="role">Undergraduate AI Researcher, Kasetsart University</p>
+        <p class="bio">
+          I am Tanaanan Chalermpan (M), an undergraduate researcher in Artificial Intelligence at Kasetsart
+          University, focused on resource-constrained applied AI — building interpretable, lightweight models
+          for real-world healthcare deployment. Since my first year, I have pursued continuous research
+          experience across NECTEC, AIIH, and KU-HCAI, contributing first-authored work spanning clinical
+          deployment and statistical methodology. I am committed to interdisciplinary research and knowledge
+          dissemination in AI's responsible and practical use.
+        </p>
+        <p class="links">
+          <a href="mailto:mjsalyjoh@gmail.com">Email</a><span class="sep">/</span>
+          <a href="https://dblp.org/pid/422/7898.html">DBLP</a><span class="sep">/</span>
+          <a href="https://scholar.google.com/citations?user=aBo9SSwAAAAJ&hl=en">Google Scholar</a><span class="sep">/</span>
+          <a href="https://orcid.org/my-orcid?orcid=0009-0003-0587-7813">ORCID</a><span class="sep">/</span>
+          <a href="https://www.researchgate.net/profile/Tanaanan-Chalermpan">ResearchGate</a><span class="sep">/</span>
+          <a href="https://drive.google.com/drive/folders/14lDk2zQsHE1Ug96M2cBLJoHDUWxIlSg7?usp=sharing">CV</a>
+        </p>
+      </div>
+    </header>
 
-                  <div class="item">
-                    <div class="item-title">Kasetsart University, Bangkok, Thailand</div>
-                    <div class="item-meta">B.S. in Computer Science (GPA: 3.33/4.00) &nbsp;|&nbsp; Jun 2023 – Mar 2027
-                    </div>
-                    <div class="item-desc">
-                      Concentrations: Artificial Intelligence, Image Processing, Data Science, Computer-aided Diagnosis,
-                      Social Science
-                    </div>
-                  </div>
+    <!-- Quick jump -->
+    <nav class="jumpnav" aria-label="Page sections">
+      <a href="#education">Education</a>
+      <a href="#publications">Publications</a>
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#teaching">Teaching</a>
+      <a href="#honors">Honors</a>
+      <a href="#training">Training</a>
+      <a href="#skills">Skills</a>
+    </nav>
 
+    <!-- Education -->
+    <section id="education">
+      <h2 class="section-heading">Education</h2>
+      <div class="item">
+        <div class="item-title">Kasetsart University, Bangkok, Thailand</div>
+        <div class="item-meta">B.S. in Computer Science (GPA: 3.33/4.00) &nbsp;|&nbsp; Jun 2023 – Mar 2027</div>
+        <div class="item-desc">
+          Concentrations: Artificial Intelligence, Image Processing, Data Science, Computer-aided Diagnosis, Social Science
+        </div>
+      </div>
+    </section>
 
-                  <h2 class="section-heading">Publications</h2>
+    <!-- Publications -->
+    <section id="publications">
+      <h2 class="section-heading">Publications</h2>
 
-                  <div class="item">
-                    <div class="item-title">Robust and Efficient Blood Loss Estimation Using Color Features and Gradient
-                      Boosting Trees</div>
-                    <div class="item-meta"> <b>Tanaanan Chalermpan</b>, Duangrat Gansawat, Kantip Kiratiratanapruk,
-                      Sanparith Marukatat, Natatikarn Jareonrattanadaechakul, Wannipa Nusupa, Urai Boonta, Wariya
-                      Sukhupragarn, Tanyong Pipanmekaporn, Sirianong Namwongprom, Visit Siripuwanan, Sarach Tuomchomtam
-                      &nbsp;|&nbsp; Discover Artificial Intelligence
-                      (Q1 on Computer Vision and Pattern Recognition, 2025)</div>
-                    <div class="item-desc">
-                      Dec. 12, 2025. <a href="https://doi.org/10.1007/s44163-025-00619-9">DOI:
-                        10.1007/s44163-025-00619-9</a>
-                    </div>
-                  </div>
+      <div class="item">
+        <div class="item-title">Robust and Efficient Blood Loss Estimation Using Color Features and Gradient Boosting Trees</div>
+        <div class="item-meta">
+          <b>Tanaanan Chalermpan</b>, Duangrat Gansawat, Kantip Kiratiratanapruk, Sanparith Marukatat,
+          Natatikarn Jareonrattanadaechakul, Wannipa Nusupa, Urai Boonta, Wariya Sukhupragarn,
+          Tanyong Pipanmekaporn, Sirianong Namwongprom, Visit Siripuwanan, Sarach Tuomchomtam
+          &nbsp;|&nbsp; Discover Artificial Intelligence (Q1, Computer Vision and Pattern Recognition, 2025)
+        </div>
+        <div class="item-desc">
+          Dec. 12, 2025 &nbsp;·&nbsp; <a href="https://doi.org/10.1007/s44163-025-00619-9">DOI: 10.1007/s44163-025-00619-9</a>
+        </div>
+      </div>
 
-                  <div class="item">
-                    <div class="item-title">Profiling Japanese Universities for Thai Students' Decision Support Through
-                      Hierarchical Clustering</div>
-                    <div class="item-meta"> <b>Tanaanan Chalermpan</b>, Nakarin Israngkura Na Ayudhaya, Sarach
-                      Tuomchomtam &nbsp;|&nbsp; International Journal of Information and Education Technology (Q2 on
-                      Education, 2025)
-                    </div>
-                    <div class="item-desc">
-                      2026. Article in press.
-                    </div>
-                  </div>
+      <div class="item">
+        <div class="item-title">Profiling Japanese Universities for Thai Students' Decision Support Through Hierarchical Clustering</div>
+        <div class="item-meta">
+          <b>Tanaanan Chalermpan</b>, Nakarin Israngkura Na Ayudhaya, Sarach Tuomchomtam
+          &nbsp;|&nbsp; International Journal of Information and Education Technology (Q2, Education, 2025)
+        </div>
+        <div class="item-desc">2026 &nbsp;·&nbsp; Article in press</div>
+      </div>
 
-                  <div class="item">
-                    <div class="item-title">Japanese Universities with Thai Offices Data</div>
-                    <div class="item-meta">Chalermpan, Tanaanan et al. &nbsp;|&nbsp; Zenodo</div>
-                    <div class="item-desc">
-                      Dec. 28, 2025. <a href="https://doi.org/10.5281/zenodo.18073128">DOI: 10.5281/zenodo.18073128</a>
-                    </div>
-                  </div>
+      <div class="item">
+        <div class="item-title">Japanese Universities with Thai Offices Data</div>
+        <div class="item-meta">Chalermpan, Tanaanan et al. &nbsp;|&nbsp; Zenodo</div>
+        <div class="item-desc">
+          Dec. 28, 2025 &nbsp;·&nbsp; <a href="https://doi.org/10.5281/zenodo.18073128">DOI: 10.5281/zenodo.18073128</a>
+        </div>
+      </div>
 
+      <div class="item">
+        <div class="item-title">Public Perception Meets Economic Data: An Analysis of Online Sentiment and Economic Indicators in Thailand</div>
+        <div class="item-meta">
+          Nakarin Israngkura Na Ayudhaya, <b>Tanaanan Chalermpan</b>, Sarach Tuomchomtam
+          &nbsp;|&nbsp; ECTI Transactions on Computer and Information Technology (ECTI-CIT)
+        </div>
+        <div class="item-desc">2026 &nbsp;·&nbsp; Under review, submitted</div>
+      </div>
 
+      <div class="item">
+        <div class="item-title">Radiomic Triage of BI-RADS 0: Interpretable Logistic Regression for Resource-Constrained Mammography</div>
+        <div class="item-meta">
+          <b>Tanaanan Chalermpan</b>, Pheemmapong Rodvaree, Sarach Tuomchomtam
+          &nbsp;|&nbsp; International Journal of Image, Graphics and Signal Processing (IJIGSP)
+        </div>
+        <div class="item-desc">2026 &nbsp;·&nbsp; Under review, submitted</div>
+      </div>
 
-                  <div class="item">
-                    <div class="item-title">Public Perception Meets Economic Data: An Analysis of Online Sentiment and
-                      Economic Indicators in Thailand</div>
-                    <div class="item-meta">Nakarin Israngkura Na Ayudhaya, <b>Tanaanan Chalermpan</b>, Sarach
-                      Tuomchomtam &nbsp;|&nbsp; ECTI Transactions on Computer and Information Technology (ECTI-CIT)
-                    </div>
-                    <div class="item-desc">
-                      2026. Under Review. Submitted.
-                    </div>
-                  </div>
+      <div class="item">
+        <div class="item-title">MangaTVL: A Polygon-Aware Pipeline for English-to-Thai Manga Translation with Reference-Free Evaluation</div>
+        <div class="item-meta">
+          <b>Tanaanan Chalermpan</b><sup>†</sup>, Patiput Ukham<sup>†</sup>, Sarach Tuomchomtam
+          &nbsp;|&nbsp; IAES International Journal of Artificial Intelligence (IJ-AI)
+        </div>
+        <div class="item-desc">2026 &nbsp;·&nbsp; Under review, submitted</div>
+        <div class="item-footnote"><sup>†</sup>Equal contribution.</div>
+      </div>
+    </section>
 
-                  <div class="item">
-                    <div class="item-title">Radiomic Triage of BI-RADS 0: Interpretable Logistic Regression for
-                      Resource-Constrained Mammography</div>
-                    <div class="item-meta"> <b>Tanaanan Chalermpan</b>, Pheemmapong Rodvaree, Sarach Tuomchomtam
-                      &nbsp;|&nbsp; International Journal of Image, Graphics and Signal Processing (IJIGSP)</div>
-                    <div class="item-desc">
-                      2026. Under Review. Submitted.
-                    </div>
-                  </div>
+    <!-- Projects -->
+    <section id="projects">
+      <h2 class="section-heading">Projects / Research</h2>
 
-                  <div class="item">
-                    <div class="item-title">MangaTVL: A Polygon-Aware Pipeline for English-to-Thai Manga Translation
-                      with Reference-Free Evaluation</div>
-                    <div class="item-meta"> <b>Tanaanan Chalermpan</b><sup>†</sup>, Patiput Ukham<sup>†</sup>, Sarach
-                      Tuomchomtam &nbsp;|&nbsp; IAES International Journal of Artificial Intelligence (IJ-AI)</div>
-                    <div class="item-desc">
-                      2026. Under Review. Submitted.
-                    </div>
-                    <div class="item-footnote" style="font-size: 0.85em; color: #666; margin-top: 4px;">
-                      <sup>†</sup>Equal contribution.
-                    </div>
-                  </div>
+      <div class="item">
+        <div class="item-title">Robust and Efficient Blood Loss Estimation System (NECTEC × CMU Research)</div>
+        <div class="item-desc">
+          Designed and implemented a practical, highly accurate solution for intraoperative blood loss estimation
+          using color-based image analysis and gradient boosting. This framework achieved comparable accuracy to
+          deep learning models while being significantly more efficient, demonstrating its potential for real-world
+          clinical deployment.
+        </div>
+      </div>
 
+      <div class="item">
+        <div class="item-title">Japanese University Grouping: Clustering and Statistical Analysis for International Student Difficulty Assessment</div>
+        <div class="item-desc">
+          Developed a framework to categorize Japanese universities based on the estimated ease or difficulty of
+          study for international students. Employed hierarchical clustering and statistical analysis (including
+          EDA and correlation tests) to analyze institutional data, segment universities into distinct groups, and
+          derive key insights for prospective foreign applicants.
+        </div>
+      </div>
+    </section>
 
+    <!-- Experience -->
+    <section id="experience">
+      <h2 class="section-heading">Research &amp; Professional Experience</h2>
 
+      <div class="item">
+        <div class="item-title">Human-Centered AI Laboratory (KU-HCAI)</div>
+        <div class="item-meta">Lab Manager / Artificial Intelligence Researcher &nbsp;|&nbsp; Nov 2024 – Present</div>
+        <div class="item-desc">
+          <ul class="bullets">
+            <li>Conduct research on profiling Japanese universities to support Thai student admission decisions.</li>
+            <li>Mentor lab members in research methodology and applied AI techniques.</li>
+            <li>Coordinate research collaborations between the university and external partners.</li>
+          </ul>
+        </div>
+      </div>
 
+      <div class="item">
+        <div class="item-title">Artificial Intelligence Technology and Innovation Center for Health (AIIH)</div>
+        <div class="item-meta">Medical AI Researcher (Partnership with Phramongkutklao Hospital) &nbsp;|&nbsp; Jan 2026 – Sep 2026</div>
+        <div class="item-desc">
+          <ul class="bullets">
+            <li>Developed an interpretable, GPU-free BI-RADS 0 mammography triage classifier for resource-constrained edge deployment.</li>
+            <li>Explored radiomics-based approaches for BI-RADS assessment on mammography images.</li>
+          </ul>
+        </div>
+      </div>
 
-                  <h2 class="section-heading">Projects / Research</h2>
+      <div class="org-group">
+        <div class="org-name">National Electronics and Computer Technology Center (NECTEC)</div>
+        <div class="org-stints">
+          <div>
+            <div class="stint-role">Research Assistant, Artificial Intelligence Research Group</div>
+            <div class="stint-meta">Aug 2026 – Oct 2026</div>
+            <ul class="bullets">
+              <li>Optimized Left Ventricular Ejection Fraction (LVEF) estimation from medical video under limited and imbalanced data.</li>
+              <li>Developed a synthetic data augmentation approach for underrepresented LVEF classes to reduce class imbalance bias and improve model performance.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="stint-role">Research Assistant, Image Processing and Understanding Research Team</div>
+            <div class="stint-meta">Nov 2024 – Dec 2025</div>
+            <ul class="bullets">
+              <li>Developed a real-time blood loss estimation system using machine learning, image processing, and feature extraction, in collaboration with the Department of Anesthesiology, Chiang Mai University.</li>
+              <li>Conducted comprehensive literature reviews on medical and AI estimation methods.</li>
+              <li>Authored a technical report and a scientific journal article for publication.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="stint-role">Research Trainee, Image Processing and Understanding Research Team</div>
+            <div class="stint-meta">Apr 2024 – Jun 2024</div>
+            <ul class="bullets">
+              <li>Enhanced a mammogram BI-RADS classification model's efficiency using Focal Loss and image processing.</li>
+              <li>Performed image preprocessing and exploratory data analysis for blood loss estimation research.</li>
+              <li>Developed a shell script to automate file summation and data reporting.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="stint-role">Artificial Intelligence Consultant, Educational Technology Research Team</div>
+            <div class="stint-meta">Oct 2023 (1 month)</div>
+            <ul class="bullets">
+              <li>Delivered consultation and training in Artificial Intelligence for the "AI &amp; Data Science Camp," part of the Specialized High School Education Development Program (RAC).</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
 
-                  <div class="item">
-                    <div class="item-title">Robust and Efficient Blood Loss Estimation System (NECTEC x CMU Research)
-                    </div>
-                    <div class="item-desc">
-                      Designed and implemented a practical, highly accurate solution for intraoperative blood loss
-                      estimation using color-based image analysis and gradient boosting. This framework achieved
-                      comparable accuracy to deep learning models while being significantly more efficient,
-                      demonstrating its potential for real-world clinical deployment.
-                    </div>
-                  </div>
+    <!-- Teaching -->
+    <section id="teaching">
+      <h2 class="section-heading">Teaching &amp; Mentoring Experience</h2>
 
-                  <div class="item">
-                    <div class="item-title">Japanese University Grouping: Clustering and Statistical Analysis for
-                      International Student Difficulty Assessment</div>
-                    <div class="item-desc">
-                      Developed a framework to categorize Japanese universities based on the estimated Ease/Difficulty
-                      of Study for international students. Employed Hierarchical Clustering and Statistical Analysis
-                      (including EDA and correlation tests) to analyze institutional data, segment universities into
-                      distinct groups, and derive key insights for prospective foreign applicants.
-                    </div>
-                  </div>
+      <div class="item">
+        <div class="item-title">Department of Computer Science, Kasetsart University</div>
+        <div class="item-meta">Lecturer &nbsp;|&nbsp; Sep 2026</div>
+        <div class="item-desc">
+          <ul class="bullets">
+            <li>Taught high school teachers and students from Surasakmontree School on "Practical Computer Vision with Deep Learning."</li>
+          </ul>
+        </div>
+      </div>
 
-                  <h2 class="section-heading">Research & Professional Experience</h2>
+      <div class="item">
+        <div class="item-title">Kasetsart University Research and Development Institute (KU-DRI)</div>
+        <div class="item-meta">Workshop Facilitator &nbsp;|&nbsp; Mar 2026</div>
+        <div class="item-desc">
+          <ul class="bullets">
+            <li>Instructed researchers and lecturers at Kasetsart University on AI-assisted research writing techniques.</li>
+          </ul>
+        </div>
+      </div>
 
-                  <div class="item">
-                    <div class="item-title">Human-Centered AI Laboratory (KU-HCAI)</div>
-                    <div class="item-meta">Lab Manager / Artificial Intelligence Researcher &nbsp;|&nbsp; Nov 2024 –
-                      Present</div>
-                    <div class="item-desc">
-                      <ul>
-                        <li>Conduct research on profiling Japanese universities to support Thai student admission decisions.</li>
-                        <li>Mentor lab members in research methodology and applied AI techniques</li>
-                        <li>Coordinate research collaborations between the university and external partners.</li>
-                      </ul>
-                    </div>
-                  </div>
+      <div class="item">
+        <div class="item-title">Human-Centered AI Laboratory (KU-HCAI), Kasetsart University</div>
+        <div class="item-meta">Lab Manager / Artificial Intelligence Researcher &nbsp;|&nbsp; Nov 2024 – Present</div>
+        <div class="item-desc">
+          <ul class="bullets">
+            <li>Managed lab session knowledge sharing on scientific report writing and AI pipeline development.</li>
+          </ul>
+        </div>
+      </div>
 
-                  <div class="item">
-                    <div class="item-title">National Electronics and Computer Technology Center (NECTEC)
-                    </div>
-                    <div class="item-meta">Research Assistant (Artificial Intelligence Research Group)
-                      &nbsp;|&nbsp; Aug 2026 – Oct 2026</div>
-                    <div class="item-desc">
-                      <ul>
-                        <li>Optimized Left Ventricular Ejection Fraction (LVEF) estimation from medical video under
-                          limited and imbalanced data.</li>
-                        <li>Developed a synthetic data augmentation approach for underrepresented LVEF classes to reduce
-                          class imbalance bias and improve model performance.</li>
-                      </ul>
-                    </div>
-                  </div>
+      <div class="item">
+        <div class="item-title">Generative Artificial Intelligence (01418263), Kasetsart University</div>
+        <div class="item-meta">Teaching Assistant &nbsp;|&nbsp; Nov 2025 – Mar 2026</div>
+        <div class="item-desc">
+          <ul class="bullets">
+            <li>Assisted the professor in lab sessions and mentored undergraduates on fundamental generative AI concepts, data structures, and debugging best practices.</li>
+          </ul>
+        </div>
+      </div>
 
-                  <div class="item">
-                    <div class="item-title">Artificial Intelligence Technology and Innovation Center for Health (AIIH)
-                    </div>
-                    <div class="item-meta">Medical AI Researcher (Partnership with Phramongkutklao Hospital)
-                      &nbsp;|&nbsp; Jan 2026 – Sep 2026</div>
-                    <div class="item-desc">
-                      <ul>
-                        <li>Developed an interpretable, GPU-free BI-RADS 0 mammography triage classifier for
-                          resource-constrained edge deployment.</li>
-                        <li>Explored radiomics-based approaches for BI-RADS assessment on mammography images.</li>
-                      </ul>
-                    </div>
-                  </div>
+      <div class="org-group">
+        <div class="org-name">Machine Learning Systems (01418262), Kasetsart University</div>
+        <div class="org-stints">
+          <div>
+            <div class="stint-role">Teaching Assistant</div>
+            <div class="stint-meta">Jun 2026 – Nov 2026</div>
+            <ul class="bullets">
+              <li>Assisted the professor in lab sessions and mentored undergraduates on fundamental machine learning concepts, data structures, and debugging best practices.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="stint-role">Teaching Assistant</div>
+            <div class="stint-meta">Nov 2024 – Oct 2025</div>
+            <ul class="bullets">
+              <li>Assisted the professor in lab sessions and mentored undergraduates on fundamental machine learning concepts, data structures, and debugging best practices.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
 
-                  <div class="item">
-                    <div class="item-title">National Electronics and Computer Technology Center (NECTEC)</div>
-                    <div class="item-meta">Research Assistant (Image Processing and Understanding Research Team)
-                      &nbsp;|&nbsp; Nov 2024 – Dec 2025</div>
-                    <div class="item-desc">
-                      <ul>
-                        <li>Developed a real-time blood loss estimation system that utilized machine learning, image
-                          processing, and feature extraction techniques in collaboration with the Department of
-                          Anesthesiology, Chiang Mai University.</li>
-                        <li>Conducted comprehensive literature reviews on medical and AI estimation methods.</li>
-                        <li>Authored a technical report and a scientific journal article for publication.</li>
-                      </ul>
-                    </div>
-                  </div>
+      <div class="item">
+        <div class="item-title">National Electronics and Computer Technology Center (NECTEC)</div>
+        <div class="item-meta">Teaching Assistant &nbsp;|&nbsp; 2024 (2 months)</div>
+        <div class="item-desc">
+          <ul class="bullets">
+            <li>Cooperated on "Kidbright Innovation by Alumni," part of the Specialized High School Education Development Program in Robotics, Artificial Intelligence, and Coding (RAC).</li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-                  <div class="item">
-                    <div class="item-title">National Electronics and Computer Technology Center (NECTEC)</div>
-                    <div class="item-meta">Research Trainee (Image Processing and Understanding Research Team)
-                      &nbsp;|&nbsp; Apr 2024 – Jun 2024</div>
-                    <div class="item-desc">
-                      <ul>
-                        <li>Enhanced a mammogram BI-RADS classification model’s efficiency using Focal Loss and image
-                          processing.</li>
-                        <li>Performed image preprocessing and Exploratory Data Analysis (EDA) for blood loss estimation
-                          research.</li>
-                        <li>Developed a shell script to automate file summation and data reporting.</li>
-                      </ul>
-                    </div>
-                  </div>
+    <!-- Honors -->
+    <section id="honors">
+      <h2 class="section-heading">Honors &amp; Awards</h2>
+      <ul class="plain">
+        <li>
+          <strong>Scopus Q1 Undergraduate Research Publication Award</strong> — Faculty of Science, Kasetsart University (Mar 2026).
+          Awarded in official recognition of exceptional academic achievement for publishing a first-authored/co-authored
+          research article in a top-quartile (Q1) international journal (Discover Artificial Intelligence, Springer Nature)
+          during undergraduate studies.
+        </li>
+        <li>
+          <strong>STEAMs Fully-Funded Scholarship</strong> — a fully-funded scholarship for high-potential students in
+          science and scientific projects, sponsored by the Ministry of Education (MOE) and Kasetsart University.
+        </li>
+        <li>
+          <strong>Thailand New Gen Inventors Award (Gold Medal)</strong> — developed a system for analyzing and diagnosing
+          the health of durian trees, in collaboration with the Faculty of Natural Resources, Prince of Songkhla University.
+        </li>
+        <li>
+          <strong>KidBright Developer Conference (First Runner-Up)</strong> — developed a water level monitoring system
+          in collaboration with the Royal Irrigation Department, Angthong province.
+        </li>
+        <li>
+          <strong>Computer Software Projects Competition (Sillapa 70) — First Prize</strong> — Ministry of Education (MOE).
+          A system for analyzing and diagnosing the health of durian trees (Ver. 1) using object detection and image
+          processing (2022).
+        </li>
+        <li>
+          <strong>Scientific Projects for High School Students Competition — First Prize</strong> — STEAMs Co-Creation
+          Project, Health and Medical Field, Kasetsart University. Antigen test kit and identification card
+          classification system using object detection and natural language processing (2022).
+        </li>
+      </ul>
+    </section>
 
-                  <div class="item">
-                    <div class="item-title">National Electronics and Computer Technology Center (NECTEC)</div>
-                    <div class="item-meta">Artificial Intelligence Consultant (Educational Technology Research Team)
-                      &nbsp;|&nbsp; Oct 2023 (1 month)</div>
-                    <div class="item-desc">
-                      <ul>
-                        <li>Delivered consultation and training in Artificial Intelligence for the ’AI & Data Science
-                          Camp,’ part of the Specialized High School Education Development Program (RAC).</li>
-                      </ul>
-                    </div>
-                  </div>
+    <!-- Training -->
+    <section id="training">
+      <h2 class="section-heading">Training &amp; Certifications</h2>
 
-                  <h2 class="section-heading">Teaching & Mentoring Experience</h2>
+      <div class="item">
+        <div class="item-title">AI Builders Gen 2 (VISTEC, DELL, AWS)</div>
+        <div class="item-meta">Graduate &nbsp;|&nbsp; 2021 – 2022</div>
+        <div class="item-desc">
+          <ul class="bullets">
+            <li>Graduated with the topic "ATK-OCR Classification (AOC): Antigen Test Kit and Identification Card
+              Classification System Using Image Classification and Natural Language Processing."</li>
+          </ul>
+        </div>
+      </div>
 
-                  <div class="item">
-                    <div class="item-title">Kasetsart University Research and Development Institute (KU-DRI)</div>
-                    <div class="item-meta">Workshop Facilitator &nbsp;|&nbsp; Mar 2026</div>
-                    <div class="item-desc">
-                      <ul>
-                        <li>Instructed researchers and lecturers at Kasetsart University on AI-assisted research writing
-                          techniques.</li>
-                      </ul>
-                    </div>
-                  </div>
+      <div class="item">
+        <div class="item-title">Prince of Songkhla University</div>
+        <div class="item-meta">Participant &nbsp;|&nbsp; 2021 – 2022</div>
+        <div class="item-desc">
+          <ul class="bullets">
+            <li>Participated in "Python Programming and Introduction to AI with Python," Department of Computer Engineering.</li>
+          </ul>
+        </div>
+      </div>
 
-                  <div class="item">
-                    <div class="item-title">Human-Centered AI Laboratory (KU-HCAI), Kasetsart University</div>
-                    <div class="item-meta">Lab Manager / Artificial Intelligence Researcher &nbsp;|&nbsp; Nov 2024 –
-                      Present</div>
-                    <div class="item-desc">
-                      <ul>
-                        <li>Managed lab session knowledge sharing on scientific report writing and AI pipeline
-                          development.</li>
-                      </ul>
-                    </div>
-                  </div>
+      <div class="item">
+        <div class="item-title">NSTDA and NECTEC</div>
+        <div class="item-meta">Participant &nbsp;|&nbsp; 2020</div>
+        <div class="item-desc">
+          <ul class="bullets">
+            <li>Fulfilled all requirements, seminars, and hands-on workshops on "Fundamental Principles of Artificial Intelligence."</li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-                  <div class="item">
-                    <div class="item-title">Generative Artificial Intelligence (01418263), Kasetsart University</div>
-                    <div class="item-meta">Teaching Assistant &nbsp;|&nbsp; Nov 2025 – Mar 2026</div>
-                    <div class="item-desc">
-                      <ul>
-                        <li>Assisted professor in lab sessions and mentored undergraduate students on fundamental
-                          generative AI concepts, data structures, and debugging best practices.</li>
-                      </ul>
-                    </div>
-                  </div>
+    <!-- Skills -->
+    <section id="skills">
+      <h2 class="section-heading">Skills &amp; Languages</h2>
+      <ul class="skills">
+        <li><strong>Programming Languages:</strong> Python, Shell scripting, Bash, LaTeX, SQL, C++</li>
+        <li><strong>Data Science:</strong> Pandas, Matplotlib, Seaborn, SciPy, Scikit-learn, Keras, PyTorch</li>
+        <li><strong>Technologies:</strong> OpenCV, Scikit-image, phpMyAdmin, GitFlow, GitHub, Vim, Nano, Linux, SLURM</li>
+        <li><strong>Spoken Languages:</strong> Thai (Native), English (Professional Proficiency), Japanese (Beginner)</li>
+      </ul>
+    </section>
 
-                  <div class="item">
-                    <div class="item-title">Machine Learning Systems (01418262), Kasetsart University</div>
-                    <div class="item-meta">Teaching Assistant &nbsp;|&nbsp; Nov 2024 – Oct 2025</div>
-                    <div class="item-desc">
-                      <ul>
-                        <li>Assisted professor in lab sessions and mentored undergraduate students on fundamental
-                          machine learning concepts, data structures, and debugging best practices.</li>
-                      </ul>
-                    </div>
-                  </div>
+    <footer>
+      This page adapted from <a href="https://github.com/jonbarron/jonbarron_website">Jon Barron's site</a>.
+    </footer>
 
-                  <div class="item">
-                    <div class="item-title">National Electronics and Computer Technology Center (NECTEC)</div>
-                    <div class="item-meta">Teaching Assistant &nbsp;|&nbsp; 2024 (2 months)</div>
-                    <div class="item-desc">
-                      <ul>
-                        <li>Cooperated on "Kidbright Innovation by Alumni" as part of the Specialized High School
-                          Education Development Program in Robotics, Artificial Intelligence, and Coding (RAC).</li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  <h2 class="section-heading">Honors & Awards</h2>
-                  <ul>
-                    <li>
-                      <strong>Scopus Q1 Undergraduate Research Publication Award:</strong>
-                      <em>Faculty of Science, Kasetsart University (Mar 2026).</em>
-                      Awarded in official recognition of exceptional academic achievement for publishing a
-                      first-authored/co-authored research article in a Top Quartile (Q1) international journal (Discover
-                      Artificial Intelligence, Springer Nature) during undergraduate studies.
-                    </li>
-                    <li><strong>STEAMs Fully-Funded Scholarship:</strong> Received a fully-funded scholarship for
-                      high-potential students in science and scientific projects, sponsored by the Ministry of Education
-                      (MOE) and Kasetsart University.</li>
-                    <li><strong>Thailand New Gen Inventors Award (Gold Medal):</strong> Developed A System for Analyzing
-                      and Diagnosing the Health of Durian Trees in collaboration with the Faculty of Natural Resources,
-                      Prince of Songkhla University.</li>
-                    <li><strong>KidBright Developer Conference (First Runner-Up):</strong> Developed a water level
-                      monitoring system in collaboration with the Royal Irrigation Department, Angthong province.</li>
-                    <li><strong>Computer Software Projects Competition (sillapa70) First Prize:</strong> From the
-                      Ministry of Education (MOE). A System for Analyzing and Diagnosing the Health of Durian Trees
-                      (Ver.1) using Object detection and Image Processing (2022).</li>
-                    <li><strong>Scientific Projects for High School Students Competition First Prize:</strong> (STEAMs
-                      Co-Creation Project) on Health and Medical Field from Kasetsart University. Antigen Test Kit and
-                      Identification card Classification system using Object Detection and Natural language processing
-                      (2022).</li>
-                  </ul>
-
-                  <h2 class="section-heading">Training & Certifications</h2>
-
-                  <div class="item">
-                    <div class="item-title">AI Builders Gen 2 (VISTEC, DELL, AWS)</div>
-                    <div class="item-meta">Graduate &nbsp;|&nbsp; 2021 – 2022</div>
-                    <div class="item-desc">
-                      <ul>
-                        <li>Graduated with the topic "ATK-OCR Classification (AOC) Antigen Test Kit and Identification
-                          card classification system using Image Classification and Natural language processing."</li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  <div class="item">
-                    <div class="item-title">Prince of Songkhla University</div>
-                    <div class="item-meta">Participant &nbsp;|&nbsp; 2021 – 2022</div>
-                    <div class="item-desc">
-                      <ul>
-                        <li>Participated in "Python Programming and Introduction to AI with Python" from the Department
-                          of Computer Engineering.</li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  <div class="item">
-                    <div class="item-title">NSTDA and NECTEC</div>
-                    <div class="item-meta">Participant &nbsp;|&nbsp; 2020</div>
-                    <div class="item-desc">
-                      <ul>
-                        <li>Fulfilled all requirements, seminars, and hands-on workshops on the topic "Fundamental
-                          Principles of Artificial Intelligence."</li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  <h2 class="section-heading">Skills & Languages</h2>
-                  <ul>
-                    <li><strong>Programming Languages:</strong> Python, Shell scripting, Bash, LaTeX, SQL, C++</li>
-                    <li><strong>Data Science:</strong> Pandas, Matplotlib, Seaborn, SciPy, Scikit-learn, Keras, PyTorch
-                    </li>
-                    <li><strong>Technologies:</strong> OpenCV, Scikit-image, phpMyAdmin, GitFlow, GitHub, Vim, Nano,
-                      Linux, SLURM</li>
-                    <li><strong>Spoken Languages:</strong> Thai (Native), English (Professional Proficiency), Japanese
-                      (Beginner)</li>
-                  </ul>
-
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-          <table
-            style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
-            <tbody>
-              <tr>
-                <td style="padding:0px">
-                  <br>
-                  <p style="text-align:right;font-size:12px;color:#888;">
-                    This page adapted from <a href="https://github.com/jonbarron/jonbarron_website"
-                      style="color:#888;">Jon Barron's site</a>.
-                  </p>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-        </td>
-      </tr>
-  </table>
+  </div>
 </body>
-
 </html>
