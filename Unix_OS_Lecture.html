@@ -1,0 +1,949 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Unix Operating System</title><meta name="data-notion-page-icon" content="💽"/><link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ctext%20y%3D%22.9em%22%20font-size%3D%2290%22%3E%F0%9F%92%BD%3C%2Ftext%3E%3C%2Fsvg%3E"/><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+/* For default-background callouts, render the border outline. */
+.callout.block-color-default_background {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+/*
+ * Toggles and callouts hold arbitrary content, so they can easily be taller
+ * than a page. They must stay breakable: avoiding breaks inside them makes
+ * Chromium push the whole block onto the next page, which leaves the previous
+ * page mostly empty before every long toggle.
+ */
+details,
+aside {
+	margin: 1.25em 0;
+}
+
+/* Keep a toggle's title on the same page as the start of its content. */
+summary {
+	page-break-after: avoid;
+	break-after: avoid;
+}
+
+/*
+ * Toggle headings render as <h1/h2/h3 style="display:inline-block"> inside
+ * <summary>. Without this reset, the heading's margin-top pushes it below the
+ * ::marker (▼), so the triangle and the title appear on separate lines.
+ */
+summary h1,
+summary h2,
+summary h3,
+summary h4 {
+	margin-top: 0;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding-inline: 0.125rem;
+	padding-block: 0.375rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+/*
+ * Render emoji icons using a ::before pseudo-element to keep the glyph
+ * out of the DOM textContent traversal. This avoids double-rendering icons
+ * in callouts and page titles.
+ * NOTE(slim/html-export-pseudo-icons): I can't tagref this because it will
+ * flag as a duplicate tag after codegen.
+ */
+.icon[data-emoji]::before {
+	content: attr(data-emoji);
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	margin-right: 0.4em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.tab {
+	margin: 1.25em 0;
+	padding-inline: 1rem;
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style><style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style></head><body><div style="padding: 10px 20px; font-family: sans-serif;"><a href="index.html" style="text-decoration: none; color: #333; font-weight: bold;">&larr; Back to Home</a></div><article id="bc257692-529e-4e49-bf91-47b723fc8ecb" class="page sans" data-notion-page-icon="💽"><header><img class="page-cover-image" src="https://app.notion.com/images/page-cover/nasa_eagle_in_lunar_orbit.jpg" style="object-position:center 40%"/><div class="page-header-icon page-header-icon-with-cover"><span class="icon" data-emoji="💽"></span></div><h1 class="page-title" dir="auto">Unix Operating System</h1><p class="page-description" dir="auto" style="font-style: italic; color: #555;">Note: This lecture is summarized from the &quot;Unix Operating System and Shell Programming Class&quot; by Dr. Chavalit SRISATHAPORNPHAT, Department of Computer Science, Faculty of Science, Kasetsart University, Thailand.</p></header><div class="page-body"><h2 id="5ca9f992-9fc8-4732-8d81-5c380a2d01b3" class="" dir="auto">Basic Shell Commands</h2><h3 id="423811d8-4300-4187-ae10-1dc117b4ef5b" class="" dir="auto">Redirection</h3><figure id="1eb0a656-edcd-4385-b8b8-e8b6cc911a43" class="image" data-notion-image="Unix_OS_Lecture_images/image.png" dir="ltr"><a href="Unix_OS_Lecture_images/image.png"><img style="width:511px" src="Unix_OS_Lecture_images/image.png"/></a></figure><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js" integrity="sha512-whYhDwtTmlC/NpZlCr6PSsAaLOrfjVg/iXAnC4H/dtiHawpShhT2SlIMbpIhT/IL/NrpdMm+Hq2C13+VKpHTYw==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><pre id="520c180a-fed4-480b-9b28-a53157e44c37" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">&gt; (redirection) | 1&gt;... (redirection stdout) 
+| 2&gt;... (redirection stderr) </code></pre><pre id="4c1ce3bf-6fd5-4d1b-9df3-4f5348058a5a" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">wc &lt; file1.txt (redirection input)</code></pre><pre id="d8afe377-1cc5-40a9-ad93-c05111730721" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">ls -l file1 noFile 1&gt;out.txt 2&gt;&amp;1 (Redirecting to one file)</code></pre><h3 id="cd96d4be-5775-49cc-ba30-855e0cf6f892" class="" dir="auto">TEE</h3><ul id="9aa63c7d-ef6a-4001-903e-73f19b593521" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Copy stdin to stdout and to file(s)<figure id="e0058727-2306-4ad4-9c8c-b25385824f32" class="image" data-notion-image="Unix_OS_Lecture_images/image%201.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%201.png"><img style="width:679.984375px" src="Unix_OS_Lecture_images/image%201.png"/></a></figure></li></ul><p id="660ec065-1da2-461e-bf2f-d52311f94d21" class="" dir="auto">
+</p><pre id="e2da044c-fe65-4488-aa57-d9e9c2b9304c" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">ls -l file99 1&gt;/dev/null 2&gt;&amp;1 // ส่งstdin stderr 
+เข้าใน trash /dev/null</code></pre><h3 id="1e38b552-d997-42fe-b736-b739e4aaee22" class="" dir="auto">Prevent overwriting</h3><pre id="f1910d7d-0203-4429-9b1b-3d8adfc80c45" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set -o noclobber</code></pre><h3 id="1c17ed72-45a3-43aa-9ee6-7fa65cf9fdd5" class="" dir="auto">Shell variables</h3><pre id="dba66035-339a-40f4-8410-fe6044ada0df" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">Stored data -&gt; variable=value
+Reference -&gt; $variable
+Unset -&gt; unset variable
+Display -&gt; echo $variable, set
+</code></pre><p id="9648706d-f721-4438-8897-159ccf6923f3" class="" dir="auto">
+</p><h2 id="408948f1-aa54-4862-9877-222bf48dfce1" class="" dir="auto">File System &amp; Permissions</h2><h3 id="5f797e9b-8829-46ed-a2cb-54f03b1066be" class="" dir="auto">Unix File Types</h3><pre id="c981ae23-3e10-4332-990b-bc8fd6c0d735" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">- : Regular file
+d : Directory
+l : Link
+c : Special file
+s : Socket
+p : Named pipe
+b : Block device</code></pre><p id="7942ae05-2674-4916-8d41-d198783cc965" class="" dir="auto">
+</p><h3 id="a5748c14-2f12-48e6-9c95-ef4e33c54b3e" class="" dir="auto">Path </h3><ul id="e174e653-d580-4257-a84d-2c2213a6ce35" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Absolute path</li></ul><pre id="f2ba13dd-b5fa-4b0d-8d57-2d4ad127177e" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">/etc/file1</code></pre><ul id="06ab63c5-016d-4f7e-ba7d-82b8ed37b2a2" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Relative path</li></ul><pre id="74d4d09c-931c-4bd3-9cef-cbdad1ae3ceb" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">../usr/staff/joan/file3</code></pre><h3 id="0401f46f-0678-4129-bca8-e19079979dc1" class="" dir="auto">Directory Contents</h3><ul id="68119dcc-6ebc-4920-b817-457ca65491a8" class="bulleted-list" dir="auto"><li style="list-style-type:disc">inode (Index node) = data structure store information of files</li></ul><ul id="59f47c7f-3935-4e63-85e0-5ed91106fe86" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong><span style="border-bottom:0.05em solid">Soft Link (Symbolic link)</span></strong></li></ul><pre id="90d497ee-d2dd-4cfa-9019-20bd8de923f8" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">ln -s &lt;existingFile&gt; &lt;newLink&gt;</code></pre><ul id="8532233d-5a3a-4f2e-91b5-4ccf7877473a" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Indirect link to a file</li></ul><ul id="9215a3cc-9f66-41dd-a942-d231d8be9f48" class="bulleted-list" dir="auto"><li style="list-style-type:disc">pointer to a originak file</li></ul><ul id="ad3a0d05-4ec2-4858-be72-68b87cdafdc6" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Different inode number</li></ul><figure id="96d7ad4f-8560-46ca-b124-127ddb607245" class="image" data-notion-image="Unix_OS_Lecture_images/image%202.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%202.png"><img style="width:707.96875px" src="Unix_OS_Lecture_images/image%202.png"/></a></figure><p id="7dfd1807-e0ae-4031-a69a-a331bb274f10" class="" dir="auto">
+</p><ul id="abf66a6b-dc44-4f16-81bd-9e51f3cbad7c" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong><span style="border-bottom:0.05em solid">Hard Link</span></strong></li></ul><pre id="00017cf5-699f-476f-9794-570601394382" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">ln &lt;existingFile&gt; &lt;newLink&gt;</code></pre><ul id="5db4fee0-ec84-4c27-a351-54d7055ccbf6" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Different name of the same file</li></ul><ul id="125d4c7d-f96f-42d3-aa21-d78bfa5ee2b1" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Same inode number</li></ul><ul id="a04cb7bb-5ac3-4719-83d0-bffab8c6ef0d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">link ผ่านเลข inode ใน directory และ physical file ใน data block โดยตรง (คล้าย ๆ เหมือนกับการ copy file)<figure id="a974c9e5-f1c8-467a-8903-0a19e4efb8ba" class="image" data-notion-image="Unix_OS_Lecture_images/image%203.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%203.png"><img style="width:455px" src="Unix_OS_Lecture_images/image%203.png"/></a></figure></li></ul><p id="96b3f6d0-763d-46be-977e-ad74b409285d" class="" dir="auto">
+</p><h3 id="b0cd456f-67d9-479f-ba51-98e6b923abe0" class="" dir="auto">File and Directory Permission</h3><ul id="c1e32102-97a2-4c24-8a64-d499d4dec189" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Permission code is used to indicate permission of user / group / other<figure id="fa53c177-85b8-4ead-a079-439637ca52e0" class="image" data-notion-image="Unix_OS_Lecture_images/image%204.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%204.png"><img style="width:483px" src="Unix_OS_Lecture_images/image%204.png"/></a></figure></li></ul><p id="069f312c-a2e4-4fc8-a54b-c224402d48cb" class="" dir="auto">
+</p><ul id="5fddeeaf-cb1f-4a48-985e-c80fb1638fe1" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Changing Permission - chmod</li></ul><pre id="695caecd-c86c-4c1c-9477-e48338fcc178" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">chmod [-R] &lt;modes&gt; &lt;file/directories&gt;</code></pre><figure id="df82d523-cf8d-4d22-82e3-af56344eb854" class="image" data-notion-image="Unix_OS_Lecture_images/image%205.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%205.png"><img style="width:511px" src="Unix_OS_Lecture_images/image%205.png"/></a></figure><figure id="c3ba59d8-f06a-4077-8b14-16d03ccee566" class="image" data-notion-image="Unix_OS_Lecture_images/image%206.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%206.png"><img style="width:511px" src="Unix_OS_Lecture_images/image%206.png"/></a></figure><p id="6ea67502-e7db-4eec-95f2-9a4bdc62ef49" class="" dir="auto">
+</p><ul id="94d0616b-04ba-4a2f-8cbb-c62f315d098f" class="bulleted-list" dir="auto"><li style="list-style-type:disc">User Masks<ul id="9d4e4c2f-b1d2-4122-9431-70f590ee7d1c" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Default permission<ul id="c5d403b4-44a6-419d-a8bd-cb8a4dd46f5f" class="bulleted-list" dir="auto"><li style="list-style-type:square">File : 666</li></ul><ul id="0083d2db-eeeb-4c66-b6c8-e28b7aedb248" class="bulleted-list" dir="auto"><li style="list-style-type:square">Directory : 777</li></ul></li></ul></li></ul><pre id="12395ea2-cd14-4f9c-8f69-6f63272c7b56" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">umask 022 (default on bash)
+
+// Calculation 
+		Directory permission : 777 - &lt;umask - 222&gt; = 755 
+		File permission : 666 - &lt;umask - 222&gt; = 644</code></pre><p id="0e2431bc-e3dc-4d86-80b7-4c1df03c8c0f" class="" dir="auto">
+</p><h2 id="e23eba51-110a-4df8-aa4f-cdb58e9d3b4a" class="" dir="auto">Advanced bash Commands (Filters)</h2><h3 id="820d75eb-50f3-4e1b-a2c0-b01aea63df8a" class="" dir="auto">cat</h3><ul id="eb84839e-2d9c-407e-9406-690a18adf8a8" class="bulleted-list" dir="auto"><li style="list-style-type:disc">concatenate files and print on stdout<pre id="e0b9ae70-9599-42f0-a571-d4c0270aaa83" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">cat &gt; filename</code></pre></li></ul><ul id="926a96ec-e967-4630-bfbf-0a0abc70e13f" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Display content of file 1 file2 and all files to stdout<pre id="8bf06c65-5818-4945-b650-2949f8d0ec95" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">cat file1 file2 ...</code></pre></li></ul><ul id="10fba021-9a2e-4d48-838c-7ffb89db7813" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Display content to stdout<pre id="c1fb5062-802e-4bdf-bbd7-ce4ebec61d0c" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">cat filename
+// -n : display line number
+	 -v : display control characters
+	 -E : display $ at the end of lines
+	 -T : display TAB
+	 -A : shortcut of -vET</code></pre></li></ul><p id="eb73f163-7f7e-4533-8b6b-4613dd0673b9" class="" dir="auto">
+</p><h3 id="4d85243b-d142-4a94-83d1-a758a307a96b" class="" dir="auto">head</h3><ul id="8cd69362-f318-4169-820f-cb4ad57cd168" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Displaying Beginning of Files</li></ul><pre id="075945e3-1166-4410-9395-9d63c05d987f" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">head filename 
+// display first 10 lines to stdout
+head -n filename 
+// display first n lines of filenames to stdout
+head file1 file2 
+// display first 10 lines of all files to stdout</code></pre><p id="37df3237-ffdd-439b-b54f-1a0eff4e9fad" class="" dir="auto">
+</p><h3 id="4f8d38e1-2385-4a19-b959-39530aea89a6" class="" dir="auto">tail</h3><ul id="3d19191c-f60a-4a7e-bccc-17d97d84ca44" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Displaying end of files.</li></ul><pre id="2f68465a-909d-4a99-b28c-0a7911706af2" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">tail filename
+ // display last 10 lines of filename to stdout
+ 
+ tail -n filename or tail --lines=n filename
+ // Display last n lines of filename to stdout
+ 
+ tail --lines=+20 filename
+ // Display all lines starting to line no 20 to stdout
+ 
+ tail -cn filename
+ // Display the last n characters of filename to stdout
+ 
+ tail -f filename
+ // Output append data as filename grow</code></pre><p id="df214ac8-ac78-4aeb-8fba-a4abe2e8c331" class="" dir="auto">
+</p><h3 id="3799cf45-13e6-4a08-b621-3de6777195d3" class="" dir="auto">cut</h3><ul id="3e2d3910-cb18-42bc-ac18-7c12b55fdb21" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Cut by specifying column number</li></ul><pre id="a014c346-2a39-4b48-be15-111b5a3b6b7a" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">cut -c&lt;column list&gt; filename
+// 1-2 or 1-2, 6, 8</code></pre><ul id="7c7a4bdf-e20b-4dd7-a8a3-7b0305fe28f7" class="bulleted-list" dir="auto"><li style="list-style-type:disc">cut by specifying field number<pre id="0cebb99f-9669-4a59-a3ca-3fd9609ded83" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">cut -f&lt;field list&gt; -d&lt;delimiter&gt; filename</code></pre><ul id="bd1d72fe-7dd4-45ae-9420-a331a8a7f4f0" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Field list : 1-2, 4</li></ul><ul id="aba316f4-43e4-40ac-b958-cb4aa2dfa8d3" class="bulleted-list" dir="auto"><li style="list-style-type:circle">delimiter <ul id="122dd3f3-fef9-4bb8-aa43-fca5fd838700" class="bulleted-list" dir="auto"><li style="list-style-type:square">-d ‘ ‘  : space as delimiter</li></ul><ul id="0e8041d3-13fc-45e4-be01-9743c974d5e9" class="bulleted-list" dir="auto"><li style="list-style-type:square">-d ‘#’ : using # as delimiter</li></ul><ul id="d27c444e-51e9-47b9-8037-b1b14644af96" class="bulleted-list" dir="auto"><li style="list-style-type:square">-d ‘$/t’ :  using as tab delimiter</li></ul></li></ul></li></ul><p id="b75aad62-2820-49af-a4c0-795e5ec52d5d" class="" dir="auto">
+</p><h3 id="1ac29079-2190-4173-b544-fda0f5bbc5af" class="" dir="auto">paste </h3><ul id="cd9ee332-7ee7-4096-8210-be56cbcf7622" class="bulleted-list" dir="auto"><li style="list-style-type:disc">combine lines together.</li></ul><pre id="256ca7b3-6027-48a1-ba81-39820b22b884" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">paste file1 file2 
+// append at the end of line file2 to file1
+
+paste -d &#x27;#&#x27; file1 file2
+// use &#x27;#&#x27; as delimiter before appending on each line from
+2 file
+** Default delimiter is TAB</code></pre><p id="296a8215-d4ed-4a84-883e-afe7431e0278" class="" dir="auto">
+</p><h3 id="829c87cc-c950-4272-924c-cbf0fa32ddd7" class="" dir="auto">tr</h3><ul id="93d21918-87c4-4073-8b0d-07d7e68f81e0" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Translate / squeeze and or delete character from stout</li></ul><pre id="741d6916-0053-43d0-b795-23039e2be24d" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">tr -s &#x27; &#x27; &lt; file1
+// Squeeze multiple of space into 1 space
+
+tr &#x27;abc&#x27; &#x27;xyz&#x27; &lt; file1
+// Replace &#x27;a&#x27; with &#x27;x&#x27;, &#x27;b&#x27; with &#x27;y&#x27; and &#x27;c&#x27; with &#x27;z&#x27;
+
+tr -d &#x27;,&#x27; &lt; file1
+// Delete all &#x27;,&#x27; from file1</code></pre><p id="d1b94675-22cf-455b-8158-13e61dd20470" class="" dir="auto">
+</p><h3 id="ef948e15-9d83-4f18-bfee-24b9f4a59b09" class="" dir="auto">sort</h3><ul id="dbc529ee-86a8-44cd-9ca6-3e473007ce4f" class="bulleted-list" dir="auto"><li style="list-style-type:disc">sort by lines <ul id="bdaeada0-be65-4746-a056-5fa12f6340e3" class="bulleted-list" dir="auto"><li style="list-style-type:circle">(each line sorted based on ASCII values)</li></ul></li></ul><ul id="7a1e0252-168e-4424-a5d7-9ed504c80587" class="bulleted-list" dir="auto"><li style="list-style-type:disc">sort by fields<ul id="02bd3672-8b17-4f66-aaf0-9d497af379e1" class="bulleted-list" dir="auto"><li style="list-style-type:circle">filed are seperated by ‘delimiter’ (default is TAB) -t</li></ul><ul id="b5f88ca8-3c0f-49d1-800b-ca2f9e5b411c" class="bulleted-list" dir="auto"><li style="list-style-type:circle">filed number as 1, 2, 3</li></ul><ul id="b745621f-6b2a-4efe-955e-ada67c27f31f" class="bulleted-list" dir="auto"><li style="list-style-type:circle">field specifiers : -k start[,stop] or - - key=-start[,stop]<ul id="d828ba1e-3a50-45c7-9532-7e6928291c43" class="bulleted-list" dir="auto"><li style="list-style-type:square">-k 1 (sort field start at 1 to EOF)</li></ul><ul id="93c95c9e-ae37-45a6-9e5e-4cd90d3d297d" class="bulleted-list" dir="auto"><li style="list-style-type:square">-k 3,4 (dort fields 3 and 4)</li></ul></li></ul></li></ul><pre id="67430566-6140-4f69-8ec4-e9ab0cde9628" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">sort filename
+// -n : numeric sort</code></pre><p id="5ea50cfb-2e78-434c-b376-31e3346b13b5" class="" dir="auto">
+</p><h3 id="b154260d-e39e-4874-8990-de5af8bb0c4a" class="" dir="auto">uniq </h3><ul id="37eddeeb-441e-4ce5-9e44-0fb43a0b5923" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Delete duplicate lines, keeping first only and other non-adjacement<pre id="aac3f18b-91de-42d6-a0a7-f6a9dd7c718c" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">uniq filename</code></pre></li></ul><ul id="4241ea4e-3034-40dd-ac81-37502aad569e" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Keep only all other non-adjacent duplicates<pre id="b9da147f-f162-4d87-bc41-3ccc34cff930" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">uniq -u filename</code></pre></li></ul><ul id="6f2e9cc8-0257-4e5c-89e2-50681aad902e" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Keep only one line in each adjacent and ignore all<pre id="81ec6ca7-edd8-4075-953a-0877307f5822" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">uniq -d filename</code></pre></li></ul><ul id="a7e7b975-fe6a-40ca-a8bf-8bc6788680f1" class="bulleted-list" dir="auto"><li style="list-style-type:disc">count number of adjacent duplicate lines<pre id="fc5b49c1-8690-4782-ae6e-8d928d121b0a" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">uniq -f n filename</code></pre></li></ul><ul id="8761b7fb-3835-4fc5-bb35-c3ebc5ad4e15" class="bulleted-list" dir="auto"><li style="list-style-type:disc">skip n field / skip n characters<pre id="fcbf8027-c9f6-4e48-b381-5ecc02d4df76" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">uniq -f n filename (skip n field)
+uniq -s n filename (skip n characters)</code></pre></li></ul><p id="8cf6572d-0560-44c5-8efc-1e4868b4543e" class="" dir="auto">
+</p><h3 id="a3d02425-ea51-4a37-a194-126ced699e2c" class="" dir="auto">Comparing Files</h3><ul id="fcd76de6-02cf-4c78-bb38-1798faba6a09" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong><span style="border-bottom:0.05em solid">cmp</span></strong><ul id="0a24e169-70f1-47eb-a9d5-98fb1a26f7dd" class="bulleted-list" dir="auto"><li style="list-style-type:circle">compare 2 files byte by byte<ul id="811a7d9f-dd2d-4572-8893-1e1b12aeb638" class="bulleted-list" dir="auto"><li style="list-style-type:square">-l  : list all different bytes in octal code</li></ul><ul id="6a932c00-48a9-417a-8f2b-cf298c074dba" class="bulleted-list" dir="auto"><li style="list-style-type:square">-s : suppress output but set the result in $? variable</li></ul></li></ul></li></ul><ul id="34252b49-6693-4de1-9bb5-f6e5f26715bd" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong><span style="border-bottom:0.05em solid">diff</span></strong><ul id="6b072553-52b5-463f-84b4-57898ea71f86" class="bulleted-list" dir="auto"><li style="list-style-type:circle">compare 2 file line by line, ทำยังไงให้ file1  เหมือน file2<ul id="8093ec62-2d85-47bb-a27d-fd5044aa82b3" class="bulleted-list" dir="auto"><li style="list-style-type:square">-b : ignore trailing blanks</li></ul><ul id="7cf3cf42-8b7c-4c6a-9cc2-333e1c7172c0" class="bulleted-list" dir="auto"><li style="list-style-type:square">-w : ignore whitespace</li></ul><ul id="3b01b964-6c1c-4613-a06e-925817648941" class="bulleted-list" dir="auto"><li style="list-style-type:square">-i : ignore case</li></ul></li></ul></li></ul><figure id="337a6645-727a-49a5-80cc-a4cf2ec8e3dd" class="image" data-notion-image="Unix_OS_Lecture_images/image%207.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%207.png"><img style="width:510.984375px" src="Unix_OS_Lecture_images/image%207.png"/></a></figure><p id="986a14fd-6f23-4243-b6fb-79a5ad03fdd1" class="" dir="auto">
+</p><h3 id="dfe33dfd-d5d3-4b17-a2a7-8d2a78768b83" class="" dir="auto">tar</h3><ul id="31855f75-26ae-4b2c-b50b-5b5858c4a98f" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Packing files - Pack all files under path into tarFile.tar<pre id="9d68ad1b-1e10-4527-8898-28198af0a6b7" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">tar cf tarFile.tar path/file...</code></pre></li></ul><ul id="67216f76-c72b-4ce4-9d86-daa03add5543" class="bulleted-list" dir="auto"><li style="list-style-type:disc">List files<pre id="f905c6e8-b4f9-44d7-a903-a3e1b64ac747" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">tar tf tarFile.tar</code></pre></li></ul><ul id="9d9a7081-3e99-416e-a60e-f3c764fa3084" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Unpacking files - Unpack all files from .tar to current directory<pre id="01bb0d86-0d3b-4f78-8c50-b9d718c9ff1f" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">tar xf tarFile.tar</code></pre></li></ul><p id="5e67e65c-0ad1-4be3-b733-4edd732f6339" class="" dir="auto">
+</p><h3 id="99762633-e2f5-4ac8-a646-b87cccdd1cc1" class="" dir="auto">gzip</h3><ul id="40f7f4ee-c848-4bb2-b0ea-62ffbad7db65" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Compress a file to file.gz<pre id="05fccb20-6534-4916-afac-475a2a18d4a4" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">gzip file</code></pre></li></ul><ul id="1c9294f2-62a1-454a-9d16-334634492054" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Uncompress a file - uncompress file.gz into file<pre id="8d6c1714-aaaf-4013-8f79-03048029817e" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">gunzip file.gz</code></pre></li></ul><ul id="94abfcbf-8ddb-4388-b684-fd0e41d0c94c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Combination with tar (.tar.gz)<pre id="db6b08b3-d5eb-434a-b399-d84c63c05e35" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">tar zcf file.tgz path
+tar zxf file.tgz</code></pre></li></ul><p id="8cfea520-6302-48e3-8eb6-4b2b0f2f4c86" class="" dir="auto">
+</p><h3 id="1e6a04d6-ecc3-4f62-ab82-2e827f9dac34" class="" dir="auto">find</h3><ul id="c58beb8a-2460-4ee6-91b3-bbcd6ed76836" class="bulleted-list" dir="auto"><li style="list-style-type:disc">find files with maching name (’*sh’) inside working directory<pre id="8b811e50-27a8-4796-ba57-329676ee2e30" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">find . -name &#x27;*sh&#x27;</code></pre></li></ul><ul id="2a35e78f-ef75-4c8e-bff3-22fea3a06597" class="bulleted-list" dir="auto"><li style="list-style-type:disc">options:<ul id="1a42127f-6c35-48fe-bf06-fbb9f3ca9588" class="bulleted-list" dir="auto"><li style="list-style-type:circle">-maxdepth n<br/>-mindepth n<ul id="55531f62-a936-4bf8-a8fd-05f83021dfae" class="bulleted-list" dir="auto"><li style="list-style-type:square">n -depth level of directory to find</li></ul></li></ul><ul id="c0d5d953-745c-4b34-b79b-531be3f53585" class="bulleted-list" dir="auto"><li style="list-style-type:circle">-type t<ul id="6daa3570-113a-4da1-a044-7b1159c8872d" class="bulleted-list" dir="auto"><li style="list-style-type:square">t -file type</li></ul></li></ul><ul id="c1dff546-6dec-4f89-985f-d56444dba021" class="bulleted-list" dir="auto"><li style="list-style-type:circle">-cmin n<ul id="de7f15bf-5054-431e-9020-bd83f8687b20" class="bulleted-list" dir="auto"><li style="list-style-type:square">n -minute(exactly), +n -minute(greater than), -n -minute(less than)</li></ul></li></ul></li></ul><p id="12911418-d55d-80a4-8cc2-ee85c3872741" class="" dir="auto">
+</p><h2 id="12911418-d55d-8011-aa5a-c6ff45cda23a" class="" dir="auto">Regular Expression and Grep</h2><h3 id="12911418-d55d-804a-8e10-fd42bb32bdd2" class="" dir="auto">Grep</h3><ul id="12911418-d55d-8040-bfdc-e19b9a7c0d80" class="bulleted-list" dir="auto"><li style="list-style-type:disc">search input that match specified regex and print them to stdout.</li></ul><ul id="12911418-d55d-8077-afe8-e26a4aff515b" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Grep cannot<ul id="12911418-d55d-8029-b7d9-c0b4911e599d" class="bulleted-list" dir="auto"><li style="list-style-type:circle">add, delete or change a line.</li></ul><ul id="12911418-d55d-8045-94f4-c88db2a2967d" class="bulleted-list" dir="auto"><li style="list-style-type:circle">print only part of a line.</li></ul><ul id="12911418-d55d-805b-a02c-f3c56c424670" class="bulleted-list" dir="auto"><li style="list-style-type:circle">read only part of  a line.</li></ul><ul id="12911418-d55d-800f-ac83-d3ab72292faf" class="bulleted-list" dir="auto"><li style="list-style-type:circle">select a line based on prev or next line.</li></ul></li></ul><p id="12911418-d55d-80eb-9faa-e5fe9368efaf" class="" dir="auto">
+</p><ul id="12911418-d55d-8051-b450-dd044065ed31" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Type of grep<ul id="12911418-d55d-8000-a8a3-e4b9ce03a159" class="bulleted-list" dir="auto"><li style="list-style-type:circle">grep → handle all of REs use unless need alternation.<pre id="12911418-d55d-8099-bea3-d1ecd5f57e19" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">grep -n &quot;;$&quot; FILE | head -5</code></pre></li></ul><ul id="12911418-d55d-8015-8f57-ff674997ed62" class="bulleted-list" dir="auto"><li style="list-style-type:circle">fgrep → fast if search require only sequence of expression<pre id="12911418-d55d-8005-a217-f74eae22af74" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">fgrep -n &quot;&#x27;&quot; FILE</code></pre></li></ul><ul id="12911418-d55d-80d1-9ac9-d36ce185d64d" class="bulleted-list" dir="auto"><li style="list-style-type:circle">egrep → allow more complex RE patterns.<pre id="12911418-d55d-80d0-9e4d-eef7c1b64cd0" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">egrep -n &#x27;^[A-Z].*!.$)&#x27; FILE</code></pre></li></ul></li></ul><h3 id="12911418-d55d-802b-b7cd-edb26afd0bc7" class="" dir="auto">Atom</h3><ul id="12911418-d55d-80d3-9446-e527abc25b63" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Dot “.” : matches single character, except the ‘\n’</li></ul><ul id="12911418-d55d-8052-86ff-e14854ac5b16" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Class “[ ]” : Any on of them may match any char in text.<ul id="12911418-d55d-8094-bf74-f4c76e7c7f33" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Special tokens<ul id="12911418-d55d-8015-a2ed-dc20c4333ef4" class="bulleted-list" dir="auto"><li style="list-style-type:square">Ranges: - example: [a-d]</li></ul><ul id="12911418-d55d-8019-a3f9-c2e85b719896" class="bulleted-list" dir="auto"><li style="list-style-type:square">Exclusion: ^ example: [^aeiou]</li></ul><ul id="12911418-d55d-80b4-9611-e4f7913fb7f3" class="bulleted-list" dir="auto"><li style="list-style-type:square">Escape: \ example: [^\^]</li></ul><figure id="12911418-d55d-80c3-8e88-d81b1b402d1b" class="image" data-notion-image="Unix_OS_Lecture_images/image%208.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%208.png"><img style="width:343.984375px" src="Unix_OS_Lecture_images/image%208.png"/></a></figure></li></ul></li></ul><ul id="12911418-d55d-80bb-908b-d1996731e211" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Anchors : Define next character must located in the text.<ul id="12911418-d55d-80d1-b36d-f5e8230b0c6e" class="bulleted-list" dir="auto"><li style="list-style-type:circle">^ → beginning of line</li></ul><ul id="12911418-d55d-80c9-81ed-fdfe53c4ba3f" class="bulleted-list" dir="auto"><li style="list-style-type:circle">$ → end of line</li></ul><ul id="12911418-d55d-802d-b781-f48b7844d78e" class="bulleted-list" dir="auto"><li style="list-style-type:circle">\&lt; → beginning of word</li></ul><ul id="12911418-d55d-80bb-81ba-c431997c98d6" class="bulleted-list" dir="auto"><li style="list-style-type:circle">\&gt; → end of word</li></ul><figure id="12911418-d55d-8091-85af-d5d30bdb4aad" class="image" data-notion-image="Unix_OS_Lecture_images/image%209.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%209.png"><img style="width:371.9765625px" src="Unix_OS_Lecture_images/image%209.png"/></a></figure></li></ul><h3 id="12911418-d55d-8054-995e-ed30c5873586" class="" dir="auto">Class : Back References</h3><ul id="12911418-d55d-80f0-9d31-d2aa5730127b" class="bulleted-list" dir="auto"><li style="list-style-type:disc">There are 9 save buffers</li></ul><ul id="12911418-d55d-8077-abc8-d17a0d1fb6a8" class="bulleted-list" dir="auto"><li style="list-style-type:disc">can save text into one of these</li></ul><ul id="12911418-d55d-80d8-86eb-fc6e1675b5d1" class="bulleted-list" dir="auto"><li style="list-style-type:disc">To refer back uses “\n”, where n is number of buffer - [1-9]</li></ul><ul id="12911418-d55d-8000-a010-dab181c71b7e" class="bulleted-list" dir="auto"><li style="list-style-type:disc">\1 \2 … \9</li></ul><h3 id="12911418-d55d-80fa-a865-d287ff107063" class="" dir="auto">Operators</h3><ul id="12911418-d55d-80a0-a26c-c641e1ad370b" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Overview of Operators<figure id="12911418-d55d-809f-ad19-fa9c45580c03" class="image" data-notion-image="Unix_OS_Lecture_images/image%2010.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2010.png"><img style="width:371.984375px" src="Unix_OS_Lecture_images/image%2010.png"/></a></figure></li></ul><p id="12911418-d55d-803b-a71a-fa21c2254e66" class="" dir="auto">
+</p><ul id="12911418-d55d-8055-b7ec-fc519673b456" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Sequence<figure id="12911418-d55d-80d1-9234-c453edefd7d8" class="image" data-notion-image="Unix_OS_Lecture_images/image%2011.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2011.png"><img style="width:371.9921875px" src="Unix_OS_Lecture_images/image%2011.png"/></a></figure><figure id="12911418-d55d-8096-a3d4-c205dd278a7d" class="image" data-notion-image="Unix_OS_Lecture_images/image%2012.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2012.png"><img style="width:371.984375px" src="Unix_OS_Lecture_images/image%2012.png"/></a></figure></li></ul><p id="12911418-d55d-8054-9cc7-c01b2d811db8" class="" dir="auto">
+</p><ul id="12911418-d55d-802b-a47a-c8234ec8848d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Alternation “|”<figure id="12911418-d55d-8052-b1ab-fb2596a79462" class="image" data-notion-image="Unix_OS_Lecture_images/image%2013.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2013.png"><img style="width:371.984375px" src="Unix_OS_Lecture_images/image%2013.png"/></a></figure></li></ul><ul id="12911418-d55d-80d7-a711-d0bbf7f37eb5" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Repetition<figure id="12911418-d55d-805c-8477-dc81668dddeb" class="image" data-notion-image="Unix_OS_Lecture_images/image%2014.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2014.png"><img style="width:371.9921875px" src="Unix_OS_Lecture_images/image%2014.png"/></a></figure><figure id="12911418-d55d-8015-acb9-f2c4d3c9ac66" class="image" data-notion-image="Unix_OS_Lecture_images/image%2015.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2015.png"><img style="width:371.9921875px" src="Unix_OS_Lecture_images/image%2015.png"/></a></figure><figure id="12911418-d55d-8090-8d53-f9fe17cba16f" class="image" data-notion-image="Unix_OS_Lecture_images/image%2016.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2016.png"><img style="width:371.9921875px" src="Unix_OS_Lecture_images/image%2016.png"/></a></figure></li></ul><ul id="12911418-d55d-8042-946e-c9af41b2571a" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Greedy Pattern Matching<ul id="12911418-d55d-800a-b0c1-dd8bccbcf787" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Longest possible string of characters that matches a pattern should be used<figure id="12911418-d55d-80c1-8a66-e084d7a3a36c" class="image" data-notion-image="Unix_OS_Lecture_images/image%2017.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2017.png"><img style="width:343.9921875px" src="Unix_OS_Lecture_images/image%2017.png"/></a></figure></li></ul></li></ul><h3 id="12911418-d55d-801c-b7d8-cb9d6307a46f" class="" dir="auto">Group</h3><ul id="12911418-d55d-8006-9e2c-c0df7d441a49" class="bulleted-list" dir="auto"><li style="list-style-type:disc">group matching<figure id="12911418-d55d-804d-9891-fec44457348f" class="image" data-notion-image="Unix_OS_Lecture_images/image%2018.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2018.png"><img style="width:371.9921875px" src="Unix_OS_Lecture_images/image%2018.png"/></a></figure></li></ul><h3 id="12911418-d55d-80b5-aff4-c4b170de98d5" class="" dir="auto">Save</h3><ul id="12911418-d55d-8029-b35a-f5ba50a77eb2" class="bulleted-list" dir="auto"><li style="list-style-type:disc">save in buffer<figure id="12911418-d55d-808c-b111-fc9d09e807e1" class="image" data-notion-image="Unix_OS_Lecture_images/image%2019.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2019.png"><img style="width:371.9921875px" src="Unix_OS_Lecture_images/image%2019.png"/></a></figure></li></ul><h2 id="12911418-d55d-807c-a66f-ee63c1a6d1ac" class="" dir="auto">sed - Stream Editor</h2><h3 id="12911418-d55d-805e-8708-ea382b26b335" class="" dir="auto">sed - introduction</h3><ul id="12911418-d55d-806d-a153-d4715af4a290" class="bulleted-list" dir="auto"><li style="list-style-type:disc">sed is not true editor - it doesn’t change original file.</li></ul><ul id="12911418-d55d-8096-9670-fcaa9ae6b56e" class="bulleted-list" dir="auto"><li style="list-style-type:disc">it’s scan input file, line by line</li></ul><ul id="12911418-d55d-8069-954c-f7ca9f1945d9" class="bulleted-list" dir="auto"><li style="list-style-type:disc">can be <span style="border-bottom:0.05em solid">a seperate file</span> or included in the sed command line.<figure id="12911418-d55d-80fd-b322-f1ee416e92f6" class="image" data-notion-image="Unix_OS_Lecture_images/image%2020.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2020.png"><img style="width:371.9921875px" src="Unix_OS_Lecture_images/image%2020.png"/></a></figure></li></ul><h3 id="12911418-d55d-803b-955d-d822fa49dbae" class="" dir="auto">sed - Operation</h3><ul id="12911418-d55d-80e8-b114-d204dcdddcf1" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Perform following instruction<ul id="12911418-d55d-807d-9d64-f70da62e859c" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Copies an input line to <span style="border-bottom:0.05em solid">pattern space</span></li></ul><ul id="12911418-d55d-8096-ad08-c4cce4ca92fd" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Applies all instruction in scripts, one by one, to only line in pattern space that match the specified addresses in instruction.</li></ul><ul id="12911418-d55d-80cd-adca-ee0cc49e95d0" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Copies content of pattern space to output file (except when -n is used)</li></ul></li></ul><ul id="12911418-d55d-8012-b000-fd8d36325770" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Input file is not changed.<figure id="12911418-d55d-80e5-b727-db0d8c350039" class="image" data-notion-image="Unix_OS_Lecture_images/image%2021.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2021.png"><img style="width:371.984375px" src="Unix_OS_Lecture_images/image%2021.png"/></a></figure></li></ul><h3 id="12911418-d55d-809e-adcb-cd5d2a09702d" class="" dir="auto">Addresses</h3><ul id="12911418-d55d-80fc-9853-ea5045103ac2" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Is an instruction determines which input file are to be processed by the command in the instructions</li></ul><ul id="12911418-d55d-8098-9c51-e8568b5f570c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">When is no address , every line is match</li></ul><ul id="12911418-d55d-8017-abbf-f4882a5bb658" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Can be one of 4 types<figure id="12911418-d55d-8096-9861-cd438bf0b2ab" class="image" data-notion-image="Unix_OS_Lecture_images/image%2022.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2022.png"><img style="width:371.9765625px" src="Unix_OS_Lecture_images/image%2022.png"/></a></figure></li></ul><h3 id="12911418-d55d-8061-8b74-e13e5071a521" class="" dir="auto">Addresses : Single-Line</h3><ul id="12911418-d55d-802b-aad4-cea994669d12" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Specifies one and only one in the input file<ul id="12911418-d55d-805c-a6d1-efe48b66915a" class="bulleted-list" dir="auto"><li style="list-style-type:circle">A line number or a dollar sign ($)<figure id="12911418-d55d-80e2-a5b4-d6168f3bbf2c" class="image" data-notion-image="Unix_OS_Lecture_images/image%2023.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2023.png"><img style="width:343.9921875px" src="Unix_OS_Lecture_images/image%2023.png"/></a></figure></li></ul></li></ul><h3 id="12911418-d55d-8032-8795-fb6e2ffd4b31" class="" dir="auto">Addresses : Set-of-Line</h3><ul id="12911418-d55d-808f-9165-e2cb2e68961c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Regex that match zero or more lines in the input.<figure id="12911418-d55d-8031-b6ba-e70ef948a456" class="image" data-notion-image="Unix_OS_Lecture_images/image%2024.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2024.png"><img style="width:371.9765625px" src="Unix_OS_Lecture_images/image%2024.png"/></a></figure></li></ul><h3 id="12911418-d55d-805b-8ac3-ecd672319219" class="" dir="auto">Addresses : Range</h3><ul id="12911418-d55d-80be-99e6-de245420261a" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Defines a set of consecutive lines with the format<ul id="12911418-d55d-8041-bb70-ec8f714b95ab" class="bulleted-list" dir="auto"><li style="list-style-type:circle">start-address, end-address</li></ul><ul id="12911418-d55d-800a-ad8b-c27ed586f006" class="bulleted-list" dir="auto"><li style="list-style-type:circle">addresses can be line-number or regex.<figure id="12911418-d55d-80b4-ad6e-e50441ee619a" class="image" data-notion-image="Unix_OS_Lecture_images/image%2025.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2025.png"><img style="width:343.9921875px" src="Unix_OS_Lecture_images/image%2025.png"/></a></figure></li></ul></li></ul><h3 id="12911418-d55d-80f9-95cb-dc06de750c25" class="" dir="auto">Addresses : Nested</h3><ul id="12911418-d55d-80cf-97f9-cee5077c94ab" class="bulleted-list" dir="auto"><li style="list-style-type:disc">An address that is contained with another address.</li></ul><ul id="12911418-d55d-806c-9b3e-d76564fe3b92" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Example<ul id="12911418-d55d-8093-996f-d54c70bb5ce0" class="bulleted-list" dir="auto"><li style="list-style-type:circle">delete all blank lines between lines 20 and 30<pre id="12911418-d55d-80c5-b48b-e85b07ea73e2" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">	20, 30 {
+				/^$/d
+					}</code></pre></li></ul><ul id="12911418-d55d-80fd-b572-cc2b82f5f137" class="bulleted-list" dir="auto"><li style="list-style-type:circle">delete all lines that has “Raven” that also contains “Quoth”<pre id="12911418-d55d-804c-a7d4-c4f363b26288" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">/Raven/{
+			/Quoth/d
+}</code></pre></li></ul><p id="12911418-d55d-80e6-844f-dc7c23fb6d7c" class="" dir="auto">
+</p><p id="12911418-d55d-8087-9325-f660d802bfbe" class="" dir="auto">
+</p><p id="12911418-d55d-80d6-9928-c57642675274" class="" dir="auto">
+</p><h3 id="12911418-d55d-80bc-a813-ec326eccc02e" class="" dir="auto">sed : Commands</h3><ul id="12911418-d55d-8048-bcd8-e81adef687bd" class="bulleted-list" dir="auto"><li style="list-style-type:circle">There are 25 commands can be used in instruction</li></ul><ul id="12911418-d55d-80f2-9c09-ff903b693009" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Can be grouped in 9 categories.<figure id="12911418-d55d-8011-b4aa-d0b073b2f30e" class="image" data-notion-image="Unix_OS_Lecture_images/image%2026.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2026.png"><img style="width:343.984375px" src="Unix_OS_Lecture_images/image%2026.png"/></a></figure></li></ul></li></ul><h3 id="12911418-d55d-802b-98bd-c2ccf6f87ffa" class="" dir="auto">Commands : Modify</h3><ul id="12911418-d55d-8060-8b41-d0b340ffb080" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Modify commands are used to insert, append, change or delete one or more whole lines.<figure id="12911418-d55d-80fe-b3ef-cca8e8106f30" class="image" data-notion-image="Unix_OS_Lecture_images/image%2027.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2027.png"><img style="width:371.984375px" src="Unix_OS_Lecture_images/image%2027.png"/></a></figure></li></ul><h3 id="12911418-d55d-809f-a454-e60b8b6626d9" class="" dir="auto">Commands : Insert</h3><ul id="12911418-d55d-80dd-ab79-cfae85ed2deb" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Add one or more lines directly to the output before the address.<figure id="12911418-d55d-80d5-950f-c244a8d6e679" class="image" data-notion-image="Unix_OS_Lecture_images/image%2028.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2028.png"><img style="width:371.984375px" src="Unix_OS_Lecture_images/image%2028.png"/></a></figure></li></ul><h3 id="12911418-d55d-8013-8fb4-fb849f5e510d" class="" dir="auto">Commands : Append</h3><figure id="12911418-d55d-8083-8818-f97339f4ea04" class="image" data-notion-image="Unix_OS_Lecture_images/image%2029.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2029.png"><img style="width:399.9921875px" src="Unix_OS_Lecture_images/image%2029.png"/></a></figure><h3 id="12911418-d55d-80a0-ae15-dd9ff6a5ff31" class="" dir="auto">Commands : Change and Delete</h3><ul id="12911418-d55d-80b4-92f4-cf327107e4f9" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Change command (c)<ul id="12911418-d55d-8072-97fe-e004d1069791" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Replaces a matched line with new text.</li></ul></li></ul><ul id="12911418-d55d-80b4-9975-e97911f250a8" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Delete pattern space command (d)<ul id="12911418-d55d-80ef-a9a3-e11d66ca5872" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Delete the entire line (in pattern space)</li></ul></li></ul><ul id="12911418-d55d-806d-8499-d0a567c89711" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Delete only the first line command (D)<ul id="12911418-d55d-8073-bf33-f8ec89073e7f" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Delete only first line in pattern space<ul id="12911418-d55d-80f4-94a3-c0eed952bc1c" class="bulleted-list" dir="auto"><li style="list-style-type:square">can be more than 1 pattern space.</li></ul></li></ul><ul id="12911418-d55d-8032-ab0e-ff8362ccd6a6" class="bulleted-list" dir="auto"><li style="list-style-type:circle">After delete the first line, if pattern space<ul id="12911418-d55d-8083-86fc-d3d15e6607ab" class="bulleted-list" dir="auto"><li style="list-style-type:square">Is not empty, does not read next input file.</li></ul><ul id="12911418-d55d-808b-969b-dbfc724df345" class="bulleted-list" dir="auto"><li style="list-style-type:square">Is empty, read next input file</li></ul></li></ul><ul id="12911418-d55d-80de-b010-ea07483f8dd5" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Start executing from the first line of scripts</li></ul></li></ul><h3 id="12911418-d55d-806e-a944-db7c6b84c34e" class="" dir="auto">Commands : Substitute</h3><ul id="12911418-d55d-806e-983b-d087d207f479" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Substitute command replaces text that selected by RE with replacement string.</li></ul><ul id="12911418-d55d-80d3-98c7-d3cd74728da3" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Format and sed’s regular expression<figure id="12911418-d55d-8060-b58d-fb63f5f230ad" class="image" data-notion-image="Unix_OS_Lecture_images/image%2030.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2030.png"><img style="width:371.984375px" src="Unix_OS_Lecture_images/image%2030.png"/></a></figure></li></ul><ul id="12911418-d55d-80ed-a1a9-cb65cff67a2d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Substitution back references<ul id="12911418-d55d-80be-a3a1-de40ec37e107" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Two types of back references<figure id="12911418-d55d-8071-8b2e-c2f004eb0d41" class="image" data-notion-image="Unix_OS_Lecture_images/image%2031.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2031.png"><img style="width:343.9921875px" src="Unix_OS_Lecture_images/image%2031.png"/></a></figure></li></ul></li></ul><p id="12911418-d55d-804e-a9b4-c459cd4b366d" class="" dir="auto">
+</p><ul id="12911418-d55d-804f-8442-d4daa6d09a94" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Back References<ul id="12911418-d55d-80a2-a3e4-ecca36834568" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Whole pattern substitution<figure id="12911418-d55d-8000-abdd-d0d9db29ea35" class="image" data-notion-image="Unix_OS_Lecture_images/image%2032.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2032.png"><img style="width:343.9765625px" src="Unix_OS_Lecture_images/image%2032.png"/></a></figure></li></ul><ul id="12911418-d55d-80a9-8dd8-d48598da4686" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Numbered buffer substitution<figure id="12911418-d55d-8047-8869-eb9ca70079bb" class="image" data-notion-image="Unix_OS_Lecture_images/image%2033.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2033.png"><img style="width:343.9921875px" src="Unix_OS_Lecture_images/image%2033.png"/></a></figure></li></ul></li></ul><ul id="12911418-d55d-80ec-99cd-c5c3bd47b19f" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Flags<ul id="12911418-d55d-8068-b8f9-d1af90e27dfa" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Global flag (g)<ul id="12911418-d55d-802f-a8fb-d99fd6878277" class="bulleted-list" dir="auto"><li style="list-style-type:square">substitute all event in the match line - only first event in default<figure id="12911418-d55d-800e-bbe1-fe141a4a0e2a" class="image" data-notion-image="Unix_OS_Lecture_images/image%2034.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2034.png"><img style="width:315.9765625px" src="Unix_OS_Lecture_images/image%2034.png"/></a></figure></li></ul></li></ul><ul id="12911418-d55d-8002-93f0-ead2440505ee" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Specific event flag (n)<ul id="12911418-d55d-8082-a864-fd3b639d5798" class="bulleted-list" dir="auto"><li style="list-style-type:square">Only one specific event can be changed in one command<figure id="12911418-d55d-8039-a36b-cb00f954cc8b" class="image" data-notion-image="Unix_OS_Lecture_images/image%2035.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2035.png"><img style="width:315.9765625px" src="Unix_OS_Lecture_images/image%2035.png"/></a></figure></li></ul></li></ul><ul id="12911418-d55d-8080-b5f0-fb5bb9c4fc33" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Print flag (p)<ul id="12911418-d55d-80ac-923a-df4bdd5abef5" class="bulleted-list" dir="auto"><li style="list-style-type:square">with -n option, print flag only specifies the line to be printed out.<figure id="12911418-d55d-809f-ac52-f6b3fe9124ec" class="image" data-notion-image="Unix_OS_Lecture_images/image%2036.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2036.png"><img style="width:315.9765625px" src="Unix_OS_Lecture_images/image%2036.png"/></a></figure></li></ul></li></ul><ul id="12911418-d55d-806b-844a-d41eb3c2ffaa" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Write the flag (w)<ul id="12911418-d55d-80c9-92a8-f7e4f296b66b" class="bulleted-list" dir="auto"><li style="list-style-type:square">Write output to specified file instead to stdout</li></ul><ul id="12911418-d55d-8087-8578-d9c3a3a95718" class="bulleted-list" dir="auto"><li style="list-style-type:square">Can be only one space between w and filename</li></ul><figure id="12911418-d55d-8045-a2da-f32dfd885caa" class="image" data-notion-image="Unix_OS_Lecture_images/image%2037.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2037.png"><img style="width:343.984375px" src="Unix_OS_Lecture_images/image%2037.png"/></a></figure></li></ul></li></ul><h3 id="12911418-d55d-80bf-99f8-d9adf8a27dc9" class="" dir="auto">Commands : Transform “y”</h3><ul id="12911418-d55d-8006-8369-cc25c1766b52" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Require two parallel sets of characters</li></ul><ul id="12911418-d55d-80d4-b55f-d5eae12170a9" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Each character in the first string represent second value in the second string. (in each char)<figure id="12911418-d55d-80d2-bab6-de8453905cda" class="image" data-notion-image="Unix_OS_Lecture_images/image%2038.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2038.png"><img style="width:371.9921875px" src="Unix_OS_Lecture_images/image%2038.png"/></a></figure></li></ul><h3 id="12911418-d55d-807c-8464-d1a001dff82d" class="" dir="auto">Commands : Input / Output</h3><ul id="12911418-d55d-8019-9e14-d009a6176dcb" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Allow us to control the input and output.</li></ul><ul id="12911418-d55d-8018-9dab-f6f40b0b6692" class="bulleted-list" dir="auto"><li style="list-style-type:disc">There are 5 input/output commands:<figure id="12911418-d55d-808e-a972-e4f649877a84" class="image" data-notion-image="Unix_OS_Lecture_images/image%2039.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2039.png"><img style="width:371.9921875px" src="Unix_OS_Lecture_images/image%2039.png"/></a></figure></li></ul><h3 id="12911418-d55d-8091-a1a9-cbca89600770" class="" dir="auto">Input / Output : Next “n”</h3><ul id="12a11418-d55d-8067-a3d3-cf2e79ad6797" class="bulleted-list" dir="auto"><li style="list-style-type:disc">forces sed to read next text line of the input file.</li></ul><ul id="12a11418-d55d-8042-8382-c7e512c97002" class="bulleted-list" dir="auto"><li style="list-style-type:disc">before reading next line, it copies entire contentss to pattern space an delete current text in pattern space, scripts continues frrom command afterr ‘next’ - without return to top of scripts.<figure id="12a11418-d55d-8050-87b7-d4660ae794ac" class="image" data-notion-image="Unix_OS_Lecture_images/image%2040.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2040.png"><img style="width:482.984375px" src="Unix_OS_Lecture_images/image%2040.png"/></a></figure></li></ul><h3 id="12a11418-d55d-8020-a7ed-d7567b3003c5" class="" dir="auto">Input / Output : Append Next “N”</h3><ul id="12a11418-d55d-803d-9792-f531a2be7c08" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Adds next input line to the current contents of the pattern space<ul id="12a11418-d55d-800f-8e20-dab7ce2e5663" class="bulleted-list" dir="auto"><li style="list-style-type:circle">If no more input line, script exits</li></ul><figure id="12a11418-d55d-8053-bdac-c31979eaeddf" class="image" data-notion-image="Unix_OS_Lecture_images/image%2041.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2041.png"><img style="width:482.96875px" src="Unix_OS_Lecture_images/image%2041.png"/></a></figure><figure id="12a11418-d55d-8021-a9cc-e9b0d983d38f" class="image" data-notion-image="Unix_OS_Lecture_images/image%2042.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2042.png"><img style="width:482.984375px" src="Unix_OS_Lecture_images/image%2042.png"/></a></figure></li></ul><h3 id="12a11418-d55d-8071-b244-d2fa3341194c" class="" dir="auto">Input / Output : Print &amp; Print First Line</h3><ul id="12a11418-d55d-8072-aecc-d4f62f551391" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Print (p) copies current contents of pattern space to stdout.</li></ul><ul id="12a11418-d55d-8098-9953-effb9f72951b" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Print first line (P) command copies only first line in patten space to stdout<figure id="12a11418-d55d-8078-adc7-ca7a26626cd2" class="image" data-notion-image="Unix_OS_Lecture_images/image%2043.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2043.png"><img style="width:482.953125px" src="Unix_OS_Lecture_images/image%2043.png"/></a></figure></li></ul><h3 id="12a11418-d55d-80d5-891a-ddb709017af8" class="" dir="auto">Commands : Files</h3><ul id="12a11418-d55d-80f9-8dde-f018312cd940" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Read file command (r) reads file and places contents in the output before moving to next command.</li></ul><ul id="12a11418-d55d-80f2-8df2-e2ae1baa9923" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Write file command (w) writes (appends) the contents of pattern space to file.<figure id="12a11418-d55d-8026-9543-ecce1f7532e4" class="image" data-notion-image="Unix_OS_Lecture_images/image%2044.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2044.png"><img style="width:482.9375px" src="Unix_OS_Lecture_images/image%2044.png"/></a></figure></li></ul><ul id="12a11418-d55d-80ff-90b9-edc59c873dfd" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Files : Read example<figure id="12a11418-d55d-804e-b106-d755f75559dc" class="image" data-notion-image="Unix_OS_Lecture_images/image%2045.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2045.png"><img style="width:482.96875px" src="Unix_OS_Lecture_images/image%2045.png"/></a></figure></li></ul><ul id="12a11418-d55d-80f1-95ff-dc8b01cda022" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Files : Write<figure id="12a11418-d55d-8007-a963-d854ed4cdaec" class="image" data-notion-image="Unix_OS_Lecture_images/image%2046.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2046.png"><img style="width:482.984375px" src="Unix_OS_Lecture_images/image%2046.png"/></a></figure><figure id="12a11418-d55d-809a-bf48-ddc23b5882b5" class="image" data-notion-image="Unix_OS_Lecture_images/image%2047.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2047.png"><img style="width:482.984375px" src="Unix_OS_Lecture_images/image%2047.png"/></a></figure></li></ul><h3 id="12a11418-d55d-80d7-9973-efe02b0bb08e" class="" dir="auto">Commands : Branch</h3><ul id="12a11418-d55d-8073-a2b2-e5f808920e5b" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Use to skip some sed commands in script file.<ul id="12a11418-d55d-807c-ae3c-f1607cf73ce3" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Each command must have a target<ul id="12a11418-d55d-8015-acc6-d0daa2748391" class="bulleted-list" dir="auto"><li style="list-style-type:square">a label - a line begin with a colon, follows by a label name<p id="12a11418-d55d-80ac-834a-c87bfedcb525" class="" dir="auto">( ≤ 7 characters) by itself</p><ul id="12a11418-d55d-80ee-bf97-fbf7c3a3cd1e" class="bulleted-list" dir="auto"><li style="list-style-type:disc">:comHere</li></ul><ul id="12a11418-d55d-80f5-bdf7-f77b77e86f23" class="bulleted-list" dir="auto"><li style="list-style-type:disc">the last instruction in the script  (a blank label)</li></ul></li></ul></li></ul></li></ul><ul id="12a11418-d55d-80f5-8645-cbbe0ea23bc3" class="bulleted-list" dir="auto"><li style="list-style-type:disc">2 branch commands<ul id="12a11418-d55d-8044-9010-edcf32ae06ed" class="bulleted-list" dir="auto"><li style="list-style-type:circle">branch command (b)</li></ul><ul id="12a11418-d55d-8088-86ab-c1dd095c9542" class="bulleted-list" dir="auto"><li style="list-style-type:circle">branch on substitution command (t)</li></ul></li></ul><p id="12a11418-d55d-801d-8eb9-e2135c6107d7" class="" dir="auto">
+</p><ul id="12a11418-d55d-803e-97ab-cb122f3edb86" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Branch : example<figure id="12a11418-d55d-8005-83e4-ec79ab8c22c7" class="image" data-notion-image="Unix_OS_Lecture_images/image%2048.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2048.png"><img style="width:482.984375px" src="Unix_OS_Lecture_images/image%2048.png"/></a></figure></li></ul><ul id="12a11418-d55d-809d-bc32-e17f044a09ec" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Branch on Substition : example<figure id="12a11418-d55d-804f-8c98-db4a3b1ca8fd" class="image" data-notion-image="Unix_OS_Lecture_images/image%2049.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2049.png"><img style="width:482.984375px" src="Unix_OS_Lecture_images/image%2049.png"/></a></figure></li></ul><h3 id="12a11418-d55d-80a4-894d-fd216431aefc" class="" dir="auto">Commands : Hold Space</h3><ul id="12a11418-d55d-80a6-9f33-e6489b42ec0c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">There are 5 commands used to move text ack and forth between pattern space and hold space<ul id="12a11418-d55d-8023-b780-dfc439b04d86" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Hold and destroy (h)</li></ul><ul id="12a11418-d55d-8010-995b-f245ce190ef3" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Hold and append (H)</li></ul><ul id="12a11418-d55d-8039-b3bb-f90b4b05d639" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Get and destroy (g)</li></ul><ul id="12a11418-d55d-80f5-8a91-ce6fbbb59965" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Get and append (G)</li></ul><ul id="12a11418-d55d-808a-822e-e0779074d799" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Exchange (x)<figure id="12a11418-d55d-8007-9117-ce9914bb1795" class="image" data-notion-image="Unix_OS_Lecture_images/image%2050.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2050.png"><img style="width:336px" src="Unix_OS_Lecture_images/image%2050.png"/></a></figure></li></ul></li></ul><p id="12a11418-d55d-80fc-ba81-fe4ff9e457ef" class="" dir="auto">
+</p><ul id="12a11418-d55d-8071-8066-eb2ec54ec761" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Example<figure id="12a11418-d55d-80d9-90fb-eb2928e2092d" class="image" data-notion-image="Unix_OS_Lecture_images/image%2051.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2051.png"><img style="width:482.984375px" src="Unix_OS_Lecture_images/image%2051.png"/></a></figure></li></ul><p id="12a11418-d55d-8056-ba3b-fcb024c42c81" class="" dir="auto">
+</p><h3 id="12a11418-d55d-80f2-931d-f63b98e1cb30" class="" dir="auto">Commands : Quit</h3><ul id="12a11418-d55d-80fa-a5a2-f6e6a61951cb" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Terminates the sed script<figure id="12a11418-d55d-8062-8abb-e1a3bc384a19" class="image" data-notion-image="Unix_OS_Lecture_images/image%2052.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2052.png"><img style="width:482.984375px" src="Unix_OS_Lecture_images/image%2052.png"/></a></figure><figure id="12a11418-d55d-80ed-9145-c6e27cc6f98a" class="image" data-notion-image="Unix_OS_Lecture_images/image%2053.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2053.png"><img style="width:482.96875px" src="Unix_OS_Lecture_images/image%2053.png"/></a></figure></li></ul><h2 id="12a11418-d55d-80ba-a0f3-da0080e57229" class="" dir="auto">AWK</h2><ul id="12a11418-d55d-807a-8e24-e0929d872423" class="bulleted-list" dir="auto"><li style="list-style-type:disc">behavior:<ul id="12a11418-d55d-808a-867a-c1baeb2045a8" class="bulleted-list" dir="auto"><li style="list-style-type:circle">reads input file, line by line, and performs action on part of or on the entire line.</li></ul><ul id="12a11418-d55d-807b-adca-c8e23a93edfd" class="bulleted-list" dir="auto"><li style="list-style-type:circle">does’nt print the line unless sepcifically told to do so.</li></ul></li></ul><ul id="12a11418-d55d-8007-99a8-cf3b227ec5c8" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Execution<pre id="12a11418-d55d-8056-8c86-d96738473f6f" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">awk &#x27;pattern{action{}&#x27; input-file
+awk -f scriptFile.awk input-file</code></pre></li></ul><ul id="12a11418-d55d-80e1-8e99-edef20984eea" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Field and Records : Data file<figure id="12a11418-d55d-805c-9c0d-e8af384d0a19" class="image" data-notion-image="Unix_OS_Lecture_images/image%2054.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2054.png"><img style="width:482.984375px" src="Unix_OS_Lecture_images/image%2054.png"/></a></figure></li></ul><h3 id="12a11418-d55d-8066-9b58-e74ae92bd0c7" class="" dir="auto">awk Variables</h3><ul id="12a11418-d55d-80b2-8a79-cccb0c96bda7" class="bulleted-list" dir="auto"><li style="list-style-type:disc">User-defined variables</li></ul><ul id="12a11418-d55d-8074-9320-fa40ee77d47b" class="bulleted-list" dir="auto"><li style="list-style-type:disc">var name : start with letters, follows by letters/digits/underscores</li></ul><ul id="12a11418-d55d-808b-9cf8-f61630907d43" class="bulleted-list" dir="auto"><li style="list-style-type:disc">initially created as strings (null string)</li></ul><p id="12a11418-d55d-8080-974a-f13a537e9db6" class="" dir="auto">
+</p><ul id="12a11418-d55d-809f-8a19-d57c19a605e7" class="bulleted-list" dir="auto"><li style="list-style-type:disc">System Variables<figure id="12a11418-d55d-805a-b515-fe828fed398c" class="image" data-notion-image="Unix_OS_Lecture_images/image%2055.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2055.png"><img style="width:482.96875px" src="Unix_OS_Lecture_images/image%2055.png"/></a></figure></li></ul><ul id="12a11418-d55d-8013-8989-e8bca311f090" class="bulleted-list" dir="auto"><li style="list-style-type:disc">awk Scripts<figure id="12a11418-d55d-8063-9c4d-fba4896b97ba" class="image" data-notion-image="Unix_OS_Lecture_images/image%2056.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2056.png"><img style="width:482.984375px" src="Unix_OS_Lecture_images/image%2056.png"/></a></figure></li></ul><ul id="12a11418-d55d-8074-8b6e-c8dc665e1beb" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Operation Example<figure id="12a11418-d55d-8091-b3ed-fa1f5f8a919a" class="image" data-notion-image="Unix_OS_Lecture_images/image%2057.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2057.png"><img style="width:336px" src="Unix_OS_Lecture_images/image%2057.png"/></a></figure></li></ul><h3 id="12a11418-d55d-809a-905c-eda1cefd8c3d" class="" dir="auto">Patterns</h3><ul id="12a11418-d55d-80c4-89ff-d1bf8d8fa838" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Indentifies which records in the file are to receive an action.<figure id="12a11418-d55d-8075-aa16-c416129c289b" class="image" data-notion-image="Unix_OS_Lecture_images/image%2058.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2058.png"><img style="width:482.96875px" src="Unix_OS_Lecture_images/image%2058.png"/></a></figure></li></ul><ul id="12a11418-d55d-8001-9055-fb08d9e9e2b2" class="bulleted-list" dir="auto"><li style="list-style-type:disc">BEGIN / END<ul id="12a11418-d55d-808e-9d2f-f54a5c5b557c" class="bulleted-list" dir="auto"><li style="list-style-type:circle">BEGIN : true at the beginning of the input file, before the first record is read. and used to initialize script before processing any data.</li></ul><ul id="12a11418-d55d-80bf-ba8c-c60af0edda02" class="bulleted-list" dir="auto"><li style="list-style-type:circle">END : used at the conclusion of scripts.</li></ul><blockquote id="12a11418-d55d-8048-b2e3-da7f750bca55" class="" dir="auto">Both are optional and can be rerplaced anywhere in a script file.</blockquote></li></ul><p id="12a11418-d55d-8099-b48b-e3fdabadc954" class="" dir="auto">
+</p><h3 id="12a11418-d55d-80a1-9e85-df28419f44d3" class="" dir="auto">Expressions</h3><ul id="12a11418-d55d-8069-bc2f-f5bcc1f75a6b" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Main of expressions<figure id="12a11418-d55d-8071-956d-c28be11910d1" class="image" data-notion-image="Unix_OS_Lecture_images/image%2059.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2059.png"><img style="width:510.96875px" src="Unix_OS_Lecture_images/image%2059.png"/></a></figure></li></ul><p id="12a11418-d55d-803d-ab69-d2dcd2f08a12" class="" dir="auto">
+</p><h3 id="12a11418-d55d-8015-bddd-ef6fed5d9232" class="" dir="auto">Expression : Regular Expression</h3><ul id="12a11418-d55d-8002-9c39-fe2b17aa8fe8" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Same as RE defined in egrep.</li></ul><ul id="12a11418-d55d-8060-b34c-cd784f37b21d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">RE in awk<ul id="12a11418-d55d-8028-9bbb-c9492ce48616" class="bulleted-list" dir="auto"><li style="list-style-type:circle">enclosed in /slashes</li></ul><ul id="12a11418-d55d-8083-92c9-e38af38d4df9" class="bulleted-list" dir="auto"><li style="list-style-type:circle">require one of two operators<ul id="12a11418-d55d-8019-92d5-cf8c5cfdd834" class="bulleted-list" dir="auto"><li style="list-style-type:square">~ match operator</li></ul><ul id="12a11418-d55d-8081-9a43-e977d16df197" class="bulleted-list" dir="auto"><li style="list-style-type:square">!~ not match operator</li></ul><blockquote id="12a11418-d55d-80d7-b66c-e6a78974181c" class="" dir="auto">when there is no operator RE could matych anywhere in the input line.</blockquote><pre id="12a11418-d55d-802f-aa71-e3c18b017574" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">$0 ~ /^A.*$/
+$3 !~ /^ /
+$4 !~ /bird/</code></pre></li></ul></li></ul><h3 id="12a11418-d55d-80c1-bd14-fb644c4764ce" class="" dir="auto">Expression : Arithmetic Expressions</h3><ul id="12a11418-d55d-801c-aca9-c4132000754f" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Match record if the result of arithmetic expression is nonzero (true)<figure id="12a11418-d55d-80fd-9e77-d0dd4fa110a6" class="image" data-notion-image="Unix_OS_Lecture_images/image%2060.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2060.png"><img style="width:482.984375px" src="Unix_OS_Lecture_images/image%2060.png"/></a></figure></li></ul><h3 id="12a11418-d55d-807a-8824-d4d49f345a87" class="" dir="auto">Expression : Relational Expressions</h3><ul id="12a11418-d55d-805c-81b5-ddf20a7620ce" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Comparing a string with a number<ul id="12a11418-d55d-80a9-ba82-cae2ee3ad11e" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Number is converted to a string first</li></ul></li></ul><ul id="12a11418-d55d-8096-affb-de8fc0125f50" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Force converting string to be numeric<ul id="12a11418-d55d-80dd-a1e2-e1df5e17bb95" class="bulleted-list" dir="auto"><li style="list-style-type:circle">by addding 0 to it</li></ul></li></ul><ul id="12a11418-d55d-8071-81dd-ca94045e317b" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Force converting a numeric to be string<ul id="12a11418-d55d-8025-ad49-efa51809737d" class="bulleted-list" dir="auto"><li style="list-style-type:circle">by appending a null string (””) to it</li></ul><figure id="12a11418-d55d-8057-9bd9-c50690e9f66d" class="image" data-notion-image="Unix_OS_Lecture_images/image%2061.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2061.png"><img style="width:482.953125px" src="Unix_OS_Lecture_images/image%2061.png"/></a></figure></li></ul><p id="12a11418-d55d-8051-b2e8-c6381cfe8384" class="" dir="auto">
+</p><ul id="12a11418-d55d-8051-b64f-f38bc3ea14a0" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Example<figure id="12a11418-d55d-8008-90ce-f67a32922197" class="image" data-notion-image="Unix_OS_Lecture_images/image%2062.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2062.png"><img style="width:482.9375px" src="Unix_OS_Lecture_images/image%2062.png"/></a></figure></li></ul><h3 id="12a11418-d55d-809b-bcaa-e836dcd00147" class="" dir="auto">Logical Expressions and Nothing</h3><ul id="12a11418-d55d-8003-a4e6-fe054414ca02" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Used to combine two or more expressions<ul id="12a11418-d55d-8033-b0ba-e1b525aa8277" class="bulleted-list" dir="auto"><li style="list-style-type:circle">! expr</li></ul><ul id="12a11418-d55d-806b-903f-ebb3458d7b4f" class="bulleted-list" dir="auto"><li style="list-style-type:circle">expr 1 &amp;&amp; expr 2</li></ul><ul id="12a11418-d55d-80b6-aa8c-e24f7fb6da82" class="bulleted-list" dir="auto"><li style="list-style-type:circle">expr 1 || expr 2</li></ul></li></ul><ul id="12a11418-d55d-80b8-ad1c-c8fe4eacdb9a" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Nothing<ul id="12a11418-d55d-8051-86ad-cc9b782623a5" class="bulleted-list" dir="auto"><li style="list-style-type:circle">with no pattern , awk applies action to every input line.</li></ul></li></ul><p id="12a11418-d55d-8022-8b04-d65388bd2bc8" class="" dir="auto">
+</p><ul id="12a11418-d55d-806d-a368-dead8d10fc08" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Example<figure id="12a11418-d55d-8088-9a3e-dd3162b6f2d4" class="image" data-notion-image="Unix_OS_Lecture_images/image%2063.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2063.png"><img style="width:482.96875px" src="Unix_OS_Lecture_images/image%2063.png"/></a></figure></li></ul><h3 id="12a11418-d55d-80ff-b6dc-c82c7f71b662" class="" dir="auto">Range Patterns</h3><ul id="12a11418-d55d-8000-baad-e1be188c81ff" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Associated with a range of records or lines.</li></ul><ul id="12a11418-d55d-80b2-8c3b-d864bee02055" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Format<ul id="12a11418-d55d-806c-9227-c9a240f8bf98" class="bulleted-list" dir="auto"><li style="list-style-type:circle">start-pattern, end-pattern</li></ul><pre id="12a11418-d55d-80cb-9c9d-e5dd8273db03" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">awk &#x27;NR == 8, NR == 13 {print NR, $0}&#x27; file1</code></pre><figure id="12a11418-d55d-805c-92df-e6adfe104458" class="image" data-notion-image="Unix_OS_Lecture_images/image%2064.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2064.png"><img style="width:482.953125px" src="Unix_OS_Lecture_images/image%2064.png"/></a></figure></li></ul><h3 id="12a11418-d55d-80bf-b6e2-f356d3a6e344" class="" dir="auto">Actions</h3><ul id="12a11418-d55d-80d6-bb41-e58ba58b8c68" class="bulleted-list" dir="auto"><li style="list-style-type:disc">similar to C programming langauges.</li></ul><ul id="12a11418-d55d-8076-a949-d6febf90ef3a" class="bulleted-list" dir="auto"><li style="list-style-type:disc">But oly act when patterrn is true.<figure id="12a11418-d55d-8074-b93d-d00fe745afbf" class="image" data-notion-image="Unix_OS_Lecture_images/image%2065.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2065.png"><img style="width:483px" src="Unix_OS_Lecture_images/image%2065.png"/></a></figure></li></ul><p id="12a11418-d55d-804a-a5a9-c5937b68f5a0" class="" dir="auto">
+</p><h3 id="12a11418-d55d-806d-9158-e6609ff11bd7" class="" dir="auto">Basic awk Statements</h3><figure id="12a11418-d55d-80a5-9055-e664bf08f864" class="image" data-notion-image="Unix_OS_Lecture_images/image%2066.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2066.png"><img style="width:510.96875px" src="Unix_OS_Lecture_images/image%2066.png"/></a></figure><p id="12a11418-d55d-806b-91a2-c30bf79cb929" class="" dir="auto">
+</p><ul id="12a11418-d55d-8001-add9-da7ddd9d73d6" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Expression<ul id="12a11418-d55d-80a8-9774-e0140783c8cb" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Same as in patterns.</li></ul><ul id="12a11418-d55d-801c-9ebe-c8bcef563b18" class="bulleted-list" dir="auto"><li style="list-style-type:circle">The value of expression is ignore.</li></ul><pre id="12a11418-d55d-8041-9402-fd74c0aecda7" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">{$2 = 6}, {total += ($6 + 4)}</code></pre></li></ul><ul id="12a11418-d55d-806b-8d26-f9b03a43ac18" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Output<ul id="12a11418-d55d-80aa-a8c2-e7893b39e8de" class="bulleted-list" dir="auto"><li style="list-style-type:circle">print<ul id="12a11418-d55d-807c-bc84-ccbdc7ba9350" class="bulleted-list" dir="auto"><li style="list-style-type:square">print - print thw whole record</li></ul><ul id="12a11418-d55d-8034-a565-e7230136a0e4" class="bulleted-list" dir="auto"><li style="list-style-type:square">print $1, $2 - print specific values</li></ul></li></ul><ul id="12a11418-d55d-808f-a513-ef7dfd4fef44" class="bulleted-list" dir="auto"><li style="list-style-type:circle">printf and sprintf<ul id="12a11418-d55d-80bb-ae09-cf5eb180be18" class="bulleted-list" dir="auto"><li style="list-style-type:square">Similar to those in C</li></ul></li></ul></li></ul><ul id="12a11418-d55d-80f1-9739-fcbe66e69837" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Examples<figure id="12a11418-d55d-8047-a89d-e2eb5a45fe12" class="image" data-notion-image="Unix_OS_Lecture_images/image%2067.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2067.png"><img style="width:510.984375px" src="Unix_OS_Lecture_images/image%2067.png"/></a></figure></li></ul><h3 id="12a11418-d55d-8091-8395-f1761dba5e34" class="" dir="auto">Decision Statements</h3><ul id="12a11418-d55d-80fa-b874-f5929e81f87d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">if-else<ul id="12a11418-d55d-803d-9ea3-f6491fc6694c" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Similar to C</li></ul><figure id="12a11418-d55d-80ca-af36-f289d56571f9" class="image" data-notion-image="Unix_OS_Lecture_images/image%2068.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2068.png"><img style="width:482.953125px" src="Unix_OS_Lecture_images/image%2068.png"/></a></figure></li></ul><p id="12a11418-d55d-8048-b3b4-f775daf64b2c" class="" dir="auto">
+</p><ul id="12a11418-d55d-8099-81f1-fe12b454e946" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Example<figure id="12a11418-d55d-80b2-9306-f4ce57b9becc" class="image" data-notion-image="Unix_OS_Lecture_images/image%2069.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2069.png"><img style="width:482.984375px" src="Unix_OS_Lecture_images/image%2069.png"/></a></figure></li></ul><h3 id="12a11418-d55d-80a3-8053-e0c73f62a53b" class="" dir="auto">Control Actions : next</h3><ul id="12a11418-d55d-8095-ad6a-eb110493d77b" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Next<ul id="12a11418-d55d-806d-a53a-f61614882be8" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Stop processing the current record.</li></ul><ul id="12a11418-d55d-80cd-aee4-e2ee1127549a" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Start processign the next recorddd from the beginning of the script</li></ul><figure id="12a11418-d55d-809e-90a6-fd2d89716b8d" class="image" data-notion-image="Unix_OS_Lecture_images/image%2070.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2070.png"><img style="width:482.96875px" src="Unix_OS_Lecture_images/image%2070.png"/></a></figure></li></ul><h3 id="12a11418-d55d-8005-a446-faa836cc8044" class="" dir="auto">Control Actions : getline</h3><ul id="12a11418-d55d-80cf-aa93-def04fc94051" class="bulleted-list" dir="auto"><li style="list-style-type:disc">getline<ul id="12a11418-d55d-8054-8d21-f9e24be95803" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Stop processing current record, read the next record.</li></ul><ul id="12a11418-d55d-805d-abed-dbd88cf24d8a" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Start processing next record with the rest of script.</li></ul></li></ul><ul id="12a11418-d55d-8002-a3be-f9fa2d880b55" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Note<ul id="12a11418-d55d-801c-ac05-e02aad8cf60d" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Input can be directed tp $0 - by default</li></ul><ul id="12a11418-d55d-8067-ba04-ea489a6d4982" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Input can be directed to a seperate variable</li></ul><ul id="12a11418-d55d-8051-8949-d2330dc7d7ff" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Return value can be evaluated<ul id="12a11418-d55d-80d6-a6ec-e5cc73536405" class="bulleted-list" dir="auto"><li style="list-style-type:square">1 - if record is successfully read</li></ul><ul id="12a11418-d55d-8017-86a5-e2edf285cb72" class="bulleted-list" dir="auto"><li style="list-style-type:square">0 - end of file</li></ul><ul id="12a11418-d55d-809b-a763-e459a216bff6" class="bulleted-list" dir="auto"><li style="list-style-type:square">-1 - read error</li></ul></li></ul><ul id="12a11418-d55d-8034-8eb0-eb3c734ec7ec" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Input can be read from another file</li></ul></li></ul><ul id="12a11418-d55d-8057-bd19-e0e8d06c9da7" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Syntax<ul id="12a11418-d55d-808e-b78b-c12836eb451b" class="bulleted-list" dir="auto"><li style="list-style-type:circle">getline variable &lt; other-input-file<ul id="12a11418-d55d-80c7-898f-c89f25d645cf" class="bulleted-list" dir="auto"><li style="list-style-type:square">Ex.<ul id="12a11418-d55d-80b3-b7dd-da5fdff21707" class="bulleted-list" dir="auto"><li style="list-style-type:disc">getline var &lt; “filename”</li></ul></li></ul></li></ul></li></ul><ul id="12a11418-d55d-8096-b83f-ee9db8ed6e54" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Example<figure id="12a11418-d55d-80b0-8900-f85020f9e3d4" class="image" data-notion-image="Unix_OS_Lecture_images/image%2071.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2071.png"><img style="width:482.984375px" src="Unix_OS_Lecture_images/image%2071.png"/></a></figure></li></ul><h3 id="12a11418-d55d-80a9-88fb-c21d98810da5" class="" dir="auto">Control Actions : exit</h3><ul id="12a11418-d55d-8007-b2df-fa94daa99e78" class="bulleted-list" dir="auto"><li style="list-style-type:disc">exit<ul id="12a11418-d55d-807a-8532-ebcd3ff97f1a" class="bulleted-list" dir="auto"><li style="list-style-type:circle">terminate script and start executing the end statements</li></ul><ul id="12a11418-d55d-807d-9b84-cdfd9e6fdb99" class="bulleted-list" dir="auto"><li style="list-style-type:circle">if exit is in the end pattern, script exits immediately</li></ul><ul id="12a11418-d55d-80fb-b3b1-edb1aaaa608a" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Should be used in error condition</li></ul><ul id="12a11418-d55d-8016-8f93-eb0ffd214e42" class="bulleted-list" dir="auto"><li style="list-style-type:circle">return value specified</li></ul><figure id="12a11418-d55d-8068-a0fd-d77e999b6605" class="image" data-notion-image="Unix_OS_Lecture_images/image%2072.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2072.png"><img style="width:482.984375px" src="Unix_OS_Lecture_images/image%2072.png"/></a></figure></li></ul><h3 id="12a11418-d55d-8004-b0c6-fa2f8bb9c24c" class="" dir="auto">Loops : while</h3><figure id="12a11418-d55d-8091-83ea-cca21b832b4c" class="image" data-notion-image="Unix_OS_Lecture_images/image%2073.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2073.png"><img style="width:510.984375px" src="Unix_OS_Lecture_images/image%2073.png"/></a></figure><h3 id="12a11418-d55d-8028-bfb1-fb7556b242a8" class="" dir="auto">Loops : for</h3><figure id="12a11418-d55d-8033-b561-f07529dfe8df" class="image" data-notion-image="Unix_OS_Lecture_images/image%2074.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2074.png"><img style="width:510.96875px" src="Unix_OS_Lecture_images/image%2074.png"/></a></figure><h3 id="12a11418-d55d-80d1-85bc-c206c79a36d4" class="" dir="auto">Loops : do-while</h3><figure id="12a11418-d55d-80e0-b009-c43313e8bd9e" class="image" data-notion-image="Unix_OS_Lecture_images/image%2075.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2075.png"><img style="width:510.984375px" src="Unix_OS_Lecture_images/image%2075.png"/></a></figure><h3 id="12a11418-d55d-803d-8510-eb3774287045" class="" dir="auto">Associative Arrays</h3><ul id="12a11418-d55d-809f-b486-cb6d0f8e7fbd" class="bulleted-list" dir="auto"><li style="list-style-type:disc">awk arrays are known as associative arrays</li></ul><ul id="12a11418-d55d-805d-acc2-eb5858dfad6d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Use strings for array indexes</li></ul><ul id="12a11418-d55d-80cd-a638-ef03a5824745" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Index entry is associated with the array element</li></ul><ul id="12a11418-d55d-80a8-bc1f-e72535b36d80" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Design constraints<ul id="12a11418-d55d-800f-a01d-fbe0903d8e1c" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Index must be unique, but data may be duplicatedd</li></ul><ul id="12a11418-d55d-80c6-ba9f-df423a83ca6d" class="bulleted-list" dir="auto"><li style="list-style-type:circle">No ordering imposed on the indexes</li></ul><ul id="12a11418-d55d-80df-9569-d81cbee3403e" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Array index cannot be sorted</li></ul><ul id="12a11418-d55d-806d-960e-d520266a2be9" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Data values in the array can be sorted</li></ul></li></ul><ul id="12a11418-d55d-8078-8fb4-d1054df61730" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Example : an array A<pre id="12a11418-d55d-80d0-b175-e6bc6faf8a30" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">Index : &quot;Rob&quot;, &quot;George&quot;, &quot;Jan&quot;, &quot;Jone&quot;
+Data : 23, 19, 20, 20
+A[&quot;Rob&quot;] = 23, A[&quot;George&quot;] = 19, ...
+awk -f awk02-ex01.awk name-age.dat</code></pre></li></ul><h3 id="12a11418-d55d-8033-87e4-d6bed53b7cca" class="" dir="auto">Array Loops </h3><ul id="12a11418-d55d-80fe-bba8-cb024d2895f9" class="bulleted-list" dir="auto"><li style="list-style-type:disc">for…in<ul id="12a11418-d55d-803a-a661-f17265613263" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Format<ul id="12a11418-d55d-80a6-b8c4-e3523f70771c" class="bulleted-list" dir="auto"><li style="list-style-type:square">for (index_variable in array_name)</li></ul></li></ul></li></ul><ul id="12a11418-d55d-806f-b222-eab5e77bce46" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Check whether an index exists<ul id="12a11418-d55d-8018-9ce8-d939906af528" class="bulleted-list" dir="auto"><li style="list-style-type:circle">if (”magazine” in deptSales)<ul id="12a11418-d55d-804a-9be0-d6d1478570eb" class="bulleted-list" dir="auto"><li style="list-style-type:square">Return true if magazine is an index</li></ul><ul id="12a11418-d55d-806d-9062-ee1d1c5cae2d" class="bulleted-list" dir="auto"><li style="list-style-type:square">if ($2 in deptSales)</li></ul></li></ul></li></ul><ul id="12a11418-d55d-8073-aa53-f1793b80b784" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Delete array entry<ul id="12a11418-d55d-80ce-81b9-ec8c20bd3e96" class="bulleted-list" dir="auto"><li style="list-style-type:circle">delete array_name[index]</li></ul></li></ul><p id="12a11418-d55d-80cf-868a-fb2820daac2c" class="" dir="auto">
+</p><h3 id="12a11418-d55d-803a-9400-ccaf6a3ba7b0" class="" dir="auto">Array Sorting (data)</h3><ul id="12a11418-d55d-8028-9c87-f2643b53a822" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Sort only “data” in an array<ul id="12a11418-d55d-80dc-b9b2-dc6aeef5cc59" class="bulleted-list" dir="auto"><li style="list-style-type:circle">n = asort(deptSales)<ul id="12a11418-d55d-80ef-9712-d86f8ad76775" class="bulleted-list" dir="auto"><li style="list-style-type:square">all indexes are changed to [1..n], while</li></ul><ul id="12a11418-d55d-802a-910e-cf5741fbc7e3" class="bulleted-list" dir="auto"><li style="list-style-type:square">array data is sorted ascendingly (from index [1] to [n])</li></ul><ul id="12a11418-d55d-802e-ab17-d22b7ec46c8b" class="bulleted-list" dir="auto"><li style="list-style-type:square">NOTE : original array indexes are lost!</li></ul></li></ul></li></ul><ul id="12a11418-d55d-801d-b9ed-d0b1d51770fa" class="bulleted-list" dir="auto"><li style="list-style-type:disc">n = asort(deptSales, newArray)</li></ul><h3 id="12a11418-d55d-803d-8491-c15558c04538" class="" dir="auto">Array Sorting (indexes)</h3><ul id="12a11418-d55d-804b-b7bd-c3824c2f320d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Sort only “indexes” in an array</li></ul><ul id="12a11418-d55d-8066-9a38-d12a08e40e17" class="bulleted-list" dir="auto"><li style="list-style-type:disc">n = asorti(deptSales)<ul id="12a11418-d55d-8025-b23a-cfe138c3039c" class="bulleted-list" dir="auto"><li style="list-style-type:circle">all indexes are changed to [1…n]. while</li></ul><ul id="12a11418-d55d-8023-b9e4-d21c4f9e903d" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Original indexes become array data</li></ul><ul id="12a11418-d55d-80db-8fab-f793ac76ca0a" class="bulleted-list" dir="auto"><li style="list-style-type:circle">The resulting array is sorted ascendingly by it’s data (from index [1] to [n])</li></ul><ul id="12a11418-d55d-8082-8179-ed83e1672eee" class="bulleted-list" dir="auto"><li style="list-style-type:circle">NOTE : original array data are lost!</li></ul></li></ul><ul id="12a11418-d55d-805e-a19f-f5414fc808ce" class="bulleted-list" dir="auto"><li style="list-style-type:disc">n = asorti(deptSales, newArray)</li></ul><h3 id="12a11418-d55d-801f-95b8-fec8607a4b9d" class="" dir="auto">Array : Display by their sorted indexes</h3><figure id="12a11418-d55d-8033-8c46-ff0aa6270717" class="image" data-notion-image="Unix_OS_Lecture_images/image%2076.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2076.png"><img style="width:510.96875px" src="Unix_OS_Lecture_images/image%2076.png"/></a></figure><p id="12a11418-d55d-806e-a6b3-d5da52549965" class="" dir="auto">
+</p><h3 id="12a11418-d55d-8009-b070-d83f4bebecdf" class="" dir="auto">String Functions </h3><ul id="12a11418-d55d-805c-8511-e04158ae2209" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Length<ul id="12a11418-d55d-8061-804b-d9e6eaa1dd1e" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Return number of characterrrs in string parameter</li></ul><ul id="12a11418-d55d-8052-8aa7-c30ba15ddb72" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Format<ul id="12a11418-d55d-80c3-ab57-fc10141a6b8a" class="bulleted-list" dir="auto"><li style="list-style-type:square">length (string)</li></ul></li></ul></li></ul><ul id="12a11418-d55d-8092-ad1e-f973d5f70788" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Index<ul id="12a11418-d55d-80e5-850a-f4fc71781cbc" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Return first position of substring within a strin, or 0 (zero) if not found.</li></ul><ul id="12a11418-d55d-80ad-8fd3-f24365e204eb" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Format<ul id="12a11418-d55d-80ac-972e-ede8333108af" class="bulleted-list" dir="auto"><li style="list-style-type:square">index (string, substring)</li></ul></li></ul></li></ul><ul id="12a11418-d55d-80e1-8997-fc49dcadcf50" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Substring<ul id="12a11418-d55d-8050-8c52-e8fe305b6890" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Extract a substring from a string</li></ul><ul id="12a11418-d55d-8052-953e-f15ce3cbe461" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Format<ul id="12a11418-d55d-80b0-ab38-e9621b5c7aef" class="bulleted-list" dir="auto"><li style="list-style-type:square">split (string, array)</li></ul><ul id="12a11418-d55d-80c2-b2f6-ec7a2377e077" class="bulleted-list" dir="auto"><li style="list-style-type:square">split (string, array, field_seperator)</li></ul><figure id="12a11418-d55d-8077-a725-fe9a45f737d1" class="image" data-notion-image="Unix_OS_Lecture_images/image%2077.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2077.png"><img style="width:454.96875px" src="Unix_OS_Lecture_images/image%2077.png"/></a></figure></li></ul></li></ul><p id="12a11418-d55d-80f7-9b0e-c500c871bea4" class="" dir="auto">
+</p><ul id="12a11418-d55d-80d9-b7f5-e1801632492c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Substitution<ul id="12a11418-d55d-80a2-9597-e45aaa9271f1" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Substitution one string value for another</li></ul><ul id="12a11418-d55d-80ea-b4b6-f98423e310ce" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Return true (1) if success, otherwise false (0)</li></ul><ul id="12a11418-d55d-8071-863b-f6d66b030fff" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Format<ul id="12a11418-d55d-809d-8adf-e12bf29473c1" class="bulleted-list" dir="auto"><li style="list-style-type:square">sub (regexp, replacement_string, in_string)</li></ul><ul id="12a11418-d55d-8060-885d-cbcfb77d79a8" class="bulleted-list" dir="auto"><li style="list-style-type:square">If omitted, in_string = $0</li></ul><figure id="12a11418-d55d-80ad-b4c5-e321c22c638c" class="image" data-notion-image="Unix_OS_Lecture_images/image%2078.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2078.png"><img style="width:454.984375px" src="Unix_OS_Lecture_images/image%2078.png"/></a></figure></li></ul></li></ul><p id="12a11418-d55d-80cd-97c0-dbb4f0b07dee" class="" dir="auto">
+</p><ul id="12a11418-d55d-8096-99d8-c839fde9692f" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Global Substitution<ul id="12a11418-d55d-80ec-998d-f392ac854138" class="bulleted-list" dir="auto"><li style="list-style-type:circle">gsub (regexp, replacement_string, in_string)</li></ul><ul id="12a11418-d55d-803e-9a08-d2e302d9f33d" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Returns the numberr of substitutions made</li></ul></li></ul><p id="12a11418-d55d-8063-a5c2-cccf2fb75aa2" class="" dir="auto">
+</p><ul id="12a11418-d55d-807c-8c6e-f3b527543f8b" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Match<ul id="12a11418-d55d-8083-9d1b-c1ac1e1a1e93" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Return the starting position of matching expression in line, or 0 if no matching.</li></ul><ul id="12a11418-d55d-809f-b069-c1bae0c911c8" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Set 2 system variables<ul id="12a11418-d55d-807c-a96e-e5e29eb7df94" class="bulleted-list" dir="auto"><li style="list-style-type:square">RSTART - starting position</li></ul><ul id="12a11418-d55d-804c-85dc-f594da75f5f8" class="bulleted-list" dir="auto"><li style="list-style-type:square">RLENGTH - length of the matching text string</li></ul></li></ul><ul id="12a11418-d55d-80c0-bb17-cf4368fdcb75" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Format<ul id="12a11418-d55d-808a-b649-cb0a903c5003" class="bulleted-list" dir="auto"><li style="list-style-type:square">Startpos = match (string, regexp)</li></ul><figure id="12a11418-d55d-804a-be91-c0e1d6e73d85" class="image" data-notion-image="Unix_OS_Lecture_images/image%2079.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2079.png"><img style="width:454.96875px" src="Unix_OS_Lecture_images/image%2079.png"/></a></figure></li></ul></li></ul><p id="12a11418-d55d-808f-a8ad-fd163298b915" class="" dir="auto">
+</p><h3 id="12a11418-d55d-80d2-ae6f-edf9f385a730" class="" dir="auto">Math functions</h3><ul id="12a11418-d55d-8008-93ad-c7b39f2faf8c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">rand()</li></ul><ul id="12a11418-d55d-8024-b34b-ee035afa72bd" class="bulleted-list" dir="auto"><li style="list-style-type:disc">srand(seed)</li></ul><ul id="12a11418-d55d-80b2-9510-e01379c70e5d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">cos(x)</li></ul><ul id="12a11418-d55d-80a4-aefe-ffcb7d04adc1" class="bulleted-list" dir="auto"><li style="list-style-type:disc">exp(x)</li></ul><ul id="12a11418-d55d-8056-8da7-ecbecf6968ea" class="bulleted-list" dir="auto"><li style="list-style-type:disc">log(x)</li></ul><ul id="12a11418-d55d-80bc-97c0-e5c09275a057" class="bulleted-list" dir="auto"><li style="list-style-type:disc">sin(x)</li></ul><ul id="12a11418-d55d-8037-9bbb-d5619b1d98da" class="bulleted-list" dir="auto"><li style="list-style-type:disc">sqrt(x)</li></ul><p id="12a11418-d55d-805a-8d60-ec6ef14a0d40" class="" dir="auto">
+</p><h3 id="12a11418-d55d-8044-b84c-d4b26bb5bae0" class="" dir="auto">User-defined Functions</h3><ul id="12a11418-d55d-80e0-bc8e-f8d29516cca4" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Format<ul id="12a11418-d55d-80f8-bdf2-e5c40b8b3d42" class="bulleted-list" dir="auto"><li style="list-style-type:circle">function name(parameter-list)<p id="12a11418-d55d-80c6-a37e-cfe6efcbd479" class="" dir="auto">{ code }</p></li></ul><figure id="12a11418-d55d-8021-a70f-c1e89d1878a1" class="image" data-notion-image="Unix_OS_Lecture_images/image%2080.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2080.png"><img style="width:679.984375px" src="Unix_OS_Lecture_images/image%2080.png"/></a></figure></li></ul><h3 id="12a11418-d55d-8081-9aba-de47f62dd76e" class="" dir="auto">Awk Command-line Arguments</h3><ul id="12a11418-d55d-803d-b8a7-f770ee083dd1" class="bulleted-list" dir="auto"><li style="list-style-type:disc">ARGC - argument count<ul id="12a11418-d55d-8042-8193-db011e052e52" class="bulleted-list" dir="auto"><li style="list-style-type:circle">not including options to awk</li></ul></li></ul><ul id="12a11418-d55d-8032-8c7d-f11564510e60" class="bulleted-list" dir="auto"><li style="list-style-type:disc">ARGV - array of cmdline argument<ul id="12a11418-d55d-80cf-af1d-fc7cc5223bf4" class="bulleted-list" dir="auto"><li style="list-style-type:circle">index starts from 0 to (ARGC-1)</li></ul><figure id="12a11418-d55d-807f-919c-c11191176882" class="image" data-notion-image="Unix_OS_Lecture_images/image%2081.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2081.png"><img style="width:679.96875px" src="Unix_OS_Lecture_images/image%2081.png"/></a></figure></li></ul><h3 id="12a11418-d55d-80bc-81a0-fe988522b19e" class="" dir="auto">Awk Command-line Variables</h3><ul id="12a11418-d55d-808d-9ecf-e72db197d6ec" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Option -v<ul id="12a11418-d55d-8016-b334-d2762aaa6182" class="bulleted-list" dir="auto"><li style="list-style-type:circle">used to send values to variables inside awk scripts</li></ul><figure id="12a11418-d55d-801d-86e3-f0dec32a7130" class="image" data-notion-image="Unix_OS_Lecture_images/image%2082.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2082.png"><img style="width:482.984375px" src="Unix_OS_Lecture_images/image%2082.png"/></a></figure></li></ul><h2 id="12a11418-d55d-8028-a3bf-f9fa9d1797f6" class="" dir="auto">Shell Programming 1</h2><h3 id="12c11418-d55d-8052-8bf6-c871e982f14f" class="" dir="auto">Listing Running Processes</h3><ul id="12c11418-d55d-809c-a732-c5b4d2c9a14a" class="bulleted-list" dir="auto"><li style="list-style-type:disc">jobs</li></ul><ul id="12c11418-d55d-80b0-91f6-c00d89dc8a67" class="bulleted-list" dir="auto"><li style="list-style-type:disc">ps -f<figure id="12c11418-d55d-80c5-8d92-fb0165c497fb" class="image" data-notion-image="Unix_OS_Lecture_images/image%2083.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2083.png"><img style="width:307.9888916015625px" src="Unix_OS_Lecture_images/image%2083.png"/></a></figure></li></ul><h3 id="12c11418-d55d-8063-bb05-e5ab24078d75" class="" dir="auto">Parent and Child Processes</h3><ul id="12c11418-d55d-8071-9fbf-e29aa486ef4e" class="bulleted-list" dir="auto"><li style="list-style-type:disc">PPID<ul id="12c11418-d55d-8075-8d91-fe096a8c7952" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Every process has a parent process.</li></ul><ul id="12c11418-d55d-8035-bb60-f9092ddef102" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Each new command is run in a child process<ul id="12c11418-d55d-80af-8a5c-dc6fdb96fb1a" class="bulleted-list" dir="auto"><li style="list-style-type:square">Current shell waits for the child process to complete</li></ul><ul id="12c11418-d55d-80ff-a54a-de9a2fda2dc5" class="bulleted-list" dir="auto"><li style="list-style-type:square">To let the current shell runs a new command<ul id="12c11418-d55d-801d-925e-cbf6d6c66a67" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Use . or source</li></ul></li></ul></li></ul><ul id="12c11418-d55d-8025-a6cf-f6f3d8f802f6" class="bulleted-list" dir="auto"><li style="list-style-type:circle">To let a new command runs in the current process<ul id="12c11418-d55d-801d-abf0-cd78fdb155b1" class="bulleted-list" dir="auto"><li style="list-style-type:square">Use exec, current process will replacedd by new process (of new command)</li></ul></li></ul><ul id="12c11418-d55d-80e1-8e9f-d3fd748b1fef" class="bulleted-list" dir="auto"><li style="list-style-type:circle">To kill a processd<ul id="12c11418-d55d-8043-8fb7-c0af9cabe5ef" class="bulleted-list" dir="auto"><li style="list-style-type:square">kill %&lt;job id&gt;</li></ul><ul id="12c11418-d55d-8073-8f59-e06f4f1e0f93" class="bulleted-list" dir="auto"><li style="list-style-type:square">kill -&lt;signal_type&gt; process_id</li></ul></li></ul></li></ul><p id="12c11418-d55d-803a-b8ec-e06a9a4d558f" class="" dir="auto">
+</p><h3 id="12c11418-d55d-801f-b458-caa172a933f7" class="" dir="auto">A Simple Shell Script</h3><ul id="12c11418-d55d-8072-a873-d85f1bfb17e5" class="bulleted-list" dir="auto"><li style="list-style-type:disc">A file contains commands that shell can execute</li></ul><ul id="12c11418-d55d-805f-bf9e-d0b34eeba7d1" class="bulleted-list" dir="auto"><li style="list-style-type:disc">(at least) chmod u+x &lt;script&gt; is required to run it.</li></ul><pre id="12c11418-d55d-80cd-b560-fcc6349fb679" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">#!/bin/bash
+# My first shell script
+date
+echo &quot;Users currently loggedd in&quot;
+who</code></pre><ul id="12c11418-d55d-80c6-91db-d92413ce5e35" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Specifying a shell to run the script<ul id="12c11418-d55d-80ac-8451-da0fb7c2bb56" class="bulleted-list" dir="auto"><li style="list-style-type:circle">OS involks program specified after “#!” characters in the scripts to execute rest of the scripts</li></ul></li></ul><ul id="12c11418-d55d-80ba-a46f-d57070c55ea7" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Comments<ul id="12c11418-d55d-8057-875f-f252fd3f6276" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Any text after a # in any location until the end of line.</li></ul><ul id="12c11418-d55d-806f-b5a1-dfd76eafe273" class="bulleted-list" dir="auto"><li style="list-style-type:circle">First line starts with a #! (shebang) is to tell shell to invoke program specified after #! to handle rest of the script</li></ul></li></ul><p id="12c11418-d55d-80e4-bd26-f1ae9a6f6267" class="" dir="auto">
+</p><h3 id="12c11418-d55d-80fc-8b8a-ff869ef01031" class="" dir="auto">Arguments and Positional Parameters</h3><ul id="12c11418-d55d-80f8-9a43-fc3a415afd6c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Command line arguments put in the postional parameters $1, $2, .. ${10}, …</li></ul><pre id="12c11418-d55d-80a8-92d8-ff6bb0eb4a10" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">#!/bin/bash
+# My first shell script
+head $1
+echo ...
+tail $1</code></pre><ul id="12c11418-d55d-8030-a150-c2cd18fba977" class="bulleted-list" dir="auto"><li style="list-style-type:disc">$0 is the command itself</li></ul><ul id="12c11418-d55d-80c1-b1a5-f4dd0f3b9b1e" class="bulleted-list" dir="auto"><li style="list-style-type:disc">$* list of all arguments</li></ul><p id="12c11418-d55d-80a3-baca-e42b3dac2f62" class="" dir="auto">
+</p><h3 id="12c11418-d55d-80b7-ae95-f7695292ad2d" class="" dir="auto">Expression</h3><ul id="12c11418-d55d-80e7-8b1b-c2cc1c708be3" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Expression in shell scripts<ul id="12c11418-d55d-80ae-aee0-dc66a1cd7c76" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Mathematical</li></ul><ul id="12c11418-d55d-8025-b720-c7cefa6f024a" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Relational</li></ul><ul id="12c11418-d55d-80cf-b198-c0ea6eb20527" class="bulleted-list" dir="auto"><li style="list-style-type:circle">File</li></ul><ul id="12c11418-d55d-8024-aba6-de5ed99db72e" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Logical</li></ul><figure id="12c11418-d55d-8077-91b1-fefa1bce9e66" class="image" data-notion-image="Unix_OS_Lecture_images/image%2084.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2084.png"><img style="width:679.96875px" src="Unix_OS_Lecture_images/image%2084.png"/></a></figure></li></ul><p id="12c11418-d55d-8003-a908-c1196d3b51cb" class="" dir="auto">
+</p><h3 id="12c11418-d55d-806b-896a-dc7d9d811399" class="" dir="auto">Mathematical Expression</h3><ul id="12c11418-d55d-8070-a46b-c5bcd35fd8ed" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Only integer operations are valid</li></ul><ul id="12c11418-d55d-800e-82a8-fc05d6bc7008" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Operators<figure id="12c11418-d55d-8032-9d83-c91594c3ce21" class="image" data-notion-image="Unix_OS_Lecture_images/image%2085.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2085.png"><img style="width:307.98333740234375px" src="Unix_OS_Lecture_images/image%2085.png"/></a></figure></li></ul><ul id="12c11418-d55d-80c5-985a-ecaf0ef9a178" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><span style="border-bottom:0.05em solid">let</span> or double parenthesis<figure id="12c11418-d55d-80d4-a169-fa9650810b65" class="image" data-notion-image="Unix_OS_Lecture_images/image%2086.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2086.png"><img style="width:452.96875px" src="Unix_OS_Lecture_images/image%2086.png"/></a></figure></li></ul><ul id="12c11418-d55d-80cd-a215-fa9265da5890" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Math. Exp.<figure id="12c11418-d55d-8006-b0ec-c64749d483cb" class="image" data-notion-image="Unix_OS_Lecture_images/image%2087.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2087.png"><img style="width:452.984375px" src="Unix_OS_Lecture_images/image%2087.png"/></a></figure></li></ul><p id="12c11418-d55d-800e-9dbc-cc59a4e164df" class="" dir="auto">
+</p><h3 id="12c11418-d55d-80ad-a22a-e4b388b87d29" class="" dir="auto">Relational Expression</h3><figure id="12c11418-d55d-8006-ab85-d5b4cc25564e" class="image" data-notion-image="Unix_OS_Lecture_images/image%2088.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2088.png"><img style="width:707.984375px" src="Unix_OS_Lecture_images/image%2088.png"/></a></figure><h3 id="12c11418-d55d-80be-b26a-d8892ce35bd7" class="" dir="auto">File Expressions</h3><ul id="12c11418-d55d-80d5-9602-cfe451223aa7" class="bulleted-list" dir="auto"><li style="list-style-type:disc">lecture<figure id="12c11418-d55d-80cf-b573-f225a84b1d37" class="image" data-notion-image="Unix_OS_Lecture_images/image%2089.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2089.png"><img style="width:307.99444580078125px" src="Unix_OS_Lecture_images/image%2089.png"/></a></figure></li></ul><p id="12c11418-d55d-8055-b824-cb11709f9a2f" class="" dir="auto">
+</p><h3 id="12c11418-d55d-80ec-9b8c-d1a5536aa8d4" class="" dir="auto">Logical Expressions</h3><ul id="12c11418-d55d-8038-9e93-dd3357f170e5" class="bulleted-list" dir="auto"><li style="list-style-type:disc">lecture<figure id="12c11418-d55d-803f-84c1-fcb307c22992" class="image" data-notion-image="Unix_OS_Lecture_images/image%2090.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2090.png"><img style="width:307.99444580078125px" src="Unix_OS_Lecture_images/image%2090.png"/></a></figure></li></ul><h3 id="12c11418-d55d-8043-b178-e0dfbaea09aa" class="" dir="auto">Control Flow : if-then-else</h3><figure id="12c11418-d55d-809f-b2de-e92d1d10fbc5" class="image" data-notion-image="Unix_OS_Lecture_images/image%2091.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2091.png"><img style="width:336px" src="Unix_OS_Lecture_images/image%2091.png"/></a></figure><ul id="12c11418-d55d-80eb-92eb-f5f42c35865c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">if command evaluates the exit status of the command following if<ul id="12c11418-d55d-80d8-b277-e4f826bb5589" class="bulleted-list" dir="auto"><li style="list-style-type:circle">True or 0, commands after then are run</li></ul><ul id="12c11418-d55d-80f6-b90d-e093a82c3ef3" class="bulleted-list" dir="auto"><li style="list-style-type:circle">False or 1, commands after else are run</li></ul><figure id="12c11418-d55d-803d-8e61-cbc9e5aebd67" class="image" data-notion-image="Unix_OS_Lecture_images/image%2092.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2092.png"><img style="width:679.984375px" src="Unix_OS_Lecture_images/image%2092.png"/></a></figure></li></ul><p id="12c11418-d55d-80ea-82f1-fe4757636ce5" class="" dir="auto">
+</p><h3 id="12c11418-d55d-808e-8b7a-c7af60b70b9e" class="" dir="auto">Script Termination</h3><ul id="12c11418-d55d-80ed-8360-cc16c9673498" class="bulleted-list" dir="auto"><li style="list-style-type:disc">exit<ul id="12c11418-d55d-8042-b55f-c69a212fc222" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Terminate the script and sets the exit status</li></ul><ul id="12c11418-d55d-8093-9673-dcee8dfcb7f1" class="bulleted-list" dir="auto"><li style="list-style-type:circle">exit status is kept in system variabble $?</li></ul></li></ul><h2 id="12c11418-d55d-80f3-9a9c-db25f529fa6e" class="" dir="auto">Shell Programming 2</h2><h3 id="12c11418-d55d-8018-8102-f5b0037a3b83" class="" dir="auto">case</h3><figure id="12c11418-d55d-801e-92b2-e2ae7ad2ae2e" class="image" data-notion-image="Unix_OS_Lecture_images/image%2093.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2093.png"><img style="width:707.984375px" src="Unix_OS_Lecture_images/image%2093.png"/></a></figure><h3 id="12c11418-d55d-807c-ac01-c9f5a7a5e1bb" class="" dir="auto">while loop</h3><figure id="12c11418-d55d-80e9-8b0a-f5c8d458dca1" class="image" data-notion-image="Unix_OS_Lecture_images/image%2094.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2094.png"><img style="width:335.99444580078125px" src="Unix_OS_Lecture_images/image%2094.png"/></a></figure><h3 id="12c11418-d55d-8032-82c0-c10fffe87c72" class="" dir="auto">until loop</h3><ul id="12c11418-d55d-80c2-a36e-cf374bc85a11" class="bulleted-list" dir="auto"><li style="list-style-type:disc">opposite of while loop<figure id="12c11418-d55d-80c8-a6f9-f5a4b185f75b" class="image" data-notion-image="Unix_OS_Lecture_images/image%2095.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2095.png"><img style="width:307.99444580078125px" src="Unix_OS_Lecture_images/image%2095.png"/></a></figure></li></ul><h3 id="12c11418-d55d-80cc-86e8-f39edd2efe5d" class="" dir="auto">for … in loop</h3><figure id="12c11418-d55d-800a-a329-ce5c0c880599" class="image" data-notion-image="Unix_OS_Lecture_images/image%2096.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2096.png"><img style="width:335.9888916015625px" src="Unix_OS_Lecture_images/image%2096.png"/></a></figure><h3 id="12c11418-d55d-80be-97b1-feed480ef272" class="" dir="auto">select </h3><ul id="12c11418-d55d-80a6-9384-d22324d1b995" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Creating Menu in Shell Scripting</li></ul><pre id="12c11418-d55d-80ec-923a-e877c74bbe47" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">select ITEM in [LIST]
+do
+	[COMMANDS]
+done</code></pre><ul id="12c11418-d55d-8003-862c-f096ad0637b8" class="bulleted-list" dir="auto"><li style="list-style-type:disc">custom prompt can uset using the <span style="border-bottom:0.05em solid">PS3</span> (environment variable)</li></ul><pre id="12c11418-d55d-800c-892b-f0f0dd905b3b" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">PS3=&quot;Enter a number: &quot;
+
+select character in Sheldon Leonard Penny Howard Raj
+do
+    echo &quot;Selected character: $character&quot;
+    echo &quot;Selected number: $REPLY&quot;
+done</code></pre><h3 id="12c11418-d55d-808b-a551-cfc48c7f8e04" class="" dir="auto">Loop Control Statements</h3><ul id="12c11418-d55d-809f-a8ca-d4d44793c486" class="bulleted-list" dir="auto"><li style="list-style-type:disc">break and continue</li></ul><figure id="12c11418-d55d-8039-a7bd-e9d4b218eadf" class="image" data-notion-image="Unix_OS_Lecture_images/image%2097.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2097.png"><img style="width:335.9888916015625px" src="Unix_OS_Lecture_images/image%2097.png"/></a></figure><h3 id="12c11418-d55d-80ce-8493-d4988904f152" class="" dir="auto">Special Parameters and Variables</h3><ul id="12c11418-d55d-8018-9eb7-c083867cda73" class="bulleted-list" dir="auto"><li style="list-style-type:disc">$0 - Script name</li></ul><ul id="12c11418-d55d-8060-a3da-ff6c84efa1d9" class="bulleted-list" dir="auto"><li style="list-style-type:disc">$# - Number of arguments</li></ul><ul id="12c11418-d55d-8006-b9c7-dd37403814de" class="bulleted-list" dir="auto"><li style="list-style-type:disc">$*, $@ - All Parameters<figure id="12c11418-d55d-801b-8ac4-f48a9bff88d1" class="image" data-notion-image="Unix_OS_Lecture_images/image%2098.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2098.png"><img style="width:679.953125px" src="Unix_OS_Lecture_images/image%2098.png"/></a></figure></li></ul><h3 id="12c11418-d55d-8089-8060-c07145933a5c" class="" dir="auto">Changing Positional Parameters</h3><ul id="12c11418-d55d-80d7-95dc-c460e49fa6e1" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Positional parameters can be changedd with <span style="border-bottom:0.05em solid">set</span> statement<figure id="12c11418-d55d-801c-a18f-cf529914be15" class="image" data-notion-image="Unix_OS_Lecture_images/image%2099.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%2099.png"><img style="width:307.9888916015625px" src="Unix_OS_Lecture_images/image%2099.png"/></a></figure></li></ul><h3 id="12c11418-d55d-8049-88e2-cb90bf8085d7" class="" dir="auto">Shift Command</h3><ul id="12c11418-d55d-8004-b6d7-d87f9f5dc74b" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><span style="border-bottom:0.05em solid">shift</span> work by shifting the values of positional parameters to the <span style="border-bottom:0.05em solid">left, one value at a time.</span><figure id="12c11418-d55d-800d-9927-d656c2d3b951" class="image" data-notion-image="Unix_OS_Lecture_images/image%20100.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20100.png"><img style="width:679.984375px" src="Unix_OS_Lecture_images/image%20100.png"/></a></figure></li></ul><h2 id="12c11418-d55d-80a8-82f7-d2804beb466d" class="" dir="auto">Shell Programming 3</h2><h3 id="12c11418-d55d-80e8-8b5e-d343acbf6de5" class="" dir="auto">Functions (1)</h3><ul id="12c11418-d55d-804e-b7af-faa2da48b9c5" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Writing functions<ul id="12c11418-d55d-807e-bb28-f10c411835a4" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Functions must be placed at beginning of the file.</li></ul><ul id="12c11418-d55d-8008-80d8-c30761edc48e" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Passing arguments to function is similar to passing arguments to a command line.<ul id="12c11418-d55d-80fc-ac65-fe6abca06c1b" class="bulleted-list" dir="auto"><li style="list-style-type:square">Functions read them in a form of positional parameters.</li></ul></li></ul></li></ul><ul id="12c11418-d55d-8020-9a72-f24039effdd7" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Function format<figure id="12c11418-d55d-80eb-8b12-d9bba54c3555" class="image" data-notion-image="Unix_OS_Lecture_images/image%20101.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20101.png"><img style="width:307.9888916015625px" src="Unix_OS_Lecture_images/image%20101.png"/></a></figure></li></ul><p id="12c11418-d55d-80c9-975e-eb9f28c5d6b8" class="" dir="auto">
+</p><h3 id="12c11418-d55d-802b-91c8-de70e5d85c91" class="" dir="auto">Functions (2)</h3><ul id="12c11418-d55d-8019-87f6-fec8df613883" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Local variables<ul id="12c11418-d55d-806a-a865-f6805f968976" class="bulleted-list" dir="auto"><li style="list-style-type:circle">By default, all variables are <span style="border-bottom:0.05em solid">global</span>.</li></ul><ul id="12c11418-d55d-80a5-9762-f0c90ed78242" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Modifying a variable in function changes it in the whole script.</li></ul><ul id="12c11418-d55d-800d-9ecb-dc00221b4a3f" class="bulleted-list" dir="auto"><li style="list-style-type:circle">To create local variables, use the <span style="border-bottom:0.05em solid">local</span> command.<ul id="12c11418-d55d-80f1-931a-e2fe1833a2d6" class="bulleted-list" dir="auto"><li style="list-style-type:square">local   var=value</li></ul><ul id="12c11418-d55d-8036-9783-cfd84df5294d" class="bulleted-list" dir="auto"><li style="list-style-type:square">local varName</li></ul></li></ul></li></ul><ul id="12c11418-d55d-80f6-82a4-cf03d6fea2fb" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><span style="border-bottom:0.05em solid">local</span> command can only be used within a function<figure id="12c11418-d55d-80a4-830d-f351f9351262" class="image" data-notion-image="Unix_OS_Lecture_images/image%20102.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20102.png"><img style="width:307.9888916015625px" src="Unix_OS_Lecture_images/image%20102.png"/></a></figure></li></ul><p id="12c11418-d55d-80e6-aee4-ea586604d9ea" class="" dir="auto">
+</p><h3 id="12c11418-d55d-8026-92b2-d78f15fef375" class="" dir="auto">Functions (3)</h3><ul id="12c11418-d55d-80aa-8cf2-c43c42d8fecc" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Returning Values</li></ul><ul id="12c11418-d55d-80aa-a8a2-c31cfb259a1a" class="bulleted-list" dir="auto"><li style="list-style-type:disc">return &lt;status&gt;<ul id="12c11418-d55d-8067-b7dc-c3aa38f5959d" class="bulleted-list" dir="auto"><li style="list-style-type:circle">#status is 1-byte unsigned int (0-255)</li></ul></li></ul><ul id="12c11418-d55d-8055-aa68-d7d1b116d692" class="bulleted-list" dir="auto"><li style="list-style-type:disc">if no status specified, ‘return status’ of <span style="border-bottom:0.05em solid">previous command</span> is returned.</li></ul><ul id="12c11418-d55d-80f2-8046-eae038aefcb6" class="bulleted-list" dir="auto"><li style="list-style-type:disc">The return value is stored in exit status ($?)<figure id="12c11418-d55d-8073-91b5-ebb09eb8dbce" class="image" data-notion-image="Unix_OS_Lecture_images/image%20103.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20103.png"><img style="width:307.99444580078125px" src="Unix_OS_Lecture_images/image%20103.png"/></a></figure></li></ul><h3 id="12c11418-d55d-8040-a4a2-ee54e712dcfb" class="" dir="auto">Functions (4)</h3><ul id="12c11418-d55d-8004-857b-ecb9885fb09c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Returning Values<ul id="12c11418-d55d-80c8-9850-d28b9e9b1bd0" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Return a string/word<figure id="12c11418-d55d-807f-8e1f-d1c8713394e2" class="image" data-notion-image="Unix_OS_Lecture_images/image%20104.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20104.png"><img style="width:279.99444580078125px" src="Unix_OS_Lecture_images/image%20104.png"/></a></figure></li></ul></li></ul><p id="12c11418-d55d-8030-98b4-dbd46382e06b" class="" dir="auto">
+</p><h3 id="12c11418-d55d-8064-952b-dd94459ed447" class="" dir="auto">Argument Validation</h3><ul id="12c11418-d55d-80b8-a848-df51915754c4" class="bulleted-list" dir="auto"><li style="list-style-type:disc">$# could be used to validate input<ul id="12c11418-d55d-8017-a4aa-fb0a063e8257" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Fixed number of arguments</li></ul><ul id="12c11418-d55d-80f4-b9fe-f40c9c5a7190" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Minimum number of arguments</li></ul><ul id="12c11418-d55d-806f-80b3-c1725f650d36" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Numeric arguments</li></ul><ul id="12c11418-d55d-80e8-9bbd-cfa705aaa3c6" class="bulleted-list" dir="auto"><li style="list-style-type:circle">File type validation<figure id="12c11418-d55d-804a-b895-de9a2fe793f1" class="image" data-notion-image="Unix_OS_Lecture_images/image%20105.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20105.png"><img style="width:279.9888916015625px" src="Unix_OS_Lecture_images/image%20105.png"/></a></figure></li></ul></li></ul><p id="12c11418-d55d-805b-858a-c050d5420323" class="" dir="auto">
+</p><h3 id="12c11418-d55d-8068-b6b6-c54f2ab416ca" class="" dir="auto">Debugging Scripts</h3><ul id="12c11418-d55d-80d8-975c-d660f3514ac1" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Debug options included in the script<figure id="12c11418-d55d-809f-aab9-ea9922e1f7a0" class="image" data-notion-image="Unix_OS_Lecture_images/image%20106.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20106.png"><img style="width:307.99444580078125px" src="Unix_OS_Lecture_images/image%20106.png"/></a></figure></li></ul><ul id="12c11418-d55d-8008-8a89-ed0db5cd06a9" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Debug options on the command line<ul id="12c11418-d55d-8031-b1a8-d6c7b9d9b020" class="bulleted-list" dir="auto"><li style="list-style-type:circle">bash -o xtrace &lt;scriptname&gt;</li></ul></li></ul><p id="12c11418-d55d-8025-97ab-fd792a37d585" class="" dir="auto">
+</p><h3 id="12c11418-d55d-8069-9a0b-f863f23a8ae9" class="" dir="auto">Variable Evaluation</h3><ul id="12c11418-d55d-80f1-949a-e73567cd563b" class="bulleted-list" dir="auto"><li style="list-style-type:disc">To access a variable<ul id="12c11418-d55d-80c3-8b98-ca7ced3a8805" class="bulleted-list" dir="auto"><li style="list-style-type:circle">$var_name</li></ul><ul id="12c11418-d55d-80db-b42a-f991ab59b5f7" class="bulleted-list" dir="auto"><li style="list-style-type:circle">${var_name}<ul id="12c11418-d55d-804b-8b5d-d815fe74d9f2" class="bulleted-list" dir="auto"><li style="list-style-type:square">cp $file $file.bak</li></ul><ul id="12c11418-d55d-807a-8492-c785372de483" class="bulleted-list" dir="auto"><li style="list-style-type:square">cp $file ${file}.bak</li></ul><ul id="12c11418-d55d-80dc-9fc5-ff401685ac13" class="bulleted-list" dir="auto"><li style="list-style-type:square">Also be used in variable substitution</li></ul></li></ul><ul id="12c11418-d55d-8084-9d8f-e11b28b88ad4" class="bulleted-list" dir="auto"><li style="list-style-type:circle">${!var_name}<ul id="12c11418-d55d-804b-81f8-fb4aae98742f" class="bulleted-list" dir="auto"><li style="list-style-type:square">Use the value of var_name as name of variable (indirect reference)</li></ul></li></ul></li></ul><p id="12c11418-d55d-8054-bd78-f2c591a4dd5c" class="" dir="auto">
+</p><h3 id="12c11418-d55d-8023-b3a9-c38d97a642c3" class="" dir="auto">Variable Substitution</h3><figure id="12c11418-d55d-800f-ad10-de35c145a5a6" class="image" data-notion-image="Unix_OS_Lecture_images/image%20107.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20107.png"><img style="width:707.984375px" src="Unix_OS_Lecture_images/image%20107.png"/></a></figure><ul id="12c11418-d55d-8044-ab62-ea7b2794d906" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Substitute If Variable Null (-)<figure id="12c11418-d55d-80ae-8378-e70ae89a4ae2" class="image" data-notion-image="Unix_OS_Lecture_images/image%20108.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20108.png"><img style="width:707.96875px" src="Unix_OS_Lecture_images/image%20108.png"/></a></figure></li></ul><p id="12c11418-d55d-808a-b8fb-db0b9d036af3" class="" dir="auto">
+</p><ul id="12c11418-d55d-80f0-8a32-f1be819ba9a3" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Substitute If Variable Not Null (+)<figure id="12c11418-d55d-8002-a973-e1aa0fb10c3e" class="image" data-notion-image="Unix_OS_Lecture_images/image%20109.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20109.png"><img style="width:679.953125px" src="Unix_OS_Lecture_images/image%20109.png"/></a></figure></li></ul><p id="12c11418-d55d-803e-b626-c2db5ca2d831" class="" dir="auto">
+</p><ul id="12c11418-d55d-80cc-98d2-d9f8ba6c931e" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Substitution Assignment (=)<figure id="12c11418-d55d-8099-b9dd-f25313648ed7" class="image" data-notion-image="Unix_OS_Lecture_images/image%20110.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20110.png"><img style="width:307.9888916015625px" src="Unix_OS_Lecture_images/image%20110.png"/></a></figure></li></ul><p id="12c11418-d55d-8067-a803-d61b2e295a92" class="" dir="auto">
+</p><ul id="12c11418-d55d-8040-8d72-e73c39b61cbe" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Substitution Validation (?)<figure id="12c11418-d55d-80e4-a1e6-e9b6baaa35bf" class="image" data-notion-image="Unix_OS_Lecture_images/image%20111.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20111.png"><img style="width:679.953125px" src="Unix_OS_Lecture_images/image%20111.png"/></a></figure></li></ul><p id="12c11418-d55d-8011-8021-d437ac2ce26b" class="" dir="auto">
+</p><h3 id="12c11418-d55d-80cd-bfe4-d0925e7d8fbb" class="" dir="auto">Substring Expansion</h3><figure id="12c11418-d55d-800b-987c-e1d01bb34566" class="image" data-notion-image="Unix_OS_Lecture_images/image%20112.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20112.png"><img style="width:707.96875px" src="Unix_OS_Lecture_images/image%20112.png"/></a></figure><p id="12c11418-d55d-808b-8b49-e7dfdf1025e9" class="" dir="auto">
+</p><h3 id="12c11418-d55d-80c0-957a-f2137e6e426a" class="" dir="auto">Pattern Matching in Bash</h3><figure id="12c11418-d55d-807f-896a-e9d9bd019573" class="image" data-notion-image="Unix_OS_Lecture_images/image%20113.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20113.png"><img style="width:707.96875px" src="Unix_OS_Lecture_images/image%20113.png"/></a></figure><figure id="12c11418-d55d-8023-bf57-c4e8ae5c28cf" class="image" data-notion-image="Unix_OS_Lecture_images/image%20114.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20114.png"><img style="width:707.984375px" src="Unix_OS_Lecture_images/image%20114.png"/></a></figure><figure id="12c11418-d55d-8027-86ec-cdc26cfce88c" class="image" data-notion-image="Unix_OS_Lecture_images/image%20115.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20115.png"><img style="width:707.96875px" src="Unix_OS_Lecture_images/image%20115.png"/></a></figure><h3 id="12c11418-d55d-80bf-84bc-da918d26ac16" class="" dir="auto">Miscellanueous Operators</h3><ul id="12c11418-d55d-8057-a8d1-da1bc0efdd90" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Length operator<ul id="12c11418-d55d-8083-b1e4-eb0550a815e8" class="bulleted-list" dir="auto"><li style="list-style-type:circle">${#var}<ul id="12c11418-d55d-80a3-89c9-e99b2044050d" class="bulleted-list" dir="auto"><li style="list-style-type:square">Return the length of the value of var as a string</li></ul></li></ul></li></ul><ul id="12c11418-d55d-8021-a523-d8356c251938" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Command substitution<ul id="12c11418-d55d-808c-949f-c1f7d75931bd" class="bulleted-list" dir="auto"><li style="list-style-type:circle">$ (command)<ul id="12c11418-d55d-80b9-b10c-dcd1feec94db" class="bulleted-list" dir="auto"><li style="list-style-type:square">Output from stdout of the command is returned</li></ul><ul id="12c11418-d55d-801a-b4c5-f48226a5d260" class="bulleted-list" dir="auto"><li style="list-style-type:square">Backward compatible with backquotes: <code>cmd</code></li></ul></li></ul></li></ul><p id="12c11418-d55d-80a4-a4b9-e330b2e68fd4" class="" dir="auto">
+</p><h3 id="12c11418-d55d-80b3-9aa5-e72cbc8c9fd5" class="" dir="auto">Arrays</h3><figure id="12c11418-d55d-80a3-8f69-d3dd1070cf01" class="image" data-notion-image="Unix_OS_Lecture_images/image%20116.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20116.png"><img style="width:707.953125px" src="Unix_OS_Lecture_images/image%20116.png"/></a></figure><h3 id="12c11418-d55d-804e-9488-d041ccd1aa6f" class="" dir="auto">Arrays (2)</h3><ul id="12c11418-d55d-808b-9c91-d46ddb5399e8" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Note that <code>#</code>  symbol is used to determine the length or count of a variable or array.</li></ul><figure id="12c11418-d55d-806f-871d-ecc00931e0f0" class="image" data-notion-image="Unix_OS_Lecture_images/image%20117.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20117.png"><img style="width:707.984375px" src="Unix_OS_Lecture_images/image%20117.png"/></a></figure><p id="12c11418-d55d-80f4-82fe-e2d5bd96b33e" class="" dir="auto">
+</p><h3 id="12c11418-d55d-8061-97b3-cd1dcd8d280f" class="" dir="auto">Arrays (3)</h3><figure id="12c11418-d55d-804a-aa39-e7ac44da5afd" class="image" data-notion-image="Unix_OS_Lecture_images/image%20118.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20118.png"><img style="width:707.984375px" src="Unix_OS_Lecture_images/image%20118.png"/></a></figure><p id="12c11418-d55d-808b-a1c9-dd6aef48d0dc" class="" dir="auto">
+</p><h3 id="12c11418-d55d-80d9-913c-e77dbb117c89" class="" dir="auto">Shell Script I/O</h3><ul id="12c11418-d55d-8069-82b1-d00de041f00e" class="bulleted-list" dir="auto"><li style="list-style-type:disc">File - oriented I/O<ul id="12c11418-d55d-8074-bf5e-cdbaa0aad30a" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Rredirections</li></ul><ul id="12c11418-d55d-809e-bd84-d938af73a6e7" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Pipes</li></ul><ul id="12c11418-d55d-80c4-8ba0-d681db7de68c" class="bulleted-list" dir="auto"><li style="list-style-type:circle">echo/printf</li></ul></li></ul><ul id="12c11418-d55d-8053-a490-d424d02ffd98" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Interactive I/O<ul id="12c11418-d55d-803d-a627-c7e0b0ff4016" class="bulleted-list" dir="auto"><li style="list-style-type:circle">read</li></ul><ul id="12c11418-d55d-800d-bf8b-f9f84014f900" class="bulleted-list" dir="auto"><li style="list-style-type:circle">echo/printf</li></ul></li></ul><ul id="12c11418-d55d-802f-bbc0-f3817d09e1a7" class="bulleted-list" dir="auto"><li style="list-style-type:disc">File-oriented I/O is more preferable<ul id="12c11418-d55d-80e8-a811-ff5d60640c09" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Dur to it’s automaticity in nature</li></ul></li></ul><p id="12c11418-d55d-8010-a0a9-f30079fbb0f9" class="" dir="auto">
+</p><h3 id="12c11418-d55d-8017-a401-e635199014bf" class="" dir="auto"><strong>echo</strong></h3><figure id="12c11418-d55d-80ce-833e-fdcacf76dfe0" class="image" data-notion-image="Unix_OS_Lecture_images/image%20119.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20119.png"><img style="width:335.9888916015625px" src="Unix_OS_Lecture_images/image%20119.png"/></a></figure><figure id="12c11418-d55d-809a-9fd5-c731a4737fa2" class="image" data-notion-image="Unix_OS_Lecture_images/image%20120.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20120.png"><img style="width:707.96875px" src="Unix_OS_Lecture_images/image%20120.png"/></a></figure><figure id="12c11418-d55d-80c3-becb-e208bd7db9c3" class="image" data-notion-image="Unix_OS_Lecture_images/image%20121.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20121.png"><img style="width:707.9375px" src="Unix_OS_Lecture_images/image%20121.png"/></a></figure><p id="12c11418-d55d-80b9-8f5d-eed297e6e39d" class="" dir="auto">
+</p><h3 id="12c11418-d55d-803f-9c41-d14daa442c05" class="" dir="auto"><strong>printf</strong></h3><ul id="12c11418-d55d-8067-aba2-eb9c522b9810" class="bulleted-list" dir="auto"><li style="list-style-type:disc">C-style printf</li></ul><ul id="12c11418-d55d-80bb-a7b8-f5d8ab6046c1" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Additional bash printf specifiers<ul id="12c11418-d55d-80fd-9437-e5d8ea7e1bad" class="bulleted-list" dir="auto"><li style="list-style-type:circle">%b<ul id="12c11418-d55d-8074-ac79-cde227585660" class="bulleted-list" dir="auto"><li style="list-style-type:square">Expands echo-style escape sequences in the argument string<ul id="12c11418-d55d-807d-9e48-f2782ecf9a56" class="bulleted-list" dir="auto"><li style="list-style-type:disc">printf &quot;%s\n&quot; &#x27;hello\nworld&#x27;</li></ul></li></ul></li></ul><ul id="12c11418-d55d-80db-9691-ce2f2cf94566" class="bulleted-list" dir="auto"><li style="list-style-type:circle">%q<ul id="12c11418-d55d-8052-a844-f5f9227987e4" class="bulleted-list" dir="auto"><li style="list-style-type:square">Prints the string argument in such a way that it can be used for shell input<ul id="12c11418-d55d-80aa-8f06-d62b3be1a29b" class="bulleted-list" dir="auto"><li style="list-style-type:disc">printf &quot;%q\n&quot; &#x27;greetings to the world&#x27;</li></ul></li></ul></li></ul></li></ul><p id="12c11418-d55d-80fb-acf8-ed5471fad45e" class="" dir="auto">
+</p><h3 id="12c11418-d55d-80a5-af92-c9f56e4c197c" class="" dir="auto">read</h3><figure id="12c11418-d55d-801c-93ae-cc0b9cdd8594" class="image" data-notion-image="Unix_OS_Lecture_images/image%20122.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20122.png"><img style="width:707.96875px" src="Unix_OS_Lecture_images/image%20122.png"/></a></figure><h3 id="12c11418-d55d-802f-8a50-e41c89fd44fa" class="" dir="auto">Process ID and Job Numbers</h3><figure id="12c11418-d55d-80fc-9abc-c6be69a5f1de" class="image" data-notion-image="Unix_OS_Lecture_images/image%20123.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20123.png"><img style="width:707.984375px" src="Unix_OS_Lecture_images/image%20123.png"/></a></figure><h3 id="12c11418-d55d-801e-a540-f6c8bdec1f6d" class="" dir="auto">Signals</h3><figure id="12c11418-d55d-8001-9266-d2e84c3482a7" class="image" data-notion-image="Unix_OS_Lecture_images/image%20124.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20124.png"><img style="width:707.984375px" src="Unix_OS_Lecture_images/image%20124.png"/></a></figure><h3 id="12c11418-d55d-8021-ab52-fe6e4931f510" class="" dir="auto">Processs ID variables</h3><ul id="12c11418-d55d-8009-af8a-ded9617e8f29" class="bulleted-list" dir="auto"><li style="list-style-type:disc">$$<ul id="12c11418-d55d-8041-b227-f75750034d5a" class="bulleted-list" dir="auto"><li style="list-style-type:circle">process ID of the current shell</li></ul></li></ul><ul id="12c11418-d55d-803c-9019-fb7d756a5528" class="bulleted-list" dir="auto"><li style="list-style-type:disc">$!<ul id="12c11418-d55d-80ff-ae11-d187a9464749" class="bulleted-list" dir="auto"><li style="list-style-type:circle">process ID of the most recently invoked background job</li></ul></li></ul><ul id="12c11418-d55d-80e3-8c44-f499d1998467" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Practice<ul id="12c11418-d55d-8056-b5c6-d4c9ff558fe3" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Write a script to test these two variables</li></ul></li></ul><p id="12c11418-d55d-8092-b994-f4ee37595918" class="" dir="auto">
+</p><h3 id="12c11418-d55d-80f8-b8ee-f80f572bf022" class="" dir="auto">trap</h3><figure id="12c11418-d55d-8079-8ba4-e8d3c5fb07c2" class="image" data-notion-image="Unix_OS_Lecture_images/image%20125.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20125.png"><img style="width:336px" src="Unix_OS_Lecture_images/image%20125.png"/></a></figure><p id="12c11418-d55d-800e-9838-eecf517b37f0" class="" dir="auto">
+</p><h3 id="12c11418-d55d-809e-ab20-da845bd7c28f" class="" dir="auto">trap : Clean up temporary files</h3><figure id="12c11418-d55d-806b-91d1-c93c88a90c40" class="image" data-notion-image="Unix_OS_Lecture_images/image%20126.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20126.png"><img style="width:707.984375px" src="Unix_OS_Lecture_images/image%20126.png"/></a></figure><h3 id="12c11418-d55d-8027-93eb-e5018d90ca34" class="" dir="auto">wait</h3><figure id="12c11418-d55d-8095-a8f3-f8c8bde06a41" class="image" data-notion-image="Unix_OS_Lecture_images/image%20127.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20127.png"><img style="width:707.984375px" src="Unix_OS_Lecture_images/image%20127.png"/></a></figure><p id="12c11418-d55d-80a9-bdd7-e44a46c1482c" class="" dir="auto">
+</p><h3 id="12c11418-d55d-80be-bb41-d72fc755091b" class="" dir="auto">Subshells</h3><figure id="12c11418-d55d-8016-8aeb-e5834018bd28" class="image" data-notion-image="Unix_OS_Lecture_images/image%20128.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20128.png"><img style="width:707.984375px" src="Unix_OS_Lecture_images/image%20128.png"/></a></figure></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
