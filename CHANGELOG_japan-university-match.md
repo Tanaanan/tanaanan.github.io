@@ -78,6 +78,35 @@ Log of all changes made to the "Find Your Japan University Match" tool in this s
 - **Responsive without horizontal scrolling**: below 700px width, the table automatically becomes a stack of labeled cards (one per university) instead of a cramped 8-column table — verified at 375px with zero horizontal overflow. At 700px+ it's a normal table.
 - **Finalized on the PDF/print export too**: the print view's summary table now has the identical bar gauges and 💰/🏆 winner highlighting as the on-screen version, sharing the same `favComparePct()` scaling logic and `FAVCOMPARE_I18N` legend text — verified with a real headless-Chromium print-to-PDF render, not just the DOM.
 
+## 11. Hero diagram: recolored "You" node + made it interactive
+
+- The center **"You" node** in the hero's six-path diagram changed from flat dark (#20232B) to the site's blue-to-purple brand gradient (matching the nav logo badge), with a soft pulsing glow ring around it to draw the eye.
+- Each of the 6 paths + destination pill is now a **single clickable/keyboard-focusable unit**: hovering (or focusing) thickens that path's line and scales up its pill; clicking it (or pressing Enter/Space while focused) smooth-scrolls straight to that archetype's card further down the page and opens it automatically.
+- Added a small hint line under the diagram ("👆 Tap an archetype to jump straight to it"), localized in all three languages.
+- Proper accessibility: each route is `role="button"`, `tabindex="0"`, with an `aria-label` naming the archetype, so it's usable via keyboard and screen readers, not just a mouse.
+
+## 12. Redesigned the nav logo mark
+
+- Replaced the flat 🗾 emoji badge (which rendered inconsistently across platforms) with a custom hand-drawn **torii gate** SVG icon — an unambiguous, universally-recognized symbol of Japan, at any size or platform.
+- Upgraded the badge itself from a flat two-color circle to a radial gradient sphere (matching the hero diagram's "You" node gradient) with a glossy highlight and a soft drop shadow, for a more polished "sticker" look.
+- Added a small playful touch: the badge tilts and scales up slightly on hover.
+- The icon scales proportionally with the badge at every breakpoint, including the compact mobile header.
+
+## 13. Favicon
+
+- Generated a proper favicon set from the same torii-gate mark used in the nav logo — `favicon.ico` (16/32/48px, legacy browser support), plus dedicated PNGs at 16px, 32px, and a 180px `apple-touch-icon` for iOS home-screen bookmarks.
+- Wired up via `<link rel="icon">` / `rel="apple-touch-icon"` tags in the `<head>`, so browser tabs, bookmarks, and iOS "Add to Home Screen" now show the branded icon instead of a blank/generic one.
+
+## 14. Recolored the logo to shrine vermillion
+
+- Changed the nav badge (and the torii gate icon's background sphere) from the blue-to-purple gradient to a **vermillion red gradient** (`#FF8464 → #E8543F → #A6301F`) — the traditional color of a Japanese shrine torii gate — so the mark now reads unmistakably as "shrine gate," not just an abstract icon.
+- Regenerated the favicon set (`favicon.ico`, 16px/32px/180px PNGs) with the same red palette so the browser tab and the nav logo match exactly.
+- Recolored the small logo mark in the Open Graph share image (`og-cover.png`) to match, so the branding is consistent everywhere the site can appear — the page itself, the browser tab, and any social share card.
+
+## 15. Publication status: "in press" → "published"
+
+- Reverted every "in press" reference back to **"Published at IJIET (2026)"** across all three languages (hero pill, the info chip, the research-team note, the planner disclaimer, and the footer citation) — the paper's status changed from in-press to published, so the wording now reflects that.
+
 ---
 
 *All changes verified via automated browser testing (console-error checks, functional JS assertions, and — for the PDF fixes — real headless-Chromium print-to-PDF comparisons) across Thai, English, and Japanese, at both desktop and mobile widths.*
