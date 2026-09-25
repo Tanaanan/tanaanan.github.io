@@ -47,16 +47,30 @@
   .brand{display:flex;align-items:center;gap:10px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:15px;}
   .brand-badge{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--c3),var(--c6));display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;box-shadow:0 2px 0 rgba(32,35,43,0.12);}
   .navlinks{display:flex;gap:24px;font-size:13.5px;font-weight:500;}
-  .navlinks a{text-decoration:none;color:var(--ink-soft);transition:color .15s;}
+  .navlinks a{text-decoration:none;color:var(--ink-soft);transition:color .15s;position:relative;padding-bottom:2px;}
   .navlinks a:hover{color:var(--ink);}
+  .navlinks a.active{color:var(--ink);font-weight:700;}
+  .navlinks a.active::after{content:'';position:absolute;left:0;right:0;bottom:-15px;height:2px;background:var(--c3);border-radius:2px;}
   @media (max-width:760px){ .navlinks{display:none;} }
 
   .lang-switch{display:flex;align-items:center;gap:2px;background:var(--bg-soft);border-radius:100px;padding:3px;flex-shrink:0;}
   .lang-btn{
     border:none;background:transparent;font-family:'Inter',sans-serif;font-size:12.5px;font-weight:600;
     color:var(--ink-soft);padding:6px 13px;border-radius:100px;cursor:pointer;transition:background .15s ease,color .15s ease;
+    white-space:nowrap;
   }
   .lang-btn.active{background:var(--panel);color:var(--ink);box-shadow:0 1px 0 rgba(32,35,43,0.08);}
+
+  /* Narrow screens: the brand name + tagline + 3-way lang switch don't fit on
+     one row without wrapping mid-word — drop the decorative tagline and
+     tighten everything up so the header stays one clean line. */
+  @media (max-width:480px){
+    nav .wrap{padding:11px 16px;gap:8px;}
+    .brand{font-size:13px;gap:7px;white-space:nowrap;}
+    .brand .mono{display:none;}
+    .brand-badge{width:26px;height:26px;font-size:13px;}
+    .lang-btn{padding:5px 9px;font-size:11px;}
+  }
 
   /* ---------- HERO ---------- */
   header.hero{padding:70px 0 44px;position:relative;overflow:hidden;}
@@ -182,7 +196,9 @@
 
   .figure-pair{display:grid;grid-template-columns:1.8fr 1fr;gap:18px;margin-bottom:22px;align-items:stretch;}
   @media (max-width:700px){ .figure-pair{grid-template-columns:1fr;} }
-  .compare-scroll{overflow-x:auto;border-radius:16px;border:1px solid var(--line);}
+  .compare-hint{display:none;font-size:11.5px;color:var(--ink-soft);text-align:center;margin:0 0 10px;}
+  @media (max-width:760px){ .compare-hint{display:block;} }
+  .compare-scroll{overflow-x:auto;border-radius:16px;border:1px solid var(--line);-webkit-overflow-scrolling:touch;}
   .compare-table{border-collapse:collapse;width:100%;min-width:760px;background:var(--panel);}
   .compare-table th, .compare-table td{padding:14px 16px;text-align:left;border-bottom:1px solid var(--line);font-size:13px;vertical-align:top;}
   .compare-table th{background:var(--bg-soft);font-family:'Fredoka',sans-serif;font-weight:600;font-size:14px;}
@@ -194,6 +210,8 @@
   .figure-cell img{width:100%;height:auto;display:block;border-radius:8px;}
   .figure-cell .chart-mount{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;}
   .chart-mount svg{width:100%;height:auto;display:block;}
+  .radar-dot{cursor:pointer;transition:r .15s ease;}
+  .radar-dot:hover, .radar-dot:focus{r:6.5;outline:none;}
   .figure-label{font-size:11.5px;color:var(--ink-soft);margin-top:8px;text-align:center;font-weight:500;}
 
   .map-legend{
@@ -216,6 +234,9 @@
   .planner .eyebrow{color:#C9B8F0;}
   .planner .section-title{color:#fff;}
   .planner .section-desc{color:#B6B4C4;}
+  .planner-progress{display:flex;gap:8px;margin-top:22px;}
+  .pstep{flex:1;max-width:60px;height:5px;border-radius:3px;background:rgba(255,255,255,0.15);transition:background .3s ease;}
+  .pstep.done{background:var(--c5);}
   .q-block{margin-top:28px;}
   .q-label{font-weight:700;font-size:14px;margin-bottom:12px;}
   .q-options{display:flex;flex-wrap:wrap;gap:9px;}
@@ -229,10 +250,14 @@
   .result{
     margin-top:32px;padding:24px;border-radius:18px;
     background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);
+    animation:resultPop .4s cubic-bezier(.34,1.56,.64,1);
   }
+  @keyframes resultPop{ from{opacity:0;transform:translateY(8px) scale(0.98);} to{opacity:1;transform:translateY(0) scale(1);} }
   .result-title{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#B6B4C4;font-weight:700;}
   .result-name{font-size:22px;font-weight:800;margin:8px 0 8px;font-family:'Plus Jakarta Sans',sans-serif;}
   .result-desc{color:#D6D4E2;font-size:13.5px;}
+  .reset-btn{margin-top:16px;background:none;border:none;color:#B6B4C4;font-size:12px;text-decoration:underline;cursor:pointer;padding:0;font-family:'Inter',sans-serif;display:inline-block;}
+  .reset-btn:hover{color:#fff;}
   .disclaimer{font-size:11.5px;color:#8B899C;margin-top:20px;line-height:1.6;}
 
   /* ---------- VALIDATION ---------- */
@@ -347,6 +372,95 @@
   .uni-search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none;}
   .no-results{font-size:13px;color:var(--ink-soft);padding:12px 0;text-align:center;display:none;}
 
+  /* Filter chips */
+  .filter-chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px;}
+  .fchip{
+    font-size:12px;font-weight:600;padding:8px 15px;border-radius:100px;
+    border:1.5px solid var(--line);background:var(--panel);color:var(--ink-soft);
+    cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s ease;
+  }
+  .fchip:hover{border-color:var(--c3);color:var(--ink);}
+  .fchip.active{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .fchip.fav-chip.active{background:#EAA829;border-color:#EAA829;color:#fff;}
+
+  /* Shortlist export bar */
+  .shortlist-bar{
+    display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+    background:linear-gradient(135deg,#FFFBF0,#FFF8E1);border:1px solid #EAA829;border-radius:14px;
+    padding:12px 18px;margin:0 0 18px;
+  }
+  .shortlist-count{font-size:13px;font-weight:700;color:#8A5A0E;}
+  .shortlist-actions{display:flex;gap:8px;flex-wrap:wrap;}
+  .shortlist-actions button{
+    font-size:12px;font-weight:600;padding:7px 13px;border-radius:100px;
+    border:1.5px solid #EAA829;background:#fff;color:#8A5A0E;cursor:pointer;
+    font-family:'Inter',sans-serif;transition:all .15s ease;
+  }
+  .shortlist-actions button:hover{background:#EAA829;color:#fff;}
+  .shortlist-actions button.clear-btn{border-color:var(--line);color:var(--ink-soft);}
+  .shortlist-actions button.clear-btn:hover{background:var(--ink-soft);border-color:var(--ink-soft);color:#fff;}
+
+  /* Print-only shortlist view */
+  #printArea{display:none;}
+  @media print{
+    /* Chrome/Edge strip background-color unless forced — this is why the
+       discipline bars, badges and cluster swatches were invisible in the
+       saved PDF even though borders (like the card's left color stripe)
+       printed fine. Force every element to keep its background. */
+    *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;color-adjust:exact !important;}
+    /* Hiding the rest of the page with visibility:hidden still reserves its
+       layout space, so the print engine paginated the whole (very tall)
+       single-page app and left a stack of blank pages after the shortlist.
+       display:none removes it from layout entirely, and #printArea flows
+       normally instead of being absolutely positioned over page 1. */
+    body > *:not(#printArea){display:none !important;}
+    #printArea{display:block !important;width:100%;padding:20px;margin:0;font-family:'Inter',Arial,sans-serif;color:#20232B;}
+
+    #printArea .print-header{text-align:center;border-bottom:3px solid #20232B;padding-bottom:14px;margin-bottom:18px;}
+    #printArea .print-header h1{font-size:21px;margin:0 0 6px;}
+    #printArea .print-meta{font-size:11px;color:#666;}
+
+    #printArea .print-summary{width:100%;border-collapse:collapse;margin-bottom:22px;font-size:10.5px;}
+    #printArea .print-summary th, #printArea .print-summary td{border:1px solid #ccc;padding:6px 8px;text-align:left;}
+    #printArea .print-summary th{background:#F1F0EA;font-size:10px;text-transform:uppercase;letter-spacing:.03em;}
+    #printArea .print-summary .swatch{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;}
+
+    #printArea .print-uni{border:1px solid #ddd;border-left-width:6px;border-radius:8px;padding:14px 18px;margin-bottom:14px;page-break-inside:avoid;}
+    #printArea .print-uni-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;}
+    #printArea .print-uni-head h3{font-size:15px;margin:0;}
+    #printArea .print-cluster-badge{font-size:9.5px;font-weight:700;color:#fff;padding:3px 10px;border-radius:100px;white-space:nowrap;}
+    #printArea .print-sub{font-size:11px;color:#666;margin:5px 0 10px;}
+
+    #printArea .print-badges{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+    #printArea .pbadge{font-size:9px;font-weight:600;padding:2px 8px;border-radius:100px;background:#eee;color:#666;}
+    #printArea .pbadge.on{background:#20232B;color:#fff;}
+
+    #printArea .print-stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:11px;margin-bottom:12px;}
+    #printArea .print-stats-grid .pstat{background:#FAFAF7;border:1px solid #eee;border-radius:6px;padding:6px 8px;}
+    #printArea .print-stats-grid .pstat b{display:block;font-size:8.5px;text-transform:uppercase;letter-spacing:.03em;color:#888;font-weight:700;}
+    #printArea .print-stats-grid .pstat span{font-size:12px;font-weight:600;}
+
+    #printArea .print-disc-title{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;color:#888;margin-bottom:6px;}
+    #printArea .print-disc-row{display:flex;align-items:center;gap:6px;margin-bottom:3px;font-size:10px;}
+    #printArea .print-disc-label{width:96px;flex-shrink:0;color:#555;}
+    #printArea .print-disc-bar-wrap{flex:1;height:7px;background:#eee;border-radius:4px;overflow:hidden;}
+    #printArea .print-disc-bar{height:100%;border-radius:4px;}
+    #printArea .print-disc-pct{width:32px;text-align:right;color:#555;font-family:'IBM Plex Mono',monospace;}
+
+    #printArea .print-tip{margin-top:10px;padding:9px 11px;background:#F0F7FF;border:1px solid #BDE0FF;border-radius:8px;font-size:10.5px;color:#1A5E94;line-height:1.5;}
+    #printArea .print-tip b{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.03em;margin-bottom:2px;}
+
+    #printArea .print-footer{margin-top:18px;font-size:9.5px;color:#999;text-align:center;border-top:1px solid #ddd;padding-top:10px;}
+  }
+
+  /* Favorite star */
+  .fav-star{
+    border:none;background:none;cursor:pointer;font-size:16px;line-height:1;
+    color:var(--ink-soft);padding:0 2px;flex-shrink:0;transition:transform .15s ease;
+  }
+  .fav-star:hover{transform:scale(1.2);}
+  .fav-star.active{color:#EAA829;}
+
   /* Badge glossary */
   .badge-legend{
     display:flex;gap:8px;flex-wrap:wrap;align-items:center;
@@ -385,6 +499,7 @@
     <div class="lang-switch">
       <button type="button" class="lang-btn" data-lang="th">ไทย</button>
       <button type="button" class="lang-btn" data-lang="en">EN</button>
+      <button type="button" class="lang-btn" data-lang="ja">日本語</button>
     </div>
   </div>
 </nav>
@@ -531,6 +646,13 @@
       <h2 class="section-title" data-i18n="planner.title">Find your match in 4 taps</h2>
       <p class="section-desc" data-i18n="planner.desc">A simplified heuristic based on the published cluster averages — a great starting point, not a final answer. Always double-check specific schools before applying.</p>
 
+      <div class="planner-progress" id="plannerProgress">
+        <span class="pstep" data-q="budget"></span>
+        <span class="pstep" data-q="field"></span>
+        <span class="pstep" data-q="env"></span>
+        <span class="pstep" data-q="goal"></span>
+      </div>
+
       <div class="q-block">
         <div class="q-label" data-i18n="planner.q1.label">💰 What's your monthly budget?</div>
         <div class="q-options" data-q="budget">
@@ -571,6 +693,7 @@
         <div class="result-title" data-i18n="planner.resultTitle">✨ Your best match</div>
         <div class="result-name" id="resultName"></div>
         <div class="result-desc" id="resultDesc"></div>
+        <button type="button" class="reset-btn" id="resetPlanner" data-i18n="planner.reset">↺ Start over</button>
       </div>
       <div class="disclaimer" data-i18n="planner.disclaimer">This is a simplified estimate based on group averages from the published study — not a replacement for checking each university's actual details before you apply.</div>
     </div>
@@ -584,6 +707,7 @@
       <h2 class="section-title" data-i18n="compare.title">Quick comparison, all 6 at a glance</h2>
       <p class="section-desc" data-i18n="compare.desc">Straight from the study's Comparative Assessment Matrix — good for a fast scan before you dive into any one archetype.</p>
     </div>
+    <div class="compare-hint" data-i18n="compare.hint">⟷ Swipe sideways to see all 6 archetypes</div>
     <div class="compare-scroll">
       <table class="compare-table" id="compareTable"></table>
     </div>
@@ -613,6 +737,28 @@
       <span class="uni-search-icon">🔍</span>
       <input id="uniSearch" class="uni-search" type="search" data-i18n-placeholder="search.placeholder" placeholder="Search a university by name… e.g. Osaka, Waseda, Hokkaido" autocomplete="off">
     </div>
+
+    <!-- Quick Filters -->
+    <div class="filter-chips" id="filterChips">
+      <button type="button" class="fchip active" data-filter="all" data-i18n="filter.all">All</button>
+      <button type="button" class="fchip" data-filter="idp" data-i18n="filter.idp">🎓 Has IDP</button>
+      <button type="button" class="fchip" data-filter="etp" data-i18n="filter.etp">🌐 English Taught</button>
+      <button type="button" class="fchip" data-filter="tuition" data-i18n="filter.tuition">💸 Tuition Discount</button>
+      <button type="button" class="fchip" data-filter="national" data-i18n="filter.national">🏛️ National</button>
+      <button type="button" class="fchip" data-filter="private" data-i18n="filter.private">🏢 Private</button>
+      <button type="button" class="fchip fav-chip" id="favFilterChip" data-i18n="filter.favorites">★ Favorites</button>
+    </div>
+
+    <!-- Shortlist export bar (shown once at least one university is starred) -->
+    <div class="shortlist-bar" id="shortlistBar" style="display:none;">
+      <span class="shortlist-count" id="shortlistCount"></span>
+      <div class="shortlist-actions">
+        <button type="button" id="printShortlist" data-i18n="shortlist.print">🖨️ Print / Save as PDF</button>
+        <button type="button" id="downloadShortlist" data-i18n="shortlist.download">⬇️ Download as text</button>
+        <button type="button" id="clearShortlist" class="clear-btn" data-i18n="shortlist.clear">Clear all</button>
+      </div>
+    </div>
+
     <div class="no-results" id="noResults" data-i18n="search.noResults">No universities matched your search. Try a different name.</div>
 
     <div id="clusterList"></div>
@@ -700,8 +846,12 @@
             <div style="color:#8C9BC4;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px;" data-i18n="note.lab">Laboratory</div>
             <div style="color:#fff;font-weight:700;">KU-HCAI, Kasetsart University</div>
           </div>
+          <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:12px 18px;font-size:12.5px;">
+            <div style="color:#8C9BC4;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px;" data-i18n="note.support">Supported by</div>
+            <div style="color:#fff;font-weight:700;">International SciKU Branding (ISB), Faculty of Science, Kasetsart University, Thailand</div>
+          </div>
         </div>
-        
+
         <div style="display:flex;gap:24px;margin-top:32px;align-items:center;flex-wrap:wrap;">
           <div style="display:flex;align-items:center;gap:12px;">
             <img src="japan_u_images/Tanaanan_image.png" alt="Tanaanan" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #8C9BC4;">
@@ -735,6 +885,9 @@
     </div>
   </div>
 </footer>
+
+<!-- Hidden print-only view, built on demand from starred universities -->
+<div id="printArea"></div>
 
 <script>
 // ---- Per-university data from Japan_Thai_Offices.csv ----
@@ -783,93 +936,99 @@ const UNI_DATA = {
 
 const clusters = [
   {
-    code:"C1", color:"var(--c1)", nameEn:"Hyper-Urban Core", nameTh:"กลุ่มเมืองใหญ่ใจกลางเมือง", n:7, emoji:"🏙️",
-    tagline:"Tokyo prestige, at a price", taglineTh:"ชื่อเสียงแห่งโตเกียว ในราคาที่ต้องแลกมา",
-    tags:["High cost","Elite network","Urban"], tagsTh:["ค่าครองชีพสูง","เครือข่ายชั้นนำ","เขตเมือง"],
+    code:"C1", color:"var(--c1)", nameEn:"Hyper-Urban Core", nameTh:"กลุ่มเมืองใหญ่ใจกลางเมือง", nameJa:"ハイパー・アーバン・コア", n:7, emoji:"🏙️",
+    tagline:"Tokyo prestige, at a price", taglineTh:"ชื่อเสียงแห่งโตเกียว ในราคาที่ต้องแลกมา", taglineJa:"東京のブランド力、その代償として",
+    tags:["High cost","Elite network","Urban"], tagsTh:["ค่าครองชีพสูง","เครือข่ายชั้นนำ","เขตเมือง"], tagsJa:["生活費が高い","エリートネットワーク","都市部"],
     stats:[["Living Cost","$1,698/mo"],["Admission Score","57.6/100"],["Publications","166,233"],["Mix","5 Private · 2 National"]],
     desc:"Seven private and national universities, entirely in Tokyo. The most expensive group in the study — but that buys you above-average admission selectivity, strong research output, and a metropolitan professional network. Strong in Natural Sciences (23.4%) and Social Sciences (16.2%). Good fit if you can handle high living costs and want to be in the center of everything.",
     descTh:"รวมมหาวิทยาลัยเอกชนและรัฐ 7 แห่ง อยู่ในโตเกียวทั้งหมด เป็นกลุ่มที่ค่าครองชีพสูงสุดในงานวิจัยนี้ แต่แลกมาด้วยคะแนนสอบเข้าที่สูงกว่าเฉลี่ย ผลงานวิจัยที่แน่น และเครือข่ายวิชาชีพกลางเมืองใหญ่ เด่นด้านวิทยาศาสตร์ธรรมชาติ (23.4%) และสังคมศาสตร์ (16.2%) เหมาะกับคนที่รับค่าครองชีพสูงไหวและอยากอยู่ใจกลางความคึกคัก",
+    descJa:"私立・国立7大学、すべて東京に位置するグループ。本研究で最も生活費が高いグループですが、その分平均を上回る入試難易度、堅実な研究成果、大都市ならではの人脈が得られます。自然科学（23.4%）と社会科学（16.2%）に強みがあります。高い生活費に対応できて、都心のど真ん中に身を置きたい人に向いています。",
     unis:["Meiji University","Toyo University","Waseda University","Sophia University","Bunka Gakuen University","Tokyo Institute of Technology","Tokyo Univ. of Agriculture and Technology"],
     prefs:["Tokyo"],
-    difficulty:"Hard · Financial", difficultyTh:"ยาก · ด้านการเงิน", diffLevel:"hard",
-    bestFor:"Prestige & Networking", bestForTh:"ชื่อเสียงและเครือข่าย",
-    academicCore:"Generalist / Research", academicCoreTh:"สหวิทยาการ / งานวิจัย",
-    intlNote:"ETP: moderate", intlNoteTh:"หลักสูตรอังกฤษ: ปานกลาง",
+    difficulty:"Hard · Financial", difficultyTh:"ยาก · ด้านการเงิน", difficultyJa:"難しい・費用面", diffLevel:"hard",
+    bestFor:"Prestige & Networking", bestForTh:"ชื่อเสียงและเครือข่าย", bestForJa:"ブランド力とネットワーク",
+    academicCore:"Generalist / Research", academicCoreTh:"สหวิทยาการ / งานวิจัย", academicCoreJa:"総合型／研究重視",
+    intlNote:"ETP: moderate", intlNoteTh:"หลักสูตรอังกฤษ: ปานกลาง", intlNoteJa:"英語開講：中程度",
     idpN:1, etpN:4, tuitionN:4
   },
   {
-    code:"C2", color:"var(--c2)", nameEn:"Global Gateways", nameTh:"กลุ่มประตูสู่นานาชาติ", n:2, emoji:"🌏",
-    tagline:"Two schools, maximum international vibe", taglineTh:"สองสถาบัน บรรยากาศนานาชาติสูงสุด",
-    tags:["Niche","International","Social sciences"], tagsTh:["เฉพาะกลุ่ม","นานาชาติ","สังคมศาสตร์"],
+    code:"C2", color:"var(--c2)", nameEn:"Global Gateways", nameTh:"กลุ่มประตูสู่นานาชาติ", nameJa:"グローバル・ゲートウェイ", n:2, emoji:"🌏",
+    tagline:"Two schools, maximum international vibe", taglineTh:"สองสถาบัน บรรยากาศนานาชาติสูงสุด", taglineJa:"2校だけ、国際色は最強",
+    tags:["Niche","International","Social sciences"], tagsTh:["เฉพาะกลุ่ม","นานาชาติ","สังคมศาสตร์"], tagsJa:["ニッチ","国際的","社会科学"],
     stats:[["Living Cost","$1,295/mo"],["Admission Score","45.9/100"],["Social Sciences","44.5%"],["Mix","2 Private"]],
     desc:"A special two-school group — Ritsumeikan Asia Pacific University and Takushoku University — defined by the most internationalized environment in the whole study, leaning heavily into Social Sciences and Business. With only 2 schools, think of this less as a statistical average and more as a direct case: if these two schools sound like you, they probably are.",
     descTh:"กลุ่มพิเศษที่มีแค่ 2 มหาวิทยาลัย คือ ริตสึเมกังเอเชียแปซิฟิก (Ritsumeikan Asia Pacific University) และทาคุโชกุ (Takushoku University) ซึ่งมีบรรยากาศนานาชาติสูงสุดในงานวิจัยนี้ เน้นหนักไปทางสังคมศาสตร์และบริหารธุรกิจ เพราะมีแค่ 2 แห่ง จึงควรมองเป็นกรณีศึกษาเฉพาะมากกว่าค่าเฉลี่ยทางสถิติ ถ้าสองที่นี้ตรงใจคุณ ก็มีโอกาสสูงว่าจะเหมาะกับคุณจริง ๆ",
+    descJa:"立命館アジア太平洋大学と拓殖大学という、たった2校からなる特別なグループです。研究全体の中で最も国際色が強く、社会科学・経営学に重点を置いています。2校しかないため、統計的な平均というよりは個別の事例として捉えるべきです。この2校がぴったりだと感じるなら、実際に合っている可能性が高いでしょう。",
     unis:["Ritsumeikan Asia Pacific University","Takushoku University"],
     prefs:["Oita","Tokyo"],
-    difficulty:"Easy–Moderate · Niche", difficultyTh:"ง่าย–ปานกลาง · เฉพาะกลุ่ม", diffLevel:"easy",
-    bestFor:"International Experience", bestForTh:"ประสบการณ์นานาชาติ",
-    academicCore:"Social Sci. / Humanities", academicCoreTh:"สังคมศาสตร์ / มนุษยศาสตร์",
-    intlNote:"ETP: high · IDP: low", intlNoteTh:"หลักสูตรอังกฤษ: สูง · หลักสูตรควบโท-เอก: น้อย",
+    difficulty:"Easy–Moderate · Niche", difficultyTh:"ง่าย–ปานกลาง · เฉพาะกลุ่ม", difficultyJa:"易しい〜中程度・ニッチ", diffLevel:"easy",
+    bestFor:"International Experience", bestForTh:"ประสบการณ์นานาชาติ", bestForJa:"国際的な経験",
+    academicCore:"Social Sci. / Humanities", academicCoreTh:"สังคมศาสตร์ / มนุษยศาสตร์", academicCoreJa:"社会科学／人文学",
+    intlNote:"ETP: high · IDP: low", intlNoteTh:"หลักสูตรอังกฤษ: สูง · หลักสูตรควบโท-เอก: น้อย", intlNoteJa:"英語開講：高い・IDP：少ない",
     idpN:0, etpN:1, tuitionN:2
   },
   {
-    code:"C3", color:"var(--c3)", nameEn:"Commuter Belts & Coastal Anchors", nameTh:"กลุ่มเมืองรอบนอกและชายฝั่ง", n:8, emoji:"🚃",
-    tagline:"Balanced, easygoing, well-connected", taglineTh:"สมดุล เข้าถึงง่าย และเดินทางสะดวก",
-    tags:["Moderate cost","Balanced","Suburban"], tagsTh:["ค่าครองชีพปานกลาง","สมดุล","ชานเมือง"],
+    code:"C3", color:"var(--c3)", nameEn:"Commuter Belts & Coastal Anchors", nameTh:"กลุ่มเมืองรอบนอกและชายฝั่ง", nameJa:"コミューター・ベルト＆コースタル・アンカー", n:8, emoji:"🚃",
+    tagline:"Balanced, easygoing, well-connected", taglineTh:"สมดุล เข้าถึงง่าย และเดินทางสะดวก", taglineJa:"バランスが良く、気軽で、アクセスも良好",
+    tags:["Moderate cost","Balanced","Suburban"], tagsTh:["ค่าครองชีพปานกลาง","สมดุล","ชานเมือง"], tagsJa:["中程度の生活費","バランス型","郊外"],
     stats:[["Living Cost","$1,132/mo"],["Admission Score","47.3/100"],["Health & Medicine","22.6%"],["Mix","4 Private · 4 National"]],
     desc:"Eight schools around Greater Tokyo's commuter zone and the Kansai suburbs. A balanced academic mix, especially strong in Health & Medicine (22.6%) and Social Sciences (22.9%), at a moderate cost of living. A comfortable pick if you want variety without a big-city price tag.",
     descTh:"รวม 8 มหาวิทยาลัยแถบชานเมืองโตเกียวและคันไซ มีความสมดุลทางวิชาการ เด่นเป็นพิเศษด้านสาธารณสุขและการแพทย์ (22.6%) และสังคมศาสตร์ (22.9%) ค่าครองชีพอยู่ระดับกลาง ๆ เหมาะกับคนที่อยากได้ความหลากหลายโดยไม่ต้องแบกค่าใช้จ่ายแบบเมืองใหญ่",
+    descJa:"首都圏の通勤圏や関西の郊外に位置する8大学。学問分野のバランスが良く、特に健康・医療（22.6%）と社会科学（22.9%）に強みがあります。生活費は中程度。大都市並みの費用をかけずに幅広い選択肢を求める人にとって、居心地の良い選択です。",
     unis:["The University of East Asia","Tokyo International University","Kochi University","Hirosaki University","Mie University","Tokai University","Kansai University","Chiba University"],
     prefs:["Aomori","Osaka","Mie","Chiba","Saitama","Yamaguchi","Kochi","Kanagawa"],
-    difficulty:"Moderate · Balanced", difficultyTh:"ปานกลาง · สมดุล", diffLevel:"moderate",
-    bestFor:"Balanced Lifestyle", bestForTh:"ไลฟ์สไตล์สมดุล",
-    academicCore:"Balanced / Health", academicCoreTh:"สมดุล / สาธารณสุข",
-    intlNote:"ETP: moderate", intlNoteTh:"หลักสูตรอังกฤษ: ปานกลาง",
+    difficulty:"Moderate · Balanced", difficultyTh:"ปานกลาง · สมดุล", difficultyJa:"中程度・バランス型", diffLevel:"moderate",
+    bestFor:"Balanced Lifestyle", bestForTh:"ไลฟ์สไตล์สมดุล", bestForJa:"バランスの取れた暮らし",
+    academicCore:"Balanced / Health", academicCoreTh:"สมดุล / สาธารณสุข", academicCoreJa:"バランス型／健康分野",
+    intlNote:"ETP: moderate", intlNoteTh:"หลักสูตรอังกฤษ: ปานกลาง", intlNoteJa:"英語開講：中程度",
     idpN:0, etpN:3, tuitionN:2
   },
   {
-    code:"C4", color:"var(--c4)", nameEn:"Traditional Heartland & Snow Country", nameTh:"กลุ่มภูมิภาคดั้งเดิมและเมืองหิมะ", n:8, emoji:"🏔️",
-    tagline:"Budget-friendly, science-strong, scenic", taglineTh:"ประหยัด เข้มแข็งด้านวิทยาศาสตร์ และทัศนียภาพงดงาม",
-    tags:["Lowest cost","Health & science","Nature"], tagsTh:["ค่าครองชีพต่ำที่สุด","สาธารณสุขและวิทยาศาสตร์","ธรรมชาติ"],
+    code:"C4", color:"var(--c4)", nameEn:"Traditional Heartland & Snow Country", nameTh:"กลุ่มภูมิภาคดั้งเดิมและเมืองหิมะ", nameJa:"トラディショナル・ハートランド＆雪国", n:8, emoji:"🏔️",
+    tagline:"Budget-friendly, science-strong, scenic", taglineTh:"ประหยัด เข้มแข็งด้านวิทยาศาสตร์ และทัศนียภาพงดงาม", taglineJa:"手頃な生活費、理系に強く、風景も美しい",
+    tags:["Lowest cost","Health & science","Nature"], tagsTh:["ค่าครองชีพต่ำที่สุด","สาธารณสุขและวิทยาศาสตร์","ธรรมชาติ"], tagsJa:["生活費が最も低い","健康・科学分野に強い","自然"],
     stats:[["Living Cost","$1,003/mo"],["Admission Score","50.9/100"],["Health & Medicine","29.5%"],["Mix","8 National"]],
     desc:"Eight national universities along Japan's Sea of Japan coast — the most affordable group in the entire cohort. Strongest in Health & Medicine (29.5%) and Natural Sciences (26.9%). A great fit if budget matters most and you're drawn to biomedical or natural-science fields, plus a quieter, nature-forward lifestyle.",
     descTh:"รวมมหาวิทยาลัยรัฐ 8 แห่งตามแนวชายฝั่งทะเลญี่ปุ่น (Sea of Japan) เป็นกลุ่มที่ค่าครองชีพต่ำสุดในงานวิจัยทั้งหมด เด่นสุดด้านสาธารณสุขและการแพทย์ (29.5%) และวิทยาศาสตร์ธรรมชาติ (26.9%) เหมาะมากถ้างบเป็นเรื่องสำคัญอันดับแรก และสนใจสายชีวการแพทย์หรือวิทยาศาสตร์ธรรมชาติ พร้อมไลฟ์สไตล์เงียบสงบใกล้ธรรมชาติ",
+    descJa:"日本海沿岸に位置する国立8大学で構成される、全体の中で最も生活費が抑えられたグループです。健康・医療（29.5%）と自然科学（26.9%）が最も強い分野です。予算を最優先し、生命科学や自然科学分野に興味があり、自然に近く落ち着いた暮らしを求める人に非常に向いています。",
     unis:["Kumamoto University","Kanazawa University","Yamaguchi University","Oita University","Okayama University","University of Fukui","Akita University","University of Toyama"],
     prefs:["Kumamoto","Akita","Okayama","Oita","Toyama","Yamaguchi","Ishikawa","Fukui"],
-    difficulty:"Moderate · Value", difficultyTh:"ปานกลาง · คุ้มค่า", diffLevel:"moderate",
-    bestFor:"Budget & Nature", bestForTh:"งบประมาณและธรรมชาติ",
-    academicCore:"Health / Natural Sci.", academicCoreTh:"สาธารณสุข / วิทยาศาสตร์ธรรมชาติ",
-    intlNote:"IDP: moderate", intlNoteTh:"หลักสูตรควบโท-เอก: ปานกลาง",
+    difficulty:"Moderate · Value", difficultyTh:"ปานกลาง · คุ้มค่า", difficultyJa:"中程度・コスパ重視", diffLevel:"moderate",
+    bestFor:"Budget & Nature", bestForTh:"งบประมาณและธรรมชาติ", bestForJa:"予算と自然",
+    academicCore:"Health / Natural Sci.", academicCoreTh:"สาธารณสุข / วิทยาศาสตร์ธรรมชาติ", academicCoreJa:"健康分野／自然科学",
+    intlNote:"IDP: moderate", intlNoteTh:"หลักสูตรควบโท-เอก: ปานกลาง", intlNoteJa:"IDP：中程度",
     idpN:2, etpN:1, tuitionN:1
   },
   {
-    code:"C5", color:"var(--c5)", nameEn:"Golden Route & Cultural Capitals", nameTh:"กลุ่มเส้นทางทองคำและเมืองวัฒนธรรม", n:9, emoji:"⚙️",
-    tagline:"Engineering heartland of Japan", taglineTh:"ศูนย์กลางวิศวกรรมศาสตร์ของญี่ปุ่น",
-    tags:["STEM-heavy","Industrial","Moderate cost"], tagsTh:["เน้น STEM","อุตสาหกรรม","ค่าครองชีพปานกลาง"],
+    code:"C5", color:"var(--c5)", nameEn:"Golden Route & Cultural Capitals", nameTh:"กลุ่มเส้นทางทองคำและเมืองวัฒนธรรม", nameJa:"ゴールデンルート＆文化都市", n:9, emoji:"⚙️",
+    tagline:"Engineering heartland of Japan", taglineTh:"ศูนย์กลางวิศวกรรมศาสตร์ของญี่ปุ่น", taglineJa:"日本の工学の中心地",
+    tags:["STEM-heavy","Industrial","Moderate cost"], tagsTh:["เน้น STEM","อุตสาหกรรม","ค่าครองชีพปานกลาง"], tagsJa:["理工系が強い","産業志向","中程度の生活費"],
     stats:[["Living Cost","$1,190/mo"],["Admission Score","49.1/100"],["Engineering & Tech.","49.5%"],["Mix","4 Private · 5 National"]],
     desc:"Nine schools along Japan's industrial and cultural corridor. The clearest signature: by far the highest Engineering & Technology concentration of any group (49.5%). Moderate cost of living. The obvious pick if you're chasing a STEM career in Japan's tech and industrial sector.",
     descTh:"รวม 9 มหาวิทยาลัยตามแนวพื้นที่อุตสาหกรรมและวัฒนธรรมของญี่ปุ่น จุดเด่นชัดที่สุดคือสัดส่วนวิศวกรรมศาสตร์และเทคโนโลยีสูงสุดในบรรดาทุกกลุ่ม (49.5%) ค่าครองชีพระดับกลาง เป็นตัวเลือกที่ชัดเจนถ้ามุ่งสาย STEM ในภาคเทคโนโลยีและอุตสาหกรรมของญี่ปุ่น",
+    descJa:"日本の産業・文化の中心地帯に位置する9大学。最大の特徴は、全グループ中で圧倒的に高い工学・テクノロジーの比率（49.5%）です。生活費は中程度。日本のテクノロジー・産業分野でのキャリアを目指すなら、明確な選択肢になります。",
     unis:["Shibaura Institute of Technology","The Univ. of Electro-Communications","Nara Inst. of Science and Technology*","Kyoto Institute of Technology","Meijo University","Fukui University of Technology","Fukuoka Institute of Technology","Nagaoka Univ. of Technology","Hokkaido Information University"],
     prefs:["Kyoto","Aichi","Fukuoka","Tokyo","Fukui","Nara","Niigata"],
-    difficulty:"Moderate · Tech", difficultyTh:"ปานกลาง · เทคโนโลยี", diffLevel:"moderate",
-    bestFor:"STEM / Tech Careers", bestForTh:"สายอาชีพ STEM / เทคโนโลยี",
-    academicCore:"Engineering-Dominant", academicCoreTh:"เน้นวิศวกรรมศาสตร์",
-    intlNote:"IDP: moderate", intlNoteTh:"หลักสูตรควบโท-เอก: ปานกลาง",
+    difficulty:"Moderate · Tech", difficultyTh:"ปานกลาง · เทคโนโลยี", difficultyJa:"中程度・技術系", diffLevel:"moderate",
+    bestFor:"STEM / Tech Careers", bestForTh:"สายอาชีพ STEM / เทคโนโลยี", bestForJa:"理系・テクノロジー系のキャリア",
+    academicCore:"Engineering-Dominant", academicCoreTh:"เน้นวิศวกรรมศาสตร์", academicCoreJa:"工学中心",
+    intlNote:"IDP: moderate", intlNoteTh:"หลักสูตรควบโท-เอก: ปานกลาง", intlNoteJa:"IDP：中程度",
     idpN:2, etpN:2, tuitionN:1
   },
   {
-    code:"C6", color:"var(--c6)", nameEn:"Innovation Arch & Regional Powerhouses", nameTh:"กลุ่มศูนย์กลางนวัตกรรมและมหาวิทยาลัยชั้นนำระดับภูมิภาค", n:6, emoji:"🔬",
-    tagline:"Japan's research elite, outside Tokyo", taglineTh:"สถาบันวิจัยชั้นแนวหน้าของญี่ปุ่น นอกกรุงโตเกียว",
-    tags:["Elite","Research-heavy","Regional hubs"], tagsTh:["ระดับชั้นนำ","เน้นงานวิจัย","ศูนย์กลางภูมิภาค"],
+    code:"C6", color:"var(--c6)", nameEn:"Innovation Arch & Regional Powerhouses", nameTh:"กลุ่มศูนย์กลางนวัตกรรมและมหาวิทยาลัยชั้นนำระดับภูมิภาค", nameJa:"イノベーション・アーチ＆地方の中核大学", n:6, emoji:"🔬",
+    tagline:"Japan's research elite, outside Tokyo", taglineTh:"สถาบันวิจัยชั้นแนวหน้าของญี่ปุ่น นอกกรุงโตเกียว", taglineJa:"東京以外にある日本の研究エリート",
+    tags:["Elite","Research-heavy","Regional hubs"], tagsTh:["ระดับชั้นนำ","เน้นงานวิจัย","ศูนย์กลางภูมิภาค"], tagsJa:["エリート","研究重視","地方の中核拠点"],
     stats:[["Living Cost","$1,089/mo"],["Admission Score","61.3/100"],["Publications","951,993"],["Mix","6 National"]],
     desc:"Six elite national universities forming Japan's top research network outside Tokyo (Tsukuba, Kyoto, Osaka, Hokkaido, Tohoku, Nagoya). The highest admission scores, researcher counts, and publication output of any group, plus the most doctoral and English-taught program availability. Built for strong academic profiles aiming at a PhD or research career.",
     descTh:"รวมมหาวิทยาลัยรัฐชั้นนำ 6 แห่ง ซึ่งเป็นเครือข่ายวิจัยระดับสูงสุดของญี่ปุ่นนอกโตเกียว ได้แก่ สึคุบะ เกียวโต โอซาก้า ฮอกไกโด โทโฮคุ และนาโกยา คะแนนสอบเข้า จำนวนนักวิจัย และผลงานตีพิมพ์สูงสุดในบรรดาทุกกลุ่ม ทั้งยังมีหลักสูตรควบปริญญาโท-เอก (IDP) และหลักสูตรภาษาอังกฤษมากที่สุด เหมาะกับคนที่มีผลการเรียนโดดเด่นและมุ่งสู่ปริญญาเอกหรือสายงานวิจัย",
+    descJa:"筑波、京都、大阪、北海道、東北、名古屋という、東京以外にある日本トップクラスの研究ネットワークを形成する国立6大学。入試難易度、研究者数、論文数すべてがグループ最高水準で、博士一貫プログラムや英語開講プログラムも最も充実しています。学業成績が高く、博士課程や研究職を目指す人向けです。",
     unis:["University of Tsukuba","Kyoto University","Osaka University","Hokkaido University","Tohoku University","Nagoya University"],
     prefs:["Kyoto","Aichi","Miyagi","Ibaraki","Osaka"],
-    difficulty:"Very Hard · Elite", difficultyTh:"ยากมาก · ระดับสูง", diffLevel:"veryhard",
-    bestFor:"Top-Tier Research", bestForTh:"งานวิจัยระดับแนวหน้า",
-    academicCore:"Elite Research", academicCoreTh:"งานวิจัยระดับสูง",
-    intlNote:"IDP & ETP: highest", intlNoteTh:"หลักสูตรควบโท-เอกและหลักสูตรอังกฤษ: สูงที่สุด",
+    difficulty:"Very Hard · Elite", difficultyTh:"ยากมาก · ระดับสูง", difficultyJa:"非常に難しい・エリート", diffLevel:"veryhard",
+    bestFor:"Top-Tier Research", bestForTh:"งานวิจัยระดับแนวหน้า", bestForJa:"トップレベルの研究",
+    academicCore:"Elite Research", academicCoreTh:"งานวิจัยระดับสูง", academicCoreJa:"エリート研究型",
+    intlNote:"IDP & ETP: highest", intlNoteTh:"หลักสูตรควบโท-เอกและหลักสูตรอังกฤษ: สูงที่สุด", intlNoteJa:"IDP・英語開講：最多",
     idpN:6, etpN:6, tuitionN:3
   },
 ];
@@ -889,34 +1048,117 @@ const UC_LABELS = {
     tipEtpTuit:'มีหลักสูตรภาษาอังกฤษ บวกส่วนลดค่าเล่าเรียน คุ้มมากสำหรับนักเรียนไทย', tipEtpOnly:'มีหลักสูตรภาษาอังกฤษ ลองเช็กดูว่ามีทุนที่ช่วยออกค่าเล่าเรียนได้เต็มจำนวนไหม', tipTuitOnly:'เรียนเป็นภาษาญี่ปุ่น แต่มีส่วนลดค่าเล่าเรียนช่วยไว้ ควรเตรียมภาษาญี่ปุ่นล่วงหน้า', tipNeither:'เรียนเป็นภาษาญี่ปุ่นล้วนและจ่ายค่าเล่าเรียนเต็มจำนวน แนะนำให้ภาษาญี่ปุ่นอยู่ระดับ JLPT N2 ขึ้นไป', tipIdp:' มีหลักสูตรควบโท-เอก (IDP) เหมาะกับคนที่วางแผนสายงานวิจัย', tipLowCost:' ค่าครองชีพต่ำติดอันดับต้น ๆ ในชุดข้อมูล เหมาะกับคนที่งบจำกัด', tipHighCost:' ค่าครองชีพสูง (แถบโตเกียว) วางแผนงบดี ๆ', tipTinyRes:'⚠️ บุคลากรวิจัยน้อยมาก ควรเช็กหลักสูตรที่เปิดสอนจริงก่อนสมัคร ',
     discEngTech:'วิศวกรรม/เทคโน', discNatSci:'วิทยาศาสตร์ธรรมชาติ', discHealth:'สาธารณสุข/การแพทย์', discSoc:'สังคมศาสตร์', discHum:'มนุษยศาสตร์', discBiz:'บริหารธุรกิจ', discNatRes:'ทรัพยากรธรรมชาติ', discArts:'ศิลปะและการออกแบบ',
     mapStates:'จังหวัดที่ครอบคลุม', mapCaption:'แผนที่: Data of Japan (GSI Global Map Japan)', mo:'/เดือน'
+  },
+  ja:{ admission:'入試難易度スコア', livingCost:'生活費', review:'評価スコア', publications:'論文数', researchers:'研究者数', intlStudents:'国際博士学生数', topDisc:'主要分野：', ofN:(a,b)=>`${b}校中${a}校が`, idpSnap:'修士・博士一貫プログラム（IDP）を提供', etpSnap:'英語で受講可能（ETP）', tuitSnap:'学費減免制度がある*', tuitionCaveat:'*学費減免の有無は統計的に特定のグループと結びついているわけではありません（p = 0.06）。必ず各大学に直接確認してください。', uniSectionLabel:'🏛️ このグループの大学一覧 — タップすると詳細が見られます', figLabel:'📈 特徴プロフィール（表IVのデータに基づく）', sigNote:'2つの特徴（自然資源、芸術）は薄く表示されています。本研究ではグループ間の統計的な差が証明されていません。', mapLabel:'🗾 これらの大学の位置', thaiTip:'💡 タイ人学生へのヒント',
+    national:'国立', private:'私立', hasIdp:'IDPあり', noIdp:'IDPなし', hasEtp:'英語開講あり', noEtp:'ETPなし', hasTuit:'学費減免あり', noTuit:'学費全額',
+    warnTiny:'⚠️ 非常に小規模な機関', warnSmall:'⚠️ 小規模な機関', warnLowRes:'⚠️ 研究成果が非常に限られている', warnLowIntl:'⚠️ 国際的な要素が少ない', warnMicro:'⚠️ 極小規模の機関',
+    tipEtpTuit:'英語開講＋学費減免という、タイの学生にとってお得な選択です。', tipEtpOnly:'英語開講プログラムがあります。学費を全額カバーできる奨学金があるか確認しましょう。', tipTuitOnly:'日本語中心の環境ですが、学費減免があります。日本語の準備を進めておくとよいでしょう。', tipNeither:'日本語中心の環境で、学費は全額負担です。日本語能力（JLPT N2以上）を強くお勧めします。', tipIdp:' 修士・博士一貫プログラム（IDP）があり、研究職を目指すキャリア計画に向いています。', tipLowCost:' このデータセットの中でも生活費が最も低い部類に入り、予算重視の人に向いています。', tipHighCost:' 生活費が高い（東京エリア）ため、しっかりと予算計画を立てましょう。', tipTinyRes:'⚠️ 研究スタッフの数が非常に少ないです。応募前に実際に開講中のプログラムを確認してください。 ',
+    discEngTech:'工学・テクノロジー', discNatSci:'自然科学', discHealth:'健康・医療', discSoc:'社会科学', discHum:'人文学', discBiz:'経営学', discNatRes:'自然資源', discArts:'芸術・デザイン',
+    mapStates:'対象の都道府県', mapCaption:'地図出典：Data of Japan (GSI Global Map Japan)', mo:'/月'
   }
 };
 function mixLabel(str, lang){
-  if(lang!=='th') return str;
-  return str.replace(/Private/g,'เอกชน').replace(/National/g,'รัฐ');
+  if(lang==='th') return str.replace(/Private/g,'เอกชน').replace(/National/g,'รัฐ');
+  if(lang==='ja') return str.replace(/Private/g,'私立').replace(/National/g,'国立');
+  return str;
 }
 function costLabel(str, lang){
-  if(lang!=='th') return str;
-  return str.replace(/\/mo/g,'/เดือน');
+  if(lang==='th') return str.replace(/\/mo/g,'/เดือน');
+  if(lang==='ja') return str.replace(/\/mo/g,'/月');
+  return str;
 }
 const STAT_LABEL_TH = {
   'Living Cost':'ค่าครองชีพ', 'Admission Score':'คะแนนสอบเข้า', 'Publications':'ผลงานตีพิมพ์', 'Mix':'สัดส่วนรัฐ/เอกชน',
   'Engineering & Tech.':'วิศวกรรมศาสตร์และเทคโนโลยี', 'Social Sciences':'สังคมศาสตร์', 'Health & Medicine':'สาธารณสุขและการแพทย์'
 };
-function statLabel(str, lang){ return lang==='th' ? (STAT_LABEL_TH[str]||str) : str; }
+const STAT_LABEL_JA = {
+  'Living Cost':'生活費', 'Admission Score':'入試難易度スコア', 'Publications':'論文数', 'Mix':'国立・私立の割合',
+  'Engineering & Tech.':'工学・テクノロジー', 'Social Sciences':'社会科学', 'Health & Medicine':'健康・医療'
+};
+function statLabel(str, lang){
+  if(lang==='th') return STAT_LABEL_TH[str]||str;
+  if(lang==='ja') return STAT_LABEL_JA[str]||str;
+  return str;
+}
+
+// Shared per-university helpers, reused by both the cluster cards and the print/export view.
+function buildDiscList(u, T){
+  return [
+    {lbl:T.discEngTech, val:u.engTech,   col:'#EAA829'},
+    {lbl:T.discNatSci,  val:u.natSci,    col:'#7FB238'},
+    {lbl:T.discHealth,  val:u.healthMed, col:'#E8543F'},
+    {lbl:T.discSoc,     val:u.socSci,    col:'#2E9BD6'},
+    {lbl:T.discHum,     val:u.humanities,col:'#8C5FD1'},
+    {lbl:T.discBiz,     val:u.business,  col:'#1E9E78'},
+    {lbl:T.discNatRes,  val:u.natRes,    col:'#C98A2E'},
+    {lbl:T.discArts,    val:u.arts,      col:'#C0554A'},
+  ];
+}
+function buildThaiTip(u, T){
+  let tip = '';
+  if(u.etp && u.tuition) tip = T.tipEtpTuit;
+  else if(u.etp && !u.tuition) tip = T.tipEtpOnly;
+  else if(!u.etp && u.tuition) tip = T.tipTuitOnly;
+  else if(!u.etp && !u.tuition) tip = T.tipNeither;
+  if(u.idp) tip += T.tipIdp;
+  if(u.livingCost <= 1000) tip += T.tipLowCost;
+  else if(u.livingCost >= 1600) tip += T.tipHighCost;
+  if(u.researchers < 150) tip = T.tipTinyRes + tip;
+  return tip;
+}
 
 const list = document.getElementById('clusterList');
+
+// Generic 3-way language picker: L(lang, englishValue, thaiValue, japaneseValue)
+function L(lang, en, th, ja){
+  if(lang==='th') return th;
+  if(lang==='ja') return ja;
+  return en;
+}
+
+// ---- Favorites (session-only — intentionally NOT persisted, resets on every refresh) + quick filter state ----
+let favorites = new Set();
+try{ localStorage.removeItem('jpUniMatchFavorites'); }catch(e){} // clear any favorites saved by an older version of this page
+let activeFilter = 'all';
+let showFavoritesOnly = false;
+const manualOpenState = new Map(); // clusterCode -> whether the user manually expanded it
+
+function toggleFavorite(uName){
+  if(favorites.has(uName)) favorites.delete(uName); else favorites.add(uName);
+  syncFavoriteStars();
+  applyFilters();
+  updateShortlistBar();
+}
+function syncFavoriteStars(){
+  document.querySelectorAll('.fav-star').forEach(btn=>{
+    const on = favorites.has(btn.dataset.uni);
+    btn.textContent = on ? '★' : '☆';
+    btn.classList.toggle('active', on);
+  });
+}
+
+function shortlistCountText(lang, n){
+  if(lang==='th') return `เลือกไว้ ${n} แห่ง`;
+  if(lang==='ja') return `${n}校をお気に入り登録済み`;
+  return `${n} ${n===1?'university':'universities'} starred`;
+}
+function updateShortlistBar(){
+  const bar = document.getElementById('shortlistBar');
+  const n = favorites.size;
+  bar.style.display = n>0 ? 'flex' : 'none';
+  if(n>0) document.getElementById('shortlistCount').textContent = shortlistCountText(currentLang, n);
+}
 
 function renderClusters(lang){
   list.innerHTML = '';
   const T = UC_LABELS[lang];
   clusters.forEach((c)=>{
-    const name = lang==='th' ? c.nameTh : c.nameEn;
-    const tagline = lang==='th' ? c.taglineTh : c.tagline;
-    const tags = lang==='th' ? c.tagsTh : c.tags;
-    const desc = lang==='th' ? c.descTh : c.desc;
-    const difficulty = lang==='th' ? c.difficultyTh : c.difficulty;
-    const nLabel = lang==='th' ? `จำนวน ${c.n} แห่ง` : `n = ${c.n}`;
+    const name = L(lang, c.nameEn, c.nameTh, c.nameJa);
+    const tagline = L(lang, c.tagline, c.taglineTh, c.taglineJa);
+    const tags = L(lang, c.tags, c.tagsTh, c.tagsJa);
+    const desc = L(lang, c.desc, c.descTh, c.descJa);
+    const difficulty = L(lang, c.difficulty, c.difficultyTh, c.difficultyJa);
+    const nLabel = lang==='th' ? `จำนวน ${c.n} แห่ง` : (lang==='ja' ? `${c.n}校` : `n = ${c.n}`);
 
     const el = document.createElement('div');
     el.id = 'cluster-'+c.code;
@@ -967,7 +1209,10 @@ function renderClusters(lang){
         </div>
       </div>
     `;
-    el.querySelector('.cluster-top').addEventListener('click', ()=> el.classList.toggle('open'));
+    el.querySelector('.cluster-top').addEventListener('click', ()=>{
+      el.classList.toggle('open');
+      manualOpenState.set(c.code, el.classList.contains('open'));
+    });
 
     // Build per-university detail cards
     const cardGrid = el.querySelector('#unicards-'+c.code);
@@ -976,6 +1221,12 @@ function renderClusters(lang){
       if(!u){ const fb=document.createElement('span'); fb.className='uni-chip'; fb.textContent=uName; cardGrid.appendChild(fb); return; }
       const card = document.createElement('div');
       card.className='uni-card';
+      card.dataset.uni = uName;
+      card.dataset.idp = u.idp ? '1' : '0';
+      card.dataset.etp = u.etp ? '1' : '0';
+      card.dataset.tuition = u.tuition ? '1' : '0';
+      card.dataset.type = u.type==='National' ? 'national' : 'private';
+      card.dataset.cluster = c.code;
 
       // --- Warnings ---
       const warns = [];
@@ -986,27 +1237,10 @@ function renderClusters(lang){
       if(uName.includes('East Asia') && u.researchers <= 1) warns.push({cls:'danger', txt:T.warnMicro});
 
       // --- Thai Tip ---
-      let tip = '';
-      if(u.etp && u.tuition) tip = T.tipEtpTuit;
-      else if(u.etp && !u.tuition) tip = T.tipEtpOnly;
-      else if(!u.etp && u.tuition) tip = T.tipTuitOnly;
-      else if(!u.etp && !u.tuition) tip = T.tipNeither;
-      if(u.idp) tip += T.tipIdp;
-      if(u.livingCost <= 1000) tip += T.tipLowCost;
-      else if(u.livingCost >= 1600) tip += T.tipHighCost;
-      if(u.researchers < 150) tip = T.tipTinyRes + tip;
+      const tip = buildThaiTip(u, T);
 
       // --- Disciplines ---
-      const disc = [
-        {lbl:T.discEngTech, val:u.engTech,   col:'#EAA829'},
-        {lbl:T.discNatSci,  val:u.natSci,    col:'#7FB238'},
-        {lbl:T.discHealth,  val:u.healthMed, col:'#E8543F'},
-        {lbl:T.discSoc,     val:u.socSci,    col:'#2E9BD6'},
-        {lbl:T.discHum,     val:u.humanities,col:'#8C5FD1'},
-        {lbl:T.discBiz,     val:u.business,  col:'#1E9E78'},
-        {lbl:T.discNatRes,  val:u.natRes,    col:'#C98A2E'},
-        {lbl:T.discArts,    val:u.arts,      col:'#C0554A'},
-      ];
+      const disc = buildDiscList(u, T);
       const topDisc = disc.slice().sort((a,b)=>b.val-a.val).slice(0,3).map(d=>d.lbl).join(' · ');
       const maxDisc = Math.max(...disc.map(d=>d.val));
 
@@ -1014,6 +1248,7 @@ function renderClusters(lang){
       card.innerHTML = `
         <div class="uni-card-head">
           <div class="uni-card-name">${uName}</div>
+          <button type="button" class="fav-star" data-uni="${uName}" aria-label="Favorite">☆</button>
           <span class="uni-card-state">${u.state}</span>
         </div>
         <div class="uni-card-badges">
@@ -1053,12 +1288,16 @@ function renderClusters(lang){
   });
 
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  syncFavoriteStars();
+  applyFilters();
+  updateShortlistBar();
 }
 
-// ---- Live university search ----
-document.getElementById('uniSearch').addEventListener('input', function(){
-  const q = this.value.trim().toLowerCase();
+// ---- Live university search + quick filters + favorites ----
+function applyFilters(){
+  const q = document.getElementById('uniSearch').value.trim().toLowerCase();
   const noRes = document.getElementById('noResults');
+  const filtering = !!q || activeFilter !== 'all' || showFavoritesOnly;
   let totalVisible = 0;
 
   document.querySelectorAll('.cluster').forEach(clusterEl => {
@@ -1066,17 +1305,29 @@ document.getElementById('uniSearch').addEventListener('input', function(){
     let clusterVisible = 0;
 
     cards.forEach(card => {
-      const name = card.querySelector('.uni-card-name');
-      if(!name) return;
-      const match = !q || name.textContent.toLowerCase().includes(q);
+      const nameEl = card.querySelector('.uni-card-name');
+      if(!nameEl) return;
+      let match = !q || nameEl.textContent.toLowerCase().includes(q);
+      if(match){
+        if(activeFilter==='idp') match = card.dataset.idp==='1';
+        else if(activeFilter==='etp') match = card.dataset.etp==='1';
+        else if(activeFilter==='tuition') match = card.dataset.tuition==='1';
+        else if(activeFilter==='national') match = card.dataset.type==='national';
+        else if(activeFilter==='private') match = card.dataset.type==='private';
+      }
+      if(match && showFavoritesOnly) match = favorites.has(card.dataset.uni);
       card.style.display = match ? '' : 'none';
       if(match) clusterVisible++;
     });
 
-    // Show/hide and open clusters based on matches
-    if(!q){
+    // Show/hide and open clusters based on matches.
+    // When no search/filter is active, restore whatever open/closed state the
+    // user last set by hand instead of forcing every cluster shut (e.g. starring
+    // a favorite shouldn't collapse the cluster you're currently browsing).
+    if(!filtering){
+      const code = clusterEl.id.replace('cluster-','');
       clusterEl.style.display = '';
-      clusterEl.classList.remove('open');
+      clusterEl.classList.toggle('open', !!manualOpenState.get(code));
     } else if(clusterVisible > 0){
       clusterEl.style.display = '';
       clusterEl.classList.add('open');
@@ -1086,27 +1337,180 @@ document.getElementById('uniSearch').addEventListener('input', function(){
     }
   });
 
-  noRes.style.display = (q && totalVisible === 0) ? 'block' : 'none';
+  noRes.style.display = (filtering && totalVisible === 0) ? 'block' : 'none';
+}
+
+document.getElementById('uniSearch').addEventListener('input', applyFilters);
+
+document.querySelectorAll('#filterChips .fchip[data-filter]').forEach(chip=>{
+  chip.addEventListener('click', ()=>{
+    activeFilter = chip.dataset.filter;
+    document.querySelectorAll('#filterChips .fchip[data-filter]').forEach(c=>c.classList.toggle('active', c===chip));
+    applyFilters();
+  });
+});
+
+document.getElementById('favFilterChip').addEventListener('click', ()=>{
+  showFavoritesOnly = !showFavoritesOnly;
+  document.getElementById('favFilterChip').classList.toggle('active', showFavoritesOnly);
+  applyFilters();
+});
+
+// Event delegation for favorite-star clicks (cards are rebuilt on language switch)
+list.addEventListener('click', (e)=>{
+  const star = e.target.closest('.fav-star');
+  if(star){ e.stopPropagation(); toggleFavorite(star.dataset.uni); }
+});
+
+// ---- Shortlist export: print / download / clear ----
+function getShortlistEntries(){
+  const entries = [];
+  favorites.forEach(uName=>{
+    const u = UNI_DATA[uName];
+    if(!u) return;
+    const cluster = clusters.find(c=>c.unis.includes(uName));
+    entries.push({name:uName, u, cluster});
+  });
+  entries.sort((a,b)=>a.name.localeCompare(b.name));
+  return entries;
+}
+
+const SHORTLIST_I18N = {
+  en:{ title:'My Japan University Shortlist', generated:'Generated on', colUni:'University', colCluster:'Archetype', colAdmission:'Admission', colLivingCost:'Living Cost', colReview:'Review', footer:'Generated by JP Uni Match — always verify current details with each university before applying.' },
+  th:{ title:'รายการมหาวิทยาลัยที่เลือกไว้', generated:'สร้างเมื่อ', colUni:'มหาวิทยาลัย', colCluster:'กลุ่ม', colAdmission:'คะแนนสอบเข้า', colLivingCost:'ค่าครองชีพ', colReview:'รีวิว', footer:'สร้างจากเครื่องมือ JP Uni Match — ควรเช็กข้อมูลล่าสุดกับมหาวิทยาลัยโดยตรงก่อนสมัครเสมอ' },
+  ja:{ title:'マイ日本大学リスト', generated:'作成日', colUni:'大学', colCluster:'タイプ', colAdmission:'入試難易度', colLivingCost:'生活費', colReview:'評価', footer:'JP Uni Matchで作成 — 応募前に必ず各大学の最新情報を直接確認してください。' }
+};
+
+function printShortlist(){
+  const T = UC_LABELS[currentLang];
+  const S = SHORTLIST_I18N[currentLang];
+  const entries = getShortlistEntries();
+  const dateStr = new Date().toLocaleDateString(currentLang==='ja'?'ja-JP':(currentLang==='th'?'th-TH':'en-US'));
+  const clusterName = c => c ? L(currentLang, c.nameEn, c.nameTh, c.nameJa) : '';
+  const typeLabel = u => u.type==='National' ? T.national : T.private;
+
+  const summaryRows = entries.map(({name,u,cluster})=>`
+    <tr>
+      <td>${name}</td>
+      <td>${cluster ? `<span class="swatch" style="background:${HEX[cluster.code]}"></span>${clusterName(cluster)}` : '—'}</td>
+      <td>${u.admission}</td>
+      <td>$${u.livingCost}${T.mo}</td>
+      <td>${u.review}★</td>
+    </tr>`).join('');
+
+  const detailSections = entries.map(({name,u,cluster})=>{
+    const disc = buildDiscList(u, T);
+    const maxDisc = Math.max(...disc.map(d=>d.val));
+    const tip = buildThaiTip(u, T);
+    const color = cluster ? HEX[cluster.code] : '#999';
+    return `
+      <div class="print-uni" style="border-left-color:${color};">
+        <div class="print-uni-head">
+          <h3>${name}</h3>
+          ${cluster ? `<span class="print-cluster-badge" style="background:${color}">${cluster.emoji} ${clusterName(cluster)}</span>` : ''}
+        </div>
+        <div class="print-sub">${u.state} · ${typeLabel(u)}</div>
+        <div class="print-badges">
+          <span class="pbadge on">${typeLabel(u)}</span>
+          <span class="pbadge ${u.idp?'on':''}">🎓 ${u.idp?T.hasIdp:T.noIdp}</span>
+          <span class="pbadge ${u.etp?'on':''}">🌐 ${u.etp?T.hasEtp:T.noEtp}</span>
+          <span class="pbadge ${u.tuition?'on':''}">💸 ${u.tuition?T.hasTuit:T.noTuit}</span>
+        </div>
+        <div class="print-stats-grid">
+          <div class="pstat"><b>${T.admission}</b><span>${u.admission}</span></div>
+          <div class="pstat"><b>${T.livingCost}</b><span>$${u.livingCost}${T.mo}</span></div>
+          <div class="pstat"><b>${T.review}</b><span>${u.review}★</span></div>
+          <div class="pstat"><b>${T.publications}</b><span>${u.publications>=1000?(u.publications/1000).toFixed(0)+'k':u.publications}</span></div>
+          <div class="pstat"><b>${T.researchers}</b><span>${u.researchers.toLocaleString()}</span></div>
+          <div class="pstat"><b>${T.intlStudents}</b><span>${u.students}</span></div>
+        </div>
+        <div class="print-disc-title">${T.topDisc}</div>
+        ${disc.map(d=>`
+          <div class="print-disc-row">
+            <div class="print-disc-label">${d.lbl}</div>
+            <div class="print-disc-bar-wrap"><div class="print-disc-bar" style="width:${maxDisc>0?(d.val/maxDisc*100).toFixed(1):0}%;background:${d.col}"></div></div>
+            <div class="print-disc-pct">${d.val.toFixed(1)}%</div>
+          </div>`).join('')}
+        <div class="print-tip"><b>${T.thaiTip}</b>${tip}</div>
+      </div>`;
+  }).join('');
+
+  document.getElementById('printArea').innerHTML = `
+    <div class="print-header">
+      <h1>🗾 ${S.title}</h1>
+      <div class="print-meta">${S.generated} ${dateStr} · ${shortlistCountText(currentLang, entries.length)}</div>
+    </div>
+    <table class="print-summary">
+      <thead><tr><th>${S.colUni}</th><th>${S.colCluster}</th><th>${S.colAdmission}</th><th>${S.colLivingCost}</th><th>${S.colReview}</th></tr></thead>
+      <tbody>${summaryRows}</tbody>
+    </table>
+    ${detailSections}
+    <div class="print-footer">${S.footer}</div>
+  `;
+  window.print();
+}
+
+function downloadShortlist(){
+  const T = UC_LABELS[currentLang];
+  const S = SHORTLIST_I18N[currentLang];
+  const entries = getShortlistEntries();
+  const dateStr = new Date().toLocaleDateString(currentLang==='ja'?'ja-JP':(currentLang==='th'?'th-TH':'en-US'));
+  const clusterName = c => c ? L(currentLang, c.nameEn, c.nameTh, c.nameJa) : '';
+  const typeLabel = u => u.type==='National' ? T.national : T.private;
+  let text = `${S.title}\n${S.generated} ${dateStr} · ${shortlistCountText(currentLang, entries.length)}\n${'='.repeat(50)}\n\n`;
+  entries.forEach(({name,u,cluster})=>{
+    const disc = buildDiscList(u, T);
+    const topDiscList = disc.slice().sort((a,b)=>b.val-a.val).slice(0,3);
+    const tip = buildThaiTip(u, T);
+    text += `${name}\n`;
+    text += `  ${u.state} · ${typeLabel(u)} · ${S.colCluster}: ${clusterName(cluster)}\n`;
+    text += `  ${T.admission}: ${u.admission} | ${T.livingCost}: $${u.livingCost}${T.mo} | ${T.review}: ${u.review}\n`;
+    text += `  ${T.publications}: ${u.publications.toLocaleString()} | ${T.researchers}: ${u.researchers.toLocaleString()} | ${T.intlStudents}: ${u.students}\n`;
+    text += `  ${u.idp?T.hasIdp:T.noIdp} | ${u.etp?T.hasEtp:T.noEtp} | ${u.tuition?T.hasTuit:T.noTuit}\n`;
+    text += `  ${T.topDisc} ${topDiscList.map(d=>`${d.lbl} (${d.val.toFixed(1)}%)`).join(', ')}\n`;
+    text += `  ${tip}\n\n`;
+  });
+  text += `${S.footer}\n`;
+  const blob = new Blob([text], {type:'text/plain;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'japan-university-shortlist.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+document.getElementById('printShortlist').addEventListener('click', printShortlist);
+document.getElementById('downloadShortlist').addEventListener('click', downloadShortlist);
+document.getElementById('clearShortlist').addEventListener('click', ()=>{
+  if(favorites.size===0) return;
+  if(!confirm(currentLang==='th' ? 'ล้างรายการที่เลือกไว้ทั้งหมด?' : currentLang==='ja' ? 'お気に入りをすべて削除しますか？' : 'Clear your entire shortlist?')) return;
+  favorites.clear();
+  syncFavoriteStars();
+  applyFilters();
+  updateShortlistBar();
 });
 
 // ---- original, self-drawn data visualizations (not reproduced from the paper) ----
 const HEX = {C1:'#E8543F',C2:'#7FB238',C3:'#2E9BD6',C4:'#1E9E78',C5:'#EAA829',C6:'#8C5FD1'};
 
 const FEATURES = [
-  {key:'admission',   label:'Admission',    labelTh:'การรับเข้า',        sig:true},
-  {key:'resStudents',  label:'Res. Students', labelTh:'นศ.วิจัยนานาชาติ', sig:true},
-  {key:'publications', label:'Publications',  labelTh:'ผลงานตีพิมพ์',     sig:true},
-  {key:'researchers',  label:'Researchers',   labelTh:'นักวิจัย',         sig:true},
-  {key:'review',       label:'Reviews',       labelTh:'รีวิว',            sig:true},
-  {key:'livingCost',   label:'Living Cost',   labelTh:'ค่าครองชีพ',       sig:true},
-  {key:'engTech',      label:'Eng & Tech',    labelTh:'วิศวะ/เทคโน',     sig:true},
-  {key:'natSci',       label:'Nat. Sci',      labelTh:'วิทย์ธรรมชาติ',   sig:true},
-  {key:'healthMed',    label:'Health & Med',  labelTh:'สาธารณสุข',        sig:true},
-  {key:'socSci',       label:'Soc. Sci',      labelTh:'สังคมศาสตร์',      sig:true},
-  {key:'humanities',   label:'Humanities',    labelTh:'มนุษยศาสตร์',      sig:true},
-  {key:'natRes',       label:'Nat. Resources',labelTh:'ทรัพยากรธรรมชาติ', sig:false}, // ANOVA p=0.25, not significant
-  {key:'business',     label:'Business',      labelTh:'บริหารธุรกิจ',     sig:true},
-  {key:'arts',         label:'Arts',          labelTh:'ศิลปะ',            sig:false}, // ANOVA p=0.15, not significant
+  {key:'admission',   label:'Admission',    labelTh:'การรับเข้า',        labelJa:'入試難易度',      sig:true},
+  {key:'resStudents',  label:'Res. Students', labelTh:'นศ.วิจัยนานาชาติ', labelJa:'国際研究学生',    sig:true},
+  {key:'publications', label:'Publications',  labelTh:'ผลงานตีพิมพ์',     labelJa:'論文数',          sig:true},
+  {key:'researchers',  label:'Researchers',   labelTh:'นักวิจัย',         labelJa:'研究者数',        sig:true},
+  {key:'review',       label:'Reviews',       labelTh:'รีวิว',            labelJa:'レビュー',        sig:true},
+  {key:'livingCost',   label:'Living Cost',   labelTh:'ค่าครองชีพ',       labelJa:'生活費',          sig:true},
+  {key:'engTech',      label:'Eng & Tech',    labelTh:'วิศวะ/เทคโน',     labelJa:'工学/テクノ',     sig:true},
+  {key:'natSci',       label:'Nat. Sci',      labelTh:'วิทย์ธรรมชาติ',   labelJa:'自然科学',        sig:true},
+  {key:'healthMed',    label:'Health & Med',  labelTh:'สาธารณสุข',        labelJa:'健康/医療',       sig:true},
+  {key:'socSci',       label:'Soc. Sci',      labelTh:'สังคมศาสตร์',      labelJa:'社会科学',        sig:true},
+  {key:'humanities',   label:'Humanities',    labelTh:'มนุษยศาสตร์',      labelJa:'人文学',          sig:true},
+  {key:'natRes',       label:'Nat. Resources',labelTh:'ทรัพยากรธรรมชาติ', labelJa:'自然資源',        sig:false}, // ANOVA p=0.25, not significant
+  {key:'business',     label:'Business',      labelTh:'บริหารธุรกิจ',     labelJa:'経営学',          sig:true},
+  {key:'arts',         label:'Arts',          labelTh:'ศิลปะ',            labelJa:'芸術',            sig:false}, // ANOVA p=0.15, not significant
 ];
 // Cluster-level means, transcribed from Table IV of the manuscript.
 const rawValues = {
@@ -1131,6 +1535,15 @@ function normalize(key, code){
   const min = Math.min(...vals), max = Math.max(...vals);
   if(max===min) return 50;
   return ((rawValues[key][code]-min)/(max-min))*100;
+}
+
+function formatRawValue(key, val){
+  if(key==='livingCost') return `$${Math.round(val).toLocaleString()}`;
+  if(key==='publications') return val>=1000 ? (val/1000).toFixed(0)+'k' : val;
+  if(key==='researchers' || key==='resStudents') return Math.round(val).toLocaleString();
+  if(key==='review') return val.toFixed(2)+'★';
+  if(key==='admission') return val.toFixed(1);
+  return val.toFixed(1)+'%';
 }
 
 function renderRadar(mountId, code, lang){
@@ -1165,10 +1578,15 @@ function renderRadar(mountId, code, lang){
     const anchor = Math.cos(ang)>0.2 ? 'start' : (Math.cos(ang)<-0.2 ? 'end' : 'middle');
     const labelColor = f.sig ? '#666B78' : '#B7B3A6';
     const labelStyle = f.sig ? '' : ' font-style="italic"';
-    labels += `<text x="${lx}" y="${ly}" font-size="11" font-family="Inter, sans-serif" font-weight="500" fill="${labelColor}"${labelStyle} text-anchor="${anchor}" dominant-baseline="middle">${lang==='th'?f.labelTh:f.label}${f.sig?'':' †'}</text>`;
+    labels += `<text x="${lx}" y="${ly}" font-size="11" font-family="Inter, sans-serif" font-weight="500" fill="${labelColor}"${labelStyle} text-anchor="${anchor}" dominant-baseline="middle">${L(lang,f.label,f.labelTh,f.labelJa)}${f.sig?'':' †'}</text>`;
   });
 
-  const dots = points.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="${FEATURES[i].sig?color:'#B7B3A6'}"/>`).join('');
+  const dots = points.map((p,i)=>{
+    const f = FEATURES[i];
+    const label = L(lang, f.label, f.labelTh, f.labelJa);
+    const valText = formatRawValue(f.key, rawValues[f.key][code]);
+    return `<circle class="radar-dot" cx="${p[0]}" cy="${p[1]}" r="3.5" fill="${f.sig?color:'#B7B3A6'}" tabindex="0"><title>${label}: ${valText}</title></circle>`;
+  }).join('');
 
   // Asymmetric padding: axis labels only extend far on the left/right,
   // so we only need generous horizontal margin, not a huge uniform pad.
@@ -1213,6 +1631,7 @@ function renderCharts(lang){
 
 // ---- Quick comparison table (Table V: Comparative Institutional Assessment Matrix) ----
 const COMPARE_ROWS_TH = {'Academic Core':'จุดเน้นวิชาการ','Financial Tier':'ระดับค่าใช้จ่าย','Environment':'สภาพแวดล้อม','Intl. Programs':'โปรแกรมนานาชาติ','Difficulty':'ระดับความยาก','Best For':'เหมาะกับใคร'};
+const COMPARE_ROWS_JA = {'Academic Core':'学術的な強み','Financial Tier':'費用の階層','Environment':'環境','Intl. Programs':'国際プログラム','Difficulty':'難易度','Best For':'向いている人'};
 function renderCompareTable(lang){
   const rows = lang==='th' ? [
     {label:COMPARE_ROWS_TH['Academic Core'], get:c=>c.academicCoreTh},
@@ -1221,6 +1640,13 @@ function renderCompareTable(lang){
     {label:COMPARE_ROWS_TH['Intl. Programs'], get:c=>c.intlNoteTh},
     {label:COMPARE_ROWS_TH['Difficulty'], get:c=>c.difficultyTh},
     {label:COMPARE_ROWS_TH['Best For'], get:c=>c.bestForTh, cls:'best-for'},
+  ] : lang==='ja' ? [
+    {label:COMPARE_ROWS_JA['Academic Core'], get:c=>c.academicCoreJa},
+    {label:COMPARE_ROWS_JA['Financial Tier'], get:c=>costLabel(c.stats[0][1],lang)},
+    {label:COMPARE_ROWS_JA['Environment'], get:c=>c.taglineJa},
+    {label:COMPARE_ROWS_JA['Intl. Programs'], get:c=>c.intlNoteJa},
+    {label:COMPARE_ROWS_JA['Difficulty'], get:c=>c.difficultyJa},
+    {label:COMPARE_ROWS_JA['Best For'], get:c=>c.bestForJa, cls:'best-for'},
   ] : [
     {label:'Academic Core', get:c=>c.academicCore},
     {label:'Financial Tier', get:c=>c.stats[0][1]},
@@ -1229,7 +1655,7 @@ function renderCompareTable(lang){
     {label:'Difficulty', get:c=>c.difficulty},
     {label:'Best For', get:c=>c.bestFor, cls:'best-for'},
   ];
-  const dimHeader = lang==='th' ? 'ประเด็นเปรียบเทียบ' : 'Dimension';
+  const dimHeader = lang==='th' ? 'ประเด็นเปรียบเทียบ' : (lang==='ja' ? '比較項目' : 'Dimension');
   let thead = `<tr><th>${dimHeader}</th>` + clusters.map(c=>`<th style="color:${c.color}">${c.code}</th>`).join('') + '</tr>';
   let tbody = rows.map(r=>
     '<tr><td class="dim-label">'+r.label+'</td>' +
@@ -1246,8 +1672,32 @@ const io = new IntersectionObserver((entries)=>{
 }, {threshold:0.1});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
+// ---- scroll-spy nav highlighting ----
+const navLinkMap = {};
+document.querySelectorAll('.navlinks a[href^="#"]').forEach(a=>{
+  navLinkMap[a.getAttribute('href').slice(1)] = a;
+});
+const navObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      Object.values(navLinkMap).forEach(a=>a.classList.remove('active'));
+      const link = navLinkMap[entry.target.id];
+      if(link) link.classList.add('active');
+    }
+  });
+}, {rootMargin:'-40% 0px -50% 0px', threshold:0});
+Object.keys(navLinkMap).forEach(id=>{
+  const sec = document.getElementById(id);
+  if(sec) navObserver.observe(sec);
+});
+
 // ---- planner logic ----
 const answers = {budget:null, field:null, env:null, goal:null};
+function updatePlannerProgress(){
+  document.querySelectorAll('#plannerProgress .pstep').forEach(step=>{
+    step.classList.toggle('done', !!answers[step.dataset.q]);
+  });
+}
 document.querySelectorAll('.q-options').forEach(group=>{
   const q = group.dataset.q;
   group.querySelectorAll('.opt').forEach(btn=>{
@@ -1255,30 +1705,44 @@ document.querySelectorAll('.q-options').forEach(group=>{
       group.querySelectorAll('.opt').forEach(b=>b.classList.remove('selected'));
       btn.classList.add('selected');
       answers[q] = btn.dataset.v;
+      updatePlannerProgress();
       evaluate();
     });
   });
 });
+document.getElementById('resetPlanner').addEventListener('click', ()=>{
+  answers.budget = answers.field = answers.env = answers.goal = null;
+  document.querySelectorAll('.opt.selected').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('plannerResult').style.display = 'none';
+  updatePlannerProgress();
+  lastMatch = null;
+});
 
 const matchInfo = {
-  C1: {nameEn:"C1 · Hyper-Urban Core", nameTh:"C1 · กลุ่มเมืองใหญ่ใจกลางเมือง", color:"var(--c1)",
+  C1: {nameEn:"C1 · Hyper-Urban Core", nameTh:"C1 · กลุ่มเมืองใหญ่ใจกลางเมือง", nameJa:"C1・ハイパー・アーバン・コア", color:"var(--c1)",
        descEn:"High cost, all-Tokyo, elite network. You're chasing prestige and professional connections in the heart of the city — and can handle the price tag.",
-       descTh:"ค่าครองชีพสูง อยู่ในโตเกียวล้วน ๆ เครือข่ายคนเก่ง เหมาะกับคนที่อยากได้ชื่อเสียงและคอนเนกชันใจกลางเมือง และรับค่าใช้จ่ายสูงไหว"},
-  C2: {nameEn:"C2 · Global Gateways", nameTh:"C2 · กลุ่มประตูสู่นานาชาติ", color:"var(--c2)",
+       descTh:"ค่าครองชีพสูง อยู่ในโตเกียวล้วน ๆ เครือข่ายคนเก่ง เหมาะกับคนที่อยากได้ชื่อเสียงและคอนเนกชันใจกลางเมือง และรับค่าใช้จ่ายสูงไหว",
+       descJa:"生活費が高く、すべて東京に位置し、エリートネットワークを持つグループ。都心でのブランド力と人脈を求め、高い費用にも対応できる人向けです。"},
+  C2: {nameEn:"C2 · Global Gateways", nameTh:"C2 · กลุ่มประตูสู่นานาชาติ", nameJa:"C2・グローバル・ゲートウェイ", color:"var(--c2)",
        descEn:"Social sciences and business, maximum international feel. You care more about the global vibe than the admission score.",
-       descTh:"เน้นสังคมศาสตร์และบริหารธุรกิจ บรรยากาศนานาชาติสุด ๆ เหมาะกับคนที่แคร์ความเป็นนานาชาติมากกว่าคะแนนสอบเข้า"},
-  C3: {nameEn:"C3 · Commuter Belts & Coastal Anchors", nameTh:"C3 · กลุ่มเมืองรอบนอกและชายฝั่ง", color:"var(--c3)",
+       descTh:"เน้นสังคมศาสตร์และบริหารธุรกิจ บรรยากาศนานาชาติสุด ๆ เหมาะกับคนที่แคร์ความเป็นนานาชาติมากกว่าคะแนนสอบเข้า",
+       descJa:"社会科学・経営学に強く、国際色が最も強いグループ。入試スコアよりも国際的な雰囲気を重視する人に向いています。"},
+  C3: {nameEn:"C3 · Commuter Belts & Coastal Anchors", nameTh:"C3 · กลุ่มเมืองรอบนอกและชายฝั่ง", nameJa:"C3・コミューター・ベルト＆コースタル・アンカー", color:"var(--c3)",
        descEn:"Moderate cost, balanced programs. You want variety and comfort without big-city pressure.",
-       descTh:"ค่าครองชีพกลาง ๆ หลักสูตรสมดุล เหมาะกับคนที่อยากได้ความหลากหลายและความสบายโดยไม่ต้องเจอความกดดันแบบเมืองใหญ่"},
-  C4: {nameEn:"C4 · Traditional Heartland & Snow Country", nameTh:"C4 · กลุ่มภูมิภาคดั้งเดิมและเมืองหิมะ", color:"var(--c4)",
+       descTh:"ค่าครองชีพกลาง ๆ หลักสูตรสมดุล เหมาะกับคนที่อยากได้ความหลากหลายและความสบายโดยไม่ต้องเจอความกดดันแบบเมืองใหญ่",
+       descJa:"生活費は中程度で、バランスの取れたプログラムが特徴。大都市特有のプレッシャーなしに、多様性と快適さを求める人向けです。"},
+  C4: {nameEn:"C4 · Traditional Heartland & Snow Country", nameTh:"C4 · กลุ่มภูมิภาคดั้งเดิมและเมืองหิมะ", nameJa:"C4・トラディショナル・ハートランド＆雪国", color:"var(--c4)",
        descEn:"The most affordable option, strong in health & science. You're budget-conscious and drawn to quieter, nature-rich settings.",
-       descTh:"ตัวเลือกที่ประหยัดที่สุด แข็งด้านสาธารณสุขและวิทยาศาสตร์ เหมาะกับคนที่ใส่ใจงบประมาณและชอบบรรยากาศสงบ ๆ ใกล้ธรรมชาติ"},
-  C5: {nameEn:"C5 · Golden Route & Cultural Capitals", nameTh:"C5 · กลุ่มเส้นทางทองคำและเมืองวัฒนธรรม", color:"var(--c5)",
+       descTh:"ตัวเลือกที่ประหยัดที่สุด แข็งด้านสาธารณสุขและวิทยาศาสตร์ เหมาะกับคนที่ใส่ใจงบประมาณและชอบบรรยากาศสงบ ๆ ใกล้ธรรมชาติ",
+       descJa:"最も費用を抑えられる選択肢で、健康分野・科学分野に強いグループ。予算を重視し、静かで自然豊かな環境を好む人に向いています。"},
+  C5: {nameEn:"C5 · Golden Route & Cultural Capitals", nameTh:"C5 · กลุ่มเส้นทางทองคำและเมืองวัฒนธรรม", nameJa:"C5・ゴールデンルート＆文化都市", color:"var(--c5)",
        descEn:"The highest Engineering & Technology concentration anywhere in the study. You're heading straight for a STEM career in Japan.",
-       descTh:"สัดส่วนวิศวกรรมศาสตร์และเทคโนโลยีสูงสุดในงานวิจัยนี้ เหมาะกับคนที่มุ่งสาย STEM ในญี่ปุ่นแบบตรง ๆ"},
-  C6: {nameEn:"C6 · Innovation Arch & Regional Powerhouses", nameTh:"C6 · กลุ่มศูนย์กลางนวัตกรรมและมหาวิทยาลัยชั้นนำระดับภูมิภาค", color:"var(--c6)",
+       descTh:"สัดส่วนวิศวกรรมศาสตร์และเทคโนโลยีสูงสุดในงานวิจัยนี้ เหมาะกับคนที่มุ่งสาย STEM ในญี่ปุ่นแบบตรง ๆ",
+       descJa:"研究全体の中で工学・テクノロジーの比率が最も高いグループ。日本でのSTEM系キャリアを直接目指す人向けです。"},
+  C6: {nameEn:"C6 · Innovation Arch & Regional Powerhouses", nameTh:"C6 · กลุ่มศูนย์กลางนวัตกรรมและมหาวิทยาลัยชั้นนำระดับภูมิภาค", nameJa:"C6・イノベーション・アーチ＆地方の中核大学", color:"var(--c6)",
        descEn:"Elite research universities outside Tokyo. You've got a strong academic profile and you're aiming at a PhD or research career.",
-       descTh:"มหาวิทยาลัยวิจัยชั้นนำนอกโตเกียว เหมาะกับคนที่มีผลการเรียนดีและมุ่งสู่ปริญญาเอกหรือสายงานวิจัย"},
+       descTh:"มหาวิทยาลัยวิจัยชั้นนำนอกโตเกียว เหมาะกับคนที่มีผลการเรียนดีและมุ่งสู่ปริญญาเอกหรือสายงานวิจัย",
+       descJa:"東京以外にあるエリート研究大学群。学業成績が高く、博士課程や研究職を目指す人向けです。"},
 };
 
 function evaluate(){
@@ -1307,8 +1771,8 @@ function evaluate(){
   const box = document.getElementById('plannerResult');
   box.style.display='block';
   document.getElementById('resultName').style.color = matchInfo[best].color;
-  document.getElementById('resultName').textContent = currentLang==='th' ? matchInfo[best].nameTh : matchInfo[best].nameEn;
-  document.getElementById('resultDesc').textContent = currentLang==='th' ? matchInfo[best].descTh : matchInfo[best].descEn;
+  document.getElementById('resultName').textContent = L(currentLang, matchInfo[best].nameEn, matchInfo[best].nameTh, matchInfo[best].nameJa);
+  document.getElementById('resultDesc').textContent = L(currentLang, matchInfo[best].descEn, matchInfo[best].descTh, matchInfo[best].descJa);
   box.scrollIntoView({behavior:'smooth', block:'nearest'});
 
   // Auto-open and scroll to the matched cluster
@@ -1349,10 +1813,14 @@ const I18N = {
     'planner.q4.label':"🎯 What's the goal after graduation?",'planner.q4.o1':"Work in Japan's tech/industry sector",'planner.q4.o2':'Go on to a PhD / research career','planner.q4.o3':'A balanced, well-rounded experience','planner.q4.o4':'An international, English-friendly vibe',
     'planner.resultTitle':'✨ Your best match',
     'planner.disclaimer':"This is a simplified estimate based on group averages from the published study — not a replacement for checking each university's actual details before you apply.",
+    'planner.reset':'↺ Start over',
     'compare.eyebrow':'See them side by side','compare.title':'Quick comparison, all 6 at a glance','compare.desc':"Straight from the study's Comparative Assessment Matrix — good for a fast scan before you dive into any one archetype.",
+    'compare.hint':'⟷ Swipe sideways to see all 6 archetypes',
     'clusters.eyebrow':'Meet the 6 archetypes','clusters.title':'Every Japanese university, sorted into a type','clusters.desc':'Click a card to see the full university list and details for each group.',
     'badge.label':'Badge guide:', 'badge.national':'<b>National</b> = Government-funded university', 'badge.private':'<b>Private</b> = Privately operated',
     'badge.idp':'🎓 <b>Has IDP</b> = Integrated Doctoral Program available (combined master\'s–PhD track)', 'badge.etp':'🌐 <b>English Taught</b> = Programs taught in English (no Japanese required)', 'badge.tuition':'💸 <b>Tuition Discount</b> = Fee waiver / reduction may apply — confirm with school',
+    'filter.all':'All', 'filter.idp':'🎓 Has IDP', 'filter.etp':'🌐 English Taught', 'filter.tuition':'💸 Tuition Discount', 'filter.national':'🏛️ National', 'filter.private':'🏢 Private', 'filter.favorites':'★ Favorites',
+    'shortlist.print':'🖨️ Print / Save as PDF', 'shortlist.download':'⬇️ Download as text', 'shortlist.clear':'Clear all',
     'search.placeholder':'Search a university by name… e.g. Osaka, Waseda, Hokkaido', 'search.noResults':'No universities matched your search. Try a different name.',
     'valid.eyebrow':'Why you can trust this','valid.title':'Not vibes — verified statistics','valid.desc':'Three layers of testing make sure these 6 groups are real, not random.',
     'valid.c1.label':'Traits proven statistically distinct','valid.c1.desc':'Confirmed with multiple statistical tests, even after correcting for testing 18 traits at once.',
@@ -1369,7 +1837,7 @@ const I18N = {
     'note.eyebrow':'A note from the research team','note.title':'We built this for you — and we hope it helps. 🇹🇭→🇯🇵',
     'note.p1':'This tool was created by the <strong style="color:#fff;">Human-Centered AI Laboratory (KU-HCAI)</strong> at Kasetsart University as part of a peer-reviewed study published in IJIET. Our goal was simple: to make the process of choosing a Japanese university less overwhelming for Thai students by turning raw data into something you can actually use.',
     'note.p2':'We genuinely hope this serves as a <strong style="color:#C9D8F5;">concrete, data-driven starting point</strong> for your decision — and that it opens doors to more research expanding beyond these 40 universities, across more countries, and with richer data sources year by year. Consider this a foundation, not a ceiling.',
-    'note.published':'Published in', 'note.opendata':'Open data at', 'note.lab':'Laboratory',
+    'note.published':'Published in', 'note.opendata':'Open data at', 'note.lab':'Laboratory', 'note.support':'Supported by',
     'footer.note':'Unofficial visual summary made for prospective Thai applicants. Read the full paper for complete methodology.'
   },
   th:{
@@ -1395,10 +1863,14 @@ const I18N = {
     'planner.q4.label':'🎯 จบแล้วอยากทำอะไรต่อ?','planner.q4.o1':'ทำงานสายเทคโนโลยี/อุตสาหกรรมในญี่ปุ่น','planner.q4.o2':'เรียนต่อปริญญาเอก / สายงานวิจัย','planner.q4.o3':'ประสบการณ์ที่สมดุล ครบทุกด้าน','planner.q4.o4':'บรรยากาศนานาชาติ ใช้ภาษาอังกฤษได้สบาย',
     'planner.resultTitle':'✨ มหาวิทยาลัยที่เหมาะกับคุณที่สุด',
     'planner.disclaimer':'ผลลัพธ์นี้คำนวณจากค่าเฉลี่ยของแต่ละกลุ่มในงานวิจัย เป็นการประมาณคร่าว ๆ เท่านั้น ไม่ได้แทนที่การเช็กข้อมูลจริงของแต่ละมหาวิทยาลัยก่อนสมัคร',
+    'planner.reset':'↺ เริ่มใหม่',
     'compare.eyebrow':'เทียบกันชัด ๆ','compare.title':'ตารางเทียบทั้ง 6 กลุ่มแบบเร็ว ๆ','compare.desc':'ข้อมูลจาก Comparative Assessment Matrix ในงานวิจัยต้นฉบับ เหมาะกับการดูภาพรวมก่อนเจาะลึกแต่ละกลุ่ม',
+    'compare.hint':'⟷ ปัดซ้าย-ขวาเพื่อดูครบทั้ง 6 กลุ่ม',
     'clusters.eyebrow':'รู้จัก 6 กลุ่มมหาวิทยาลัย','clusters.title':'มหาวิทยาลัยญี่ปุ่นทุกแห่ง จัดกลุ่มไว้ให้แล้ว','clusters.desc':'กดที่การ์ดเพื่อดูรายชื่อมหาวิทยาลัยและรายละเอียดของแต่ละกลุ่ม',
     'badge.label':'คำอธิบายสัญลักษณ์:', 'badge.national':'<b>รัฐ</b> = มหาวิทยาลัยของรัฐ', 'badge.private':'<b>เอกชน</b> = มหาวิทยาลัยเอกชน',
     'badge.idp':'🎓 <b>มี IDP</b> = มีหลักสูตรควบปริญญาโท-เอก (Integrated Doctoral Program)', 'badge.etp':'🌐 <b>สอนภาษาอังกฤษ</b> = มีหลักสูตรที่สอนเป็นภาษาอังกฤษ ไม่ต้องใช้ภาษาญี่ปุ่นก็เรียนได้', 'badge.tuition':'💸 <b>ส่วนลดค่าเล่าเรียน</b> = อาจมีส่วนลดหรือยกเว้นค่าธรรมเนียม ควรเช็กกับมหาวิทยาลัยโดยตรงอีกที',
+    'filter.all':'ทั้งหมด', 'filter.idp':'🎓 มี IDP', 'filter.etp':'🌐 สอนภาษาอังกฤษ', 'filter.tuition':'💸 มีส่วนลดค่าเล่าเรียน', 'filter.national':'🏛️ รัฐ', 'filter.private':'🏢 เอกชน', 'filter.favorites':'★ รายการที่ชอบ',
+    'shortlist.print':'🖨️ พิมพ์ / บันทึกเป็น PDF', 'shortlist.download':'⬇️ ดาวน์โหลดเป็นไฟล์ข้อความ', 'shortlist.clear':'ล้างทั้งหมด',
     'search.placeholder':'ค้นหามหาวิทยาลัยด้วยชื่อ… เช่น Osaka, Waseda, Hokkaido', 'search.noResults':'ไม่พบมหาวิทยาลัยที่ตรงกับคำค้นหา ลองพิมพ์ชื่ออื่นดู',
     'valid.eyebrow':'ทำไมถึงเชื่อถือได้','valid.title':'ไม่ใช่ความรู้สึก แต่คือสถิติที่ผ่านการพิสูจน์','valid.desc':'ผ่านการทดสอบ 3 ชั้น เพื่อยืนยันว่าทั้ง 6 กลุ่มนี้มีอยู่จริง ไม่ได้จัดขึ้นมาเอง',
     'valid.c1.label':'ลักษณะที่พิสูจน์แล้วว่าต่างกันจริงทางสถิติ','valid.c1.desc':'ยืนยันด้วยการทดสอบทางสถิติหลายแบบ แม้จะปรับค่าจากการทดสอบ 18 ตัวแปรพร้อมกันแล้วก็ตาม',
@@ -1415,8 +1887,58 @@ const I18N = {
     'note.eyebrow':'ข้อความจากทีมวิจัย','note.title':'เราทำสิ่งนี้ขึ้นมาเพื่อคุณ หวังว่าจะเป็นประโยชน์ 🇹🇭→🇯🇵',
     'note.p1':'เครื่องมือนี้ทำโดยห้องปฏิบัติการ <strong style="color:#fff;">Human-Centered AI Laboratory (KU-HCAI)</strong> มหาวิทยาลัยเกษตรศาสตร์ ซึ่งเป็นส่วนหนึ่งของงานวิจัยที่ผ่านการตรวจสอบโดยผู้ทรงคุณวุฒิและตีพิมพ์ในวารสาร IJIET เป้าหมายของเราง่าย ๆ คือทำให้การเลือกมหาวิทยาลัยญี่ปุ่นของนักเรียนไทยไม่ต้องยุ่งยากเกินไป โดยเอาข้อมูลดิบมาแปลงเป็นอะไรที่ใช้ได้จริง',
     'note.p2':'เราหวังว่าตัวนี้จะเป็น<strong style="color:#C9D8F5;">จุดเริ่มต้นที่จับต้องได้และอิงจากข้อมูลจริง</strong>สำหรับการตัดสินใจของคุณ และอยากให้เป็นแรงผลักดันให้มีงานวิจัยต่อยอดที่ครอบคลุมกว่านี้ มากกว่า 40 มหาวิทยาลัย ไปยังประเทศอื่น ๆ ด้วยข้อมูลที่ครบขึ้นในแต่ละปี ให้มองว่านี่คือจุดเริ่มต้น ไม่ใช่เพดานสูงสุด',
-    'note.published':'ตีพิมพ์ใน', 'note.opendata':'ข้อมูลเปิดที่', 'note.lab':'ห้องปฏิบัติการ',
+    'note.published':'ตีพิมพ์ใน', 'note.opendata':'ข้อมูลเปิดที่', 'note.lab':'ห้องปฏิบัติการ', 'note.support':'ได้รับการสนับสนุนจาก',
     'footer.note':'สรุปข้อมูลแบบไม่เป็นทางการ ทำขึ้นเพื่อผู้สมัครชาวไทยที่สนใจ อ่านบทความฉบับเต็มเพื่อดูวิธีวิจัยแบบละเอียด'
+  },
+  ja:{
+    'nav.tagline':'タイの学生向け','nav.how':'仕組み','nav.planner':'マッチ診断','nav.compare':'比較','nav.clusters':'タイプを見る','nav.validation':'信頼性について',
+    'hero.pill':'🎓 実際の研究データから作成 · IJIET掲載論文',
+    'hero.title':'もう迷わない。<br><span class="grad-text">あなたにぴったりの日本の大学</span>を数分で見つけよう。',
+    'hero.subtitle':'タイと確かなつながりを持つ日本の40大学を、データサイエンスで6つの明確なタイプに分類。世界ランキングだけでなく、予算・分野・雰囲気に本当に合う大学を絞り込めます。',
+    'hero.sourceNote':'ここで紹介する大学はすべて、タイの教育機関と正式なつながりを持つ日本の大学を集めた<a href="https://jsps-th.org/jsps_en/japanese_univ/" target="_blank" rel="noopener">JSPSバンコク事務所</a>の公式ディレクトリに掲載されています。つまり、適当に選んだ40校ではなく、タイ・日本間のつながりが確認された大学リストです。 <strong style="color:var(--c5);white-space:nowrap;">📅 データ収集：2025年。</strong>',
+    'stat.uni':'調査した大学数','stat.archetypes':'明確なタイプ数','stat.traits':'統計的に異なる特徴','stat.ari':'妥当性スコア（ARI）',
+    'hero.you':'あなた','hero.figCaption':'6つの道、目指す先はひとつ — あなたに本当に合う日本の大学。',
+    'how.eyebrow':'分類の仕組み','how.title':'6つのステップ、勘に頼らない','how.desc':'このツールは雰囲気やランキングではなく、本物のデータサイエンスから作られています。',
+    'how.s1.title':'データを集める','how.s1.desc':'MEXT、researchmap、入試難易度、レビュー、生活費という5つの公開情報源から収集',
+    'how.s2.title':'データを整える','how.s2.desc':'43の特徴量を正規化し、どの指標も不当に大きな影響を持たないようにする',
+    'how.s3.title':'似た大学をグループ化','how.s3.desc':'階層的クラスタリングにより6つの自然なタイプを発見',
+    'how.s4.title':'本当に意味があるか検証','how.s4.desc':'統計検定でグループが偶然でないことを確認',
+    'how.s5.title':'安定性を再確認','how.s5.desc':'別のアルゴリズムで100回再実行しても同じ結果',
+    'how.s6.title':'実用的なツールに','how.s6.desc':'分類結果をシンプルに使える絞り込みツールへ',
+    'planner.eyebrow':'簡単な診断','planner.title':'4つの質問でマッチする大学を見つける',
+    'planner.desc':'公開されたクラスター平均に基づく簡易的な診断です。良い出発点にはなりますが、最終的な答えではありません。応募前に必ず各大学の詳細を確認してください。',
+    'planner.q1.label':'💰 毎月の予算はどれくらい？','planner.q1.o1':'1,100ドル未満 — できるだけ抑えたい','planner.q1.o2':'1,100〜1,300ドル — 無理のない範囲','planner.q1.o3':'1,300ドル以上 — 費用は気にしない',
+    'planner.q2.label':'📚 何を勉強したい？','planner.q2.o1':'工学・テクノロジー','planner.q2.o2':'健康・医療または自然科学','planner.q2.o3':'社会科学・経営・人文学','planner.q2.o4':'分野を問わず深い研究',
+    'planner.q3.label':'🏙️ どんな場所で暮らしたい？','planner.q3.o1':'東京、大都市の活気の中で','planner.q3.o2':'郊外や沿岸部、便利さも欲しい','planner.q3.o3':'地方の大都市','planner.q3.o4':'自然と静けさ、雪国の暮らし',
+    'planner.q4.label':'🎯 卒業後の目標は？','planner.q4.o1':'日本のテクノロジー/産業分野で働く','planner.q4.o2':'博士課程・研究職に進む','planner.q4.o3':'バランスの取れた充実した経験','planner.q4.o4':'国際色が強く、英語で通いやすい環境',
+    'planner.resultTitle':'✨ あなたに一番合うタイプ',
+    'planner.disclaimer':'この結果は公開研究のグループ平均に基づく簡易的な推定です。応募前に必ず各大学の実際の情報を確認してください。',
+    'planner.reset':'↺ もう一度診断する',
+    'compare.eyebrow':'並べて比較','compare.title':'6タイプをひと目で比較','compare.desc':'研究の比較評価マトリクスに基づく内容です。どのタイプを深く見るか決める前の、ざっくりした確認に便利です。',
+    'compare.hint':'⟷ 横にスワイプすると6タイプすべてを見られます',
+    'clusters.eyebrow':'6つのタイプを見てみよう','clusters.title':'日本のすべての大学を、タイプ別に整理','clusters.desc':'カードをクリックすると、各グループの大学一覧と詳細が見られます。',
+    'badge.label':'バッジの説明：', 'badge.national':'<b>国立</b> = 政府が運営する大学', 'badge.private':'<b>私立</b> = 民間が運営する大学',
+    'badge.idp':'🎓 <b>IDPあり</b> = 修士・博士一貫プログラム（Integrated Doctoral Program）あり', 'badge.etp':'🌐 <b>英語で受講可</b> = 日本語不要で学べる英語開講プログラムあり', 'badge.tuition':'💸 <b>学費減免</b> = 減免制度がある場合あり — 各大学に直接確認してください',
+    'filter.all':'全て', 'filter.idp':'🎓 IDPあり', 'filter.etp':'🌐 英語開講あり', 'filter.tuition':'💸 学費減免あり', 'filter.national':'🏛️ 国立', 'filter.private':'🏢 私立', 'filter.favorites':'★ お気に入り',
+    'shortlist.print':'🖨️ 印刷 / PDFで保存', 'shortlist.download':'⬇️ テキストでダウンロード', 'shortlist.clear':'すべて削除',
+    'search.placeholder':'大学名で検索… 例：Osaka, Waseda, Hokkaido', 'search.noResults':'該当する大学が見つかりませんでした。別の名前で試してみてください。',
+    'valid.eyebrow':'信頼できる理由','valid.title':'感覚ではなく、検証済みの統計','valid.desc':'この6つのグループが偶然ではなく実在することを、3段階の検証で確認しています。',
+    'valid.c1.label':'統計的に異なると証明された特徴','valid.c1.desc':'18の特徴を同時に検定した際の補正を行っても、複数の統計検定で確認されています。',
+    'valid.c2.label':'別アルゴリズムとの一致度','valid.c2.desc':'K-meansクラスタリングで100回再検定しても、同じ6グループが繰り返し現れました。',
+    'valid.c3.label':'次元を減らしても安定','valid.c3.desc':'データを単純化する3つの異なる方法すべてで、グループ分けが安定していました。',
+    'limit.eyebrow':'知っておきたいこと','limit.title':'絞り込む前に読んでおいてほしいこと',
+    'limit.c1.b':'対象は40大学のみ','limit.c1.p':'<a href="https://jsps-th.org/jsps_en/japanese_univ/" target="_blank" rel="noopener">JSPSバンコク事務所</a>のディレクトリに掲載された大学に限定しています。信頼できる出発点ではありますが、日本の大学すべてを網羅しているわけではありません。',
+    'limit.c2.b':'生活費は都市の平均値','limit.c2.p':'Hyper-Urban Coreの東京7大学はすべて同じ月額1,698ドルとして表示されていますが、実際の費用は地域によって異なります。',
+    'limit.c3.b':'NAISTは大学院のみ','limit.c3.p':'Golden Routeグループに含まれていますが、学部プログラムはありません。修士・博士課程の応募者のみが対象です。',
+    'limit.c4.b':'学費減免は大学ごとに異なる','limit.c4.p':'減免の有無はタイプの傾向とは一致しません。必ず各大学に直接確認してください。',
+    'limit.c5.b':'1大学につき1キャンパスのみ','limit.c5.p':'複数キャンパスを持つ大学（東海大学など）は、メインキャンパスのみで表現されています。',
+    'limit.c6.b':'あくまで出発点、最終結論ではない','limit.c6.p':'これを使って40校からいくつかに絞り込み、そのあとで気になる大学を詳しく調べてください。',
+    'limit.c7.b':'データは2025年時点 — 応募前にスコアを確認','limit.c7.p':'このツールに含まれる入試難易度、生活費、研究データ、開講状況はすべて<strong>2025年</strong>に収集されたデータに基づいています。大学のタイプ（クラスター）は構造的な特徴に基づいており、時間が経っても比較的安定していると考えられますが、<strong>入試の難易度は志願者数や大学の方針変更によって年ごとに変わる可能性があります</strong>。応募前には必ず各大学の最新の入試情報を直接確認してください。',
+    'note.eyebrow':'研究チームからのメッセージ','note.title':'あなたのために作りました。役立つことを願っています。 🇹🇭→🇯🇵',
+    'note.p1':'このツールは、カセサート大学の<strong style="color:#fff;">Human-Centered AI Laboratory（KU-HCAI）</strong>が、IJIETに掲載された査読付き研究の一環として作成しました。目標はシンプルです — 生のデータを実際に使えるものに変えることで、タイの学生が日本の大学を選ぶプロセスの負担を減らすことです。',
+    'note.p2':'この結果が、あなたの意思決定における<strong style="color:#C9D8F5;">具体的でデータに基づいた出発点</strong>になればと心から願っています。そして、この40大学を超えて、より多くの国や、年々充実するデータソースへと研究が広がっていくきっかけになればと思っています。これは天井ではなく、土台だと考えてください。',
+    'note.published':'掲載誌', 'note.opendata':'オープンデータ', 'note.lab':'研究室', 'note.support':'支援',
+    'footer.note':'タイ人志願者向けに作成した非公式のビジュアル要約です。詳しい手法については論文本文をご覧ください。'
   }
 };
 
@@ -1451,8 +1973,8 @@ function setLanguage(lang){
   document.getElementById('noResults').style.display = 'none';
   // Re-render planner result if a match was already computed
   if(lastMatch){
-    document.getElementById('resultName').textContent = lang==='th' ? matchInfo[lastMatch].nameTh : matchInfo[lastMatch].nameEn;
-    document.getElementById('resultDesc').textContent = lang==='th' ? matchInfo[lastMatch].descTh : matchInfo[lastMatch].descEn;
+    document.getElementById('resultName').textContent = L(lang, matchInfo[lastMatch].nameEn, matchInfo[lastMatch].nameTh, matchInfo[lastMatch].nameJa);
+    document.getElementById('resultDesc').textContent = L(lang, matchInfo[lastMatch].descEn, matchInfo[lastMatch].descTh, matchInfo[lastMatch].descJa);
   }
   try{ localStorage.setItem('jpUniMatchLang', lang); }catch(e){}
 }
@@ -1463,7 +1985,7 @@ document.querySelectorAll('.lang-btn').forEach(btn=>{
 
 // Default to Thai, unless the person previously chose English
 let initialLang = 'th';
-try{ const saved = localStorage.getItem('jpUniMatchLang'); if(saved==='en' || saved==='th') initialLang = saved; }catch(e){}
+try{ const saved = localStorage.getItem('jpUniMatchLang'); if(saved==='en' || saved==='th' || saved==='ja') initialLang = saved; }catch(e){}
 setLanguage(initialLang);
 </script>
 
