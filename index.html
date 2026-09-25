@@ -16,7 +16,30 @@
     --rule: #dedcd4;
     --accent: #2a5c63;
     --accent-soft: #e8eeee;
+    --card-hover: #f1efe9;
     --max: 700px;
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #16181a;
+    --ink: #eceae5;
+    --muted: #9a9994;
+    --rule: #33352f;
+    --accent: #7fd4c9;
+    --accent-soft: #1f2b2a;
+    --card-hover: #1e2022;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #16181a;
+      --ink: #eceae5;
+      --muted: #9a9994;
+      --rule: #33352f;
+      --accent: #7fd4c9;
+      --accent-soft: #1f2b2a;
+      --card-hover: #1e2022;
+    }
   }
 
   * { box-sizing: border-box; }
@@ -31,7 +54,47 @@
     font-size: 16px;
     line-height: 1.65;
     -webkit-font-smoothing: antialiased;
+    transition: background 0.2s ease, color 0.2s ease;
   }
+
+  /* ---------- scroll progress ---------- */
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0%;
+    background: var(--accent);
+    z-index: 200;
+    transition: width 0.08s linear;
+  }
+
+  /* ---------- back to top ---------- */
+  .to-top {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--rule);
+    background: var(--bg);
+    color: var(--accent);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(8px);
+    transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    z-index: 150;
+  }
+  .to-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+  .to-top:hover { background: var(--accent-soft); }
 
   a { color: var(--accent); text-decoration: none; }
   a:hover, a:focus-visible { text-decoration: underline; }
@@ -49,6 +112,7 @@
   /* ---------- top nav ---------- */
   .topnav {
     display: flex;
+    align-items: center;
     justify-content: flex-end;
     gap: 4px;
     flex-wrap: wrap;
@@ -58,6 +122,24 @@
   .topnav a { color: var(--muted); padding: 4px 2px; }
   .topnav a.current { color: var(--ink); font-weight: 600; }
   .topnav .sep { color: var(--rule); padding: 4px 2px; }
+
+  .theme-toggle {
+    margin-left: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid var(--rule);
+    background: var(--bg);
+    color: var(--ink);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    line-height: 1;
+    flex: 0 0 auto;
+  }
+  .theme-toggle:hover { background: var(--accent-soft); }
 
   /* ---------- hero ---------- */
   .hero {
@@ -98,29 +180,55 @@
 
   /* ---------- quick jump ---------- */
   .jumpnav {
+    position: sticky;
+    top: 0;
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    padding: 18px 0 10px;
-    border-top: 1px solid var(--rule);
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 6px;
+    padding: 14px 0;
+    background: var(--bg);
     border-bottom: 1px solid var(--rule);
     margin-bottom: 36px;
+    z-index: 100;
+    transition: box-shadow 0.2s ease, background 0.2s ease;
   }
+  .jumpnav::-webkit-scrollbar { display: none; }
+  .jumpnav.stuck { box-shadow: 0 4px 10px -6px rgba(0,0,0,0.25); }
   .jumpnav a {
+    flex: 0 0 auto;
     font-size: 13px;
     color: var(--muted);
-    padding: 6px 10px;
+    padding: 6px 12px;
     border-radius: 999px;
+    white-space: nowrap;
   }
   .jumpnav a:hover, .jumpnav a:focus-visible {
     background: var(--accent-soft);
     color: var(--accent);
     text-decoration: none;
   }
+  .jumpnav a.active {
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 600;
+  }
 
   /* ---------- sections ---------- */
-  section { margin-bottom: 44px; scroll-margin-top: 16px; }
+  section { margin-bottom: 44px; scroll-margin-top: 60px; }
   section:last-of-type { margin-bottom: 0; }
+
+  section.reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  section.reveal.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
   h2.section-heading {
     font-size: 13px;
@@ -132,18 +240,26 @@
     border-bottom: 1px solid var(--rule);
   }
 
-  .item { margin-bottom: 20px; }
+  .item {
+    margin-bottom: 20px;
+    padding: 10px 12px;
+    margin-left: -12px;
+    margin-right: -12px;
+    border-radius: 10px;
+    transition: background 0.15s ease;
+  }
   .item:last-child { margin-bottom: 0; }
+  .item:hover { background: var(--card-hover); }
   .item-title { font-weight: 600; color: var(--ink); }
   .item-meta { color: var(--muted); font-size: 14.5px; margin-top: 2px; }
-  .item-desc { color: #3a3a38; margin-top: 6px; font-size: 15px; }
+  .item-desc { color: var(--ink); opacity: 0.85; margin-top: 6px; font-size: 15px; }
   .item-footnote { font-size: 13px; color: var(--muted); margin-top: 4px; }
 
   ul.bullets {
     margin: 8px 0 0;
     padding-left: 18px;
   }
-  ul.bullets li { margin-bottom: 4px; font-size: 15px; color: #3a3a38; }
+  ul.bullets li { margin-bottom: 4px; font-size: 15px; color: var(--ink); opacity: 0.85; }
   ul.bullets li:last-child { margin-bottom: 0; }
 
   /* ---------- grouped org (timeline) ---------- */
@@ -182,15 +298,24 @@
     .bio { max-width: none; }
     .links { justify-content: center; }
     .topnav { justify-content: center; }
+    .item { margin-left: -8px; margin-right: -8px; padding: 10px 8px; }
+    .to-top { right: 14px; bottom: 14px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
+    section.reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
   }
 </style>
 </head>
 
 <body>
+  <div class="progress-bar" id="progressBar"></div>
+
   <div class="wrap">
 
     <!-- Navigation -->
@@ -202,6 +327,7 @@
       <a href="japan-university-match.html">Japan U Match</a>
       <span class="sep">/</span>
       <a href="unix-os-lecture.html">Unix OS Lecture</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">&#9789;</button>
     </nav>
 
     <!-- Hero -->
@@ -246,7 +372,7 @@
     </nav>
 
     <!-- Education -->
-    <section id="education">
+    <section class="reveal" id="education">
       <h2 class="section-heading">Education</h2>
       <div class="item">
         <div class="item-title">Kasetsart University, Bangkok, Thailand</div>
@@ -258,7 +384,7 @@
     </section>
 
     <!-- Publications -->
-    <section id="publications">
+    <section class="reveal" id="publications">
       <h2 class="section-heading">Publications</h2>
 
       <div class="item">
@@ -321,7 +447,7 @@
     </section>
 
     <!-- Projects -->
-    <section id="projects">
+    <section class="reveal" id="projects">
       <h2 class="section-heading">Projects / Research</h2>
 
       <div class="item">
@@ -346,7 +472,7 @@
     </section>
 
     <!-- Experience -->
-    <section id="experience">
+    <section class="reveal" id="experience">
       <h2 class="section-heading">Research &amp; Professional Experience</h2>
 
       <div class="item">
@@ -413,7 +539,7 @@
     </section>
 
     <!-- Teaching -->
-    <section id="teaching">
+    <section class="reveal" id="teaching">
       <h2 class="section-heading">Teaching &amp; Mentoring Experience</h2>
 
       <div class="item">
@@ -488,7 +614,7 @@
     </section>
 
     <!-- Honors -->
-    <section id="honors">
+    <section class="reveal" id="honors">
       <h2 class="section-heading">Honors &amp; Awards</h2>
       <ul class="plain">
         <li>
@@ -523,7 +649,7 @@
     </section>
 
     <!-- Training -->
-    <section id="training">
+    <section class="reveal" id="training">
       <h2 class="section-heading">Training &amp; Certifications</h2>
 
       <div class="item">
@@ -559,7 +685,7 @@
     </section>
 
     <!-- Skills -->
-    <section id="skills">
+    <section class="reveal" id="skills">
       <h2 class="section-heading">Skills &amp; Languages</h2>
       <ul class="skills">
         <li><strong>Programming Languages:</strong> Python, Shell scripting, Bash, LaTeX, SQL, C++</li>
@@ -574,5 +700,93 @@
     </footer>
 
   </div>
+
+  <button class="to-top" id="toTop" type="button" aria-label="Back to top" title="Back to top">&#8593;</button>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- theme toggle ---------- */
+  var root = document.documentElement;
+  var themeBtn = document.getElementById("themeToggle");
+  var stored = null;
+  try { stored = localStorage.getItem("theme"); } catch (e) {}
+  if (stored === "dark" || stored === "light") root.setAttribute("data-theme", stored);
+
+  function currentTheme() {
+    if (root.getAttribute("data-theme") === "dark") return "dark";
+    if (root.getAttribute("data-theme") === "light") return "light";
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  function syncIcon() {
+    themeBtn.textContent = currentTheme() === "dark" ? "☀" : "☽";
+  }
+  syncIcon();
+  themeBtn.addEventListener("click", function () {
+    var next = currentTheme() === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("theme", next); } catch (e) {}
+    syncIcon();
+  });
+
+  /* ---------- scroll progress + back-to-top + sticky shadow ---------- */
+  var progressBar = document.getElementById("progressBar");
+  var toTopBtn = document.getElementById("toTop");
+  var jumpnav = document.querySelector(".jumpnav");
+  var ticking = false;
+
+  function onScroll() {
+    var doc = document.documentElement;
+    var scrollTop = doc.scrollTop || document.body.scrollTop;
+    var scrollHeight = (doc.scrollHeight || document.body.scrollHeight) - doc.clientHeight;
+    var pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    progressBar.style.width = pct + "%";
+    toTopBtn.classList.toggle("visible", scrollTop > 400);
+    if (jumpnav) jumpnav.classList.toggle("stuck", scrollTop > 0);
+    ticking = false;
+  }
+  window.addEventListener("scroll", function () {
+    if (!ticking) {
+      window.requestAnimationFrame(onScroll);
+      ticking = true;
+    }
+  }, { passive: true });
+  onScroll();
+
+  toTopBtn.addEventListener("click", function () {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  /* ---------- active section highlight in quick-jump nav ---------- */
+  var sections = document.querySelectorAll("section[id]");
+  var jumpLinks = document.querySelectorAll(".jumpnav a");
+  function setActive(id) {
+    jumpLinks.forEach(function (a) {
+      a.classList.toggle("active", a.getAttribute("href") === "#" + id);
+    });
+  }
+  if ("IntersectionObserver" in window) {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) setActive(entry.target.id);
+      });
+    }, { rootMargin: "-45% 0px -50% 0px", threshold: 0 });
+    sections.forEach(function (s) { observer.observe(s); });
+
+    var revealObserver = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in-view");
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.05 });
+    sections.forEach(function (s) { revealObserver.observe(s); });
+  } else {
+    sections.forEach(function (s) { s.classList.add("in-view"); });
+  }
+})();
+</script>
 </body>
 </html>

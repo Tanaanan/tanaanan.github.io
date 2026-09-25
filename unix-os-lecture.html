@@ -791,7 +791,104 @@ blockquote.quote-large {
 	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
 }
 	
-</style><style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style></head><body><div style="padding: 10px 20px; font-family: sans-serif;"><a href="index.html" style="text-decoration: none; color: #333; font-weight: bold;">&larr; Back to Home</a></div><article id="bc257692-529e-4e49-bf91-47b723fc8ecb" class="page sans" data-notion-page-icon="💽"><header><img class="page-cover-image" src="https://app.notion.com/images/page-cover/nasa_eagle_in_lunar_orbit.jpg" style="object-position:center 40%"/><div class="page-header-icon page-header-icon-with-cover"><span class="icon" data-emoji="💽"></span></div><h1 class="page-title" dir="auto">Unix Operating System</h1><p class="page-description" dir="auto" style="font-style: italic; color: #555;">Note: This lecture is summarized from the &quot;Unix Operating System and Shell Programming Class&quot; by Dr. Chavalit SRISATHAPORNPHAT, Department of Computer Science, Faculty of Science, Kasetsart University, Thailand.</p></header><div class="page-body"><h2 id="5ca9f992-9fc8-4732-8d81-5c380a2d01b3" class="" dir="auto">Basic Shell Commands</h2><h3 id="423811d8-4300-4187-ae10-1dc117b4ef5b" class="" dir="auto">Redirection</h3><figure id="1eb0a656-edcd-4385-b8b8-e8b6cc911a43" class="image" data-notion-image="Unix_OS_Lecture_images/image.png" dir="ltr"><a href="Unix_OS_Lecture_images/image.png"><img style="width:511px" src="Unix_OS_Lecture_images/image.png"/></a></figure><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js" integrity="sha512-whYhDwtTmlC/NpZlCr6PSsAaLOrfjVg/iXAnC4H/dtiHawpShhT2SlIMbpIhT/IL/NrpdMm+Hq2C13+VKpHTYw==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><pre id="520c180a-fed4-480b-9b28-a53157e44c37" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">&gt; (redirection) | 1&gt;... (redirection stdout) 
+</style><style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style><style>
+/* ---- Interactive study-guide enhancements ---- */
+:root {
+	--accent: #2f80ed;
+	--accent-soft: rgba(47, 128, 237, 0.08);
+	--border: rgba(55, 53, 47, 0.12);
+}
+#reading-progress {
+	position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+	background: var(--accent); z-index: 1000; transition: width .1s ease-out;
+}
+#toc-toggle {
+	position: fixed; top: 14px; left: 14px; z-index: 999;
+	background: #fff; border: 1px solid var(--border); border-radius: 8px;
+	width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+	cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.12); font-size: 18px;
+}
+#toc-sidebar {
+	position: fixed; top: 0; left: 0; height: 100vh; width: 290px;
+	background: #fafafa; border-right: 1px solid var(--border);
+	overflow-y: auto; padding: 70px 18px 24px; box-sizing: border-box;
+	transform: translateX(-100%); transition: transform .25s ease;
+	z-index: 998;
+	font-family: "Inter", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	font-size: 0.92rem;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+#toc-sidebar.open { transform: translateX(0); box-shadow: 0 0 24px rgba(0,0,0,0.2); }
+#toc-sidebar h4 { margin: 0 0 .8em; font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: #9a9a95; }
+#toc-search {
+	width: 100%; padding: .55em .7em; margin-bottom: 1.2em; border: 1px solid var(--border);
+	border-radius: 8px; font-size: .88rem; box-sizing: border-box; font-family: inherit;
+	background: #fff; color: #333;
+}
+#toc-search:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+#toc-sidebar ul { list-style: none; padding-left: 0; margin: 0; }
+#toc-sidebar li { margin: 2px 0; }
+#toc-sidebar a {
+	display: block; padding: .4em .6em; border-radius: 7px; text-decoration: none;
+	color: #3a3a37; opacity: 1; border: none; font-weight: 500; line-height: 1.35;
+	letter-spacing: -0.005em; transition: background .12s ease, color .12s ease;
+}
+#toc-sidebar a:hover { background: var(--accent-soft); color: var(--accent); }
+#toc-sidebar a.active { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+#toc-sidebar .toc-h3 { padding-left: 1.15em; font-size: .87em; font-weight: 400; opacity: .75; }
+#toc-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.25); z-index: 997; opacity: 0; pointer-events: none; transition: opacity .2s; }
+#toc-overlay.open { opacity: 1; pointer-events: auto; }
+
+@media (min-width: 1400px) {
+	#toc-toggle { display: none; }
+	#toc-sidebar { transform: translateX(0); box-shadow: none; }
+	#toc-overlay { display: none !important; }
+}
+
+.section-toolbar { display: flex; gap: .5em; margin: 0 0 1.5em; flex-wrap: wrap; }
+.section-toolbar button {
+	font-size: .8rem; padding: .4em .8em; border-radius: 6px; border: 1px solid var(--border);
+	background: #fff; cursor: pointer; color: #444; font-family: inherit;
+}
+.section-toolbar button:hover { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+
+.lecture-section { border-bottom: 1px solid var(--border); padding-bottom: .25em; margin-bottom: 1em; }
+.lecture-section > h2 {
+	cursor: pointer; display: flex; align-items: center; gap: .5em;
+	user-select: none; border-radius: 8px; padding: .3em .4em; margin-left: -.4em;
+}
+.lecture-section > h2:hover { background: var(--accent-soft); }
+.lecture-section > h2::before {
+	content: "\25BE"; display: inline-block; font-size: .7em; color: #999; transition: transform .15s; width: 1em;
+}
+.lecture-section.collapsed > h2::before { transform: rotate(-90deg); }
+.lecture-section.collapsed > *:not(h2) { display: none; }
+.lecture-section[style*="display: none"] { display: none; }
+
+pre.code { position: relative; }
+.copy-btn {
+	position: absolute; top: .5em; right: .5em; font-size: .7rem; padding: .25em .6em;
+	border-radius: 5px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1);
+	color: #ddd; cursor: pointer; opacity: 0; transition: opacity .15s; font-family: inherit;
+}
+pre.code:hover .copy-btn, pre.code:focus-within .copy-btn { opacity: 1; }
+.copy-btn.copied { opacity: 1; background: #2f9e44; color: #fff; border-color: #2f9e44; }
+
+#back-to-top {
+	position: fixed; bottom: 24px; right: 24px; width: 44px; height: 44px; border-radius: 50%;
+	background: var(--accent); color: #fff; border: none; font-size: 18px; cursor: pointer;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.25); display: none; align-items: center; justify-content: center; z-index: 998;
+}
+#back-to-top.show { display: flex; }
+
+@media (min-width: 1400px) {
+	body { margin: 2em auto 2em 320px; }
+}
+@media (max-width: 640px) {
+	.copy-btn { opacity: 1; }
+}
+</style></head><body><div style="padding: 10px 20px; font-family: sans-serif;"><a href="index.html" style="text-decoration: none; color: #333; font-weight: bold;">&larr; Back to Home</a></div><article id="bc257692-529e-4e49-bf91-47b723fc8ecb" class="page sans" data-notion-page-icon="💽"><header><img class="page-cover-image" src="https://app.notion.com/images/page-cover/nasa_eagle_in_lunar_orbit.jpg" style="object-position:center 40%"/><div class="page-header-icon page-header-icon-with-cover"><span class="icon" data-emoji="💽"></span></div><h1 class="page-title" dir="auto">Unix Operating System</h1><p class="page-description" dir="auto" style="font-style: italic; color: #555;">Note: This lecture is summarized from the &quot;Unix Operating System and Shell Programming Class&quot; by Dr. Chavalit SRISATHAPORNPHAT, Department of Computer Science, Faculty of Science, Kasetsart University, Thailand.</p></header><div class="page-body"><h2 id="5ca9f992-9fc8-4732-8d81-5c380a2d01b3" class="" dir="auto">Basic Shell Commands</h2><h3 id="423811d8-4300-4187-ae10-1dc117b4ef5b" class="" dir="auto">Redirection</h3><figure id="1eb0a656-edcd-4385-b8b8-e8b6cc911a43" class="image" data-notion-image="Unix_OS_Lecture_images/image.png" dir="ltr"><a href="Unix_OS_Lecture_images/image.png"><img style="width:511px" src="Unix_OS_Lecture_images/image.png"/></a></figure><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js" integrity="sha512-whYhDwtTmlC/NpZlCr6PSsAaLOrfjVg/iXAnC4H/dtiHawpShhT2SlIMbpIhT/IL/NrpdMm+Hq2C13+VKpHTYw==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><pre id="520c180a-fed4-480b-9b28-a53157e44c37" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">&gt; (redirection) | 1&gt;... (redirection stdout) 
 | 2&gt;... (redirection stderr) </code></pre><pre id="4c1ce3bf-6fd5-4d1b-9df3-4f5348058a5a" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">wc &lt; file1.txt (redirection input)</code></pre><pre id="d8afe377-1cc5-40a9-ad93-c05111730721" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">ls -l file1 noFile 1&gt;out.txt 2&gt;&amp;1 (Redirecting to one file)</code></pre><h3 id="cd96d4be-5775-49cc-ba30-855e0cf6f892" class="" dir="auto">TEE</h3><ul id="9aa63c7d-ef6a-4001-903e-73f19b593521" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Copy stdin to stdout and to file(s)<figure id="e0058727-2306-4ad4-9c8c-b25385824f32" class="image" data-notion-image="Unix_OS_Lecture_images/image%201.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%201.png"><img style="width:679.984375px" src="Unix_OS_Lecture_images/image%201.png"/></a></figure></li></ul><p id="660ec065-1da2-461e-bf2f-d52311f94d21" class="" dir="auto">
 </p><pre id="e2da044c-fe65-4488-aa57-d9e9c2b9304c" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">ls -l file99 1&gt;/dev/null 2&gt;&amp;1 // ส่งstdin stderr 
 เข้าใน trash /dev/null</code></pre><h3 id="1e38b552-d997-42fe-b736-b739e4aaee22" class="" dir="auto">Prevent overwriting</h3><pre id="f1910d7d-0203-4429-9b1b-3d8adfc80c45" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set -o noclobber</code></pre><h3 id="1c17ed72-45a3-43aa-9ee6-7fa65cf9fdd5" class="" dir="auto">Shell variables</h3><pre id="dba66035-339a-40f4-8410-fe6044ada0df" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">Stored data -&gt; variable=value
@@ -946,4 +1043,183 @@ done</code></pre><h3 id="12c11418-d55d-808b-a551-cfc48c7f8e04" class="" dir="aut
 </p><h3 id="12c11418-d55d-80a5-af92-c9f56e4c197c" class="" dir="auto">read</h3><figure id="12c11418-d55d-801c-93ae-cc0b9cdd8594" class="image" data-notion-image="Unix_OS_Lecture_images/image%20122.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20122.png"><img style="width:707.96875px" src="Unix_OS_Lecture_images/image%20122.png"/></a></figure><h3 id="12c11418-d55d-802f-8a50-e41c89fd44fa" class="" dir="auto">Process ID and Job Numbers</h3><figure id="12c11418-d55d-80fc-9abc-c6be69a5f1de" class="image" data-notion-image="Unix_OS_Lecture_images/image%20123.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20123.png"><img style="width:707.984375px" src="Unix_OS_Lecture_images/image%20123.png"/></a></figure><h3 id="12c11418-d55d-801e-a540-f6c8bdec1f6d" class="" dir="auto">Signals</h3><figure id="12c11418-d55d-8001-9266-d2e84c3482a7" class="image" data-notion-image="Unix_OS_Lecture_images/image%20124.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20124.png"><img style="width:707.984375px" src="Unix_OS_Lecture_images/image%20124.png"/></a></figure><h3 id="12c11418-d55d-8021-ab52-fe6e4931f510" class="" dir="auto">Processs ID variables</h3><ul id="12c11418-d55d-8009-af8a-ded9617e8f29" class="bulleted-list" dir="auto"><li style="list-style-type:disc">$$<ul id="12c11418-d55d-8041-b227-f75750034d5a" class="bulleted-list" dir="auto"><li style="list-style-type:circle">process ID of the current shell</li></ul></li></ul><ul id="12c11418-d55d-803c-9019-fb7d756a5528" class="bulleted-list" dir="auto"><li style="list-style-type:disc">$!<ul id="12c11418-d55d-80ff-ae11-d187a9464749" class="bulleted-list" dir="auto"><li style="list-style-type:circle">process ID of the most recently invoked background job</li></ul></li></ul><ul id="12c11418-d55d-80e3-8c44-f499d1998467" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Practice<ul id="12c11418-d55d-8056-b5c6-d4c9ff558fe3" class="bulleted-list" dir="auto"><li style="list-style-type:circle">Write a script to test these two variables</li></ul></li></ul><p id="12c11418-d55d-8092-b994-f4ee37595918" class="" dir="auto">
 </p><h3 id="12c11418-d55d-80f8-b8ee-f80f572bf022" class="" dir="auto">trap</h3><figure id="12c11418-d55d-8079-8ba4-e8d3c5fb07c2" class="image" data-notion-image="Unix_OS_Lecture_images/image%20125.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20125.png"><img style="width:336px" src="Unix_OS_Lecture_images/image%20125.png"/></a></figure><p id="12c11418-d55d-800e-9838-eecf517b37f0" class="" dir="auto">
 </p><h3 id="12c11418-d55d-809e-ab20-da845bd7c28f" class="" dir="auto">trap : Clean up temporary files</h3><figure id="12c11418-d55d-806b-91d1-c93c88a90c40" class="image" data-notion-image="Unix_OS_Lecture_images/image%20126.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20126.png"><img style="width:707.984375px" src="Unix_OS_Lecture_images/image%20126.png"/></a></figure><h3 id="12c11418-d55d-8027-93eb-e5018d90ca34" class="" dir="auto">wait</h3><figure id="12c11418-d55d-8095-a8f3-f8c8bde06a41" class="image" data-notion-image="Unix_OS_Lecture_images/image%20127.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20127.png"><img style="width:707.984375px" src="Unix_OS_Lecture_images/image%20127.png"/></a></figure><p id="12c11418-d55d-80a9-bdd7-e44a46c1482c" class="" dir="auto">
-</p><h3 id="12c11418-d55d-80be-bb41-d72fc755091b" class="" dir="auto">Subshells</h3><figure id="12c11418-d55d-8016-8aeb-e5834018bd28" class="image" data-notion-image="Unix_OS_Lecture_images/image%20128.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20128.png"><img style="width:707.984375px" src="Unix_OS_Lecture_images/image%20128.png"/></a></figure></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
+</p><h3 id="12c11418-d55d-80be-bb41-d72fc755091b" class="" dir="auto">Subshells</h3><figure id="12c11418-d55d-8016-8aeb-e5834018bd28" class="image" data-notion-image="Unix_OS_Lecture_images/image%20128.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%20128.png"><img style="width:707.984375px" src="Unix_OS_Lecture_images/image%20128.png"/></a></figure></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span>
+<div id="reading-progress"></div>
+<button id="toc-toggle" type="button" aria-label="Toggle table of contents">&#9776;</button>
+<div id="toc-overlay"></div>
+<nav id="toc-sidebar" aria-label="Table of contents">
+	<h4>On this page</h4>
+	<input type="search" id="toc-search" placeholder="Search headings...">
+	<ul id="toc-list"></ul>
+</nav>
+<button id="back-to-top" type="button" aria-label="Back to top">&#8593;</button>
+<script>
+(function () {
+	var body = document.querySelector('.page-body');
+	if (!body) return;
+
+	// --- Group content under each h2 into collapsible sections ---
+	var children = Array.prototype.slice.call(body.childNodes);
+	var sections = [];
+	var current = null;
+	children.forEach(function (node) {
+		if (node.nodeType === 1 && node.tagName === 'H2') {
+			current = document.createElement('section');
+			current.className = 'lecture-section';
+			sections.push(current);
+			current.appendChild(node);
+		} else if (current) {
+			current.appendChild(node);
+		}
+	});
+	sections.forEach(function (sec) { body.appendChild(sec); });
+
+	// --- Expand all / Collapse all toolbar ---
+	var toolbar = document.createElement('div');
+	toolbar.className = 'section-toolbar';
+	toolbar.innerHTML = '<button type="button" id="expand-all">Expand all</button><button type="button" id="collapse-all">Collapse all</button>';
+	body.insertBefore(toolbar, body.firstChild);
+	document.getElementById('expand-all').addEventListener('click', function () {
+		sections.forEach(function (s) { s.classList.remove('collapsed'); });
+	});
+	document.getElementById('collapse-all').addEventListener('click', function () {
+		sections.forEach(function (s) { s.classList.add('collapsed'); });
+	});
+
+	// --- Build table of contents ---
+	var tocList = document.getElementById('toc-list');
+	sections.forEach(function (sec) {
+		var h2 = sec.querySelector('h2');
+		if (!h2 || !h2.id) return;
+		h2.addEventListener('click', function () {
+			sec.classList.toggle('collapsed');
+		});
+
+		var li = document.createElement('li');
+		var a = document.createElement('a');
+		a.href = '#' + h2.id;
+		a.textContent = h2.textContent;
+		a.dataset.target = h2.id;
+		li.appendChild(a);
+
+		var h3s = sec.querySelectorAll('h3');
+		if (h3s.length) {
+			var subUl = document.createElement('ul');
+			h3s.forEach(function (h3) {
+				if (!h3.id) return;
+				var subLi = document.createElement('li');
+				var subA = document.createElement('a');
+				subA.className = 'toc-h3';
+				subA.href = '#' + h3.id;
+				subA.textContent = h3.textContent;
+				subA.dataset.target = h3.id;
+				subLi.appendChild(subA);
+				subUl.appendChild(subLi);
+			});
+			li.appendChild(subUl);
+		}
+		tocList.appendChild(li);
+	});
+
+	var sidebar = document.getElementById('toc-sidebar');
+	var overlay = document.getElementById('toc-overlay');
+	var toggleBtn = document.getElementById('toc-toggle');
+
+	function closeDrawer() {
+		if (window.innerWidth < 1400) {
+			sidebar.classList.remove('open');
+			overlay.classList.remove('open');
+		}
+	}
+	toggleBtn.addEventListener('click', function () {
+		sidebar.classList.toggle('open');
+		overlay.classList.toggle('open');
+	});
+	overlay.addEventListener('click', closeDrawer);
+
+	tocList.querySelectorAll('a').forEach(function (a) {
+		a.addEventListener('click', function (e) {
+			e.preventDefault();
+			var target = document.getElementById(a.dataset.target);
+			if (!target) return;
+			var sec = target.closest('.lecture-section');
+			if (sec) sec.classList.remove('collapsed');
+			target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			history.replaceState(null, '', '#' + a.dataset.target);
+			closeDrawer();
+		});
+	});
+
+	// --- Search / filter ---
+	var searchInput = document.getElementById('toc-search');
+	searchInput.addEventListener('input', function () {
+		var q = searchInput.value.trim().toLowerCase();
+		sections.forEach(function (sec) {
+			var match = !q || sec.textContent.toLowerCase().indexOf(q) !== -1;
+			sec.style.display = match ? '' : 'none';
+			if (match && q) sec.classList.remove('collapsed');
+		});
+		tocList.querySelectorAll('li').forEach(function (li) {
+			var match = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
+			li.style.display = match ? '' : 'none';
+		});
+	});
+
+	// --- Copy-to-clipboard for code blocks ---
+	document.querySelectorAll('pre.code').forEach(function (pre) {
+		var btn = document.createElement('button');
+		btn.className = 'copy-btn';
+		btn.type = 'button';
+		btn.textContent = 'Copy';
+		btn.addEventListener('click', function (e) {
+			e.stopPropagation();
+			var codeEl = pre.querySelector('code');
+			var text = codeEl ? codeEl.innerText : pre.innerText;
+			navigator.clipboard.writeText(text).then(function () {
+				btn.textContent = 'Copied!';
+				btn.classList.add('copied');
+				setTimeout(function () {
+					btn.textContent = 'Copy';
+					btn.classList.remove('copied');
+				}, 1500);
+			});
+		});
+		pre.appendChild(btn);
+	});
+
+	// --- Reading progress bar ---
+	var progress = document.getElementById('reading-progress');
+	function updateProgress() {
+		var scrollTop = window.scrollY;
+		var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+		progress.style.width = (docHeight > 0 ? (scrollTop / docHeight) * 100 : 0) + '%';
+	}
+	window.addEventListener('scroll', updateProgress, { passive: true });
+	updateProgress();
+
+	// --- Back to top ---
+	var backBtn = document.getElementById('back-to-top');
+	window.addEventListener('scroll', function () {
+		backBtn.classList.toggle('show', window.scrollY > 600);
+	}, { passive: true });
+	backBtn.addEventListener('click', function () {
+		window.scrollTo({ top: 0, behavior: 'smooth' });
+	});
+
+	// --- Highlight active section in TOC while scrolling ---
+	var h2s = sections.map(function (s) { return s.querySelector('h2'); }).filter(function (h) { return h && h.id; });
+	if ('IntersectionObserver' in window) {
+		var observer = new IntersectionObserver(function (entries) {
+			entries.forEach(function (entry) {
+				if (!entry.isIntersecting) return;
+				var link = tocList.querySelector('a[data-target="' + entry.target.id + '"]');
+				if (!link) return;
+				tocList.querySelectorAll('a.active').forEach(function (a) { a.classList.remove('active'); });
+				link.classList.add('active');
+			});
+		}, { rootMargin: '0px 0px -70% 0px', threshold: 0 });
+		h2s.forEach(function (h2) { observer.observe(h2); });
+	}
+})();
+</script>
+</body></html>
