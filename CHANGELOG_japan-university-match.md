@@ -107,6 +107,13 @@ Log of all changes made to the "Find Your Japan University Match" tool in this s
 
 - Reverted every "in press" reference back to **"Published at IJIET (2026)"** across all three languages (hero pill, the info chip, the research-team note, the planner disclaimer, and the footer citation) — the paper's status changed from in-press to published, so the wording now reflects that.
 
+## 16. New "How to Use" section
+
+- Added a new **🧭 Quick start** section right after the hero (and a matching nav link), separate from the existing "How the sorting works" section — that one explains the data-science methodology, this one explains how to actually *use* the tool.
+- Four numbered step cards: take the quiz → browse & filter → star your favorites → compare & export.
+- A worked example underneath ("Try it yourself: Ammy's example") walking through a concrete persona (budget, field, city preference, goal) end-to-end through the real UI — quiz → matched archetype → starring universities → the Compare panel → Print/Save as PDF — using the actual button labels so it doubles as a guided tour.
+- Fully localized in Thai/English/Japanese, reusing the existing step-card and reveal-on-scroll patterns already used elsewhere on the page.
+
 ---
 
 *All changes verified via automated browser testing (console-error checks, functional JS assertions, and — for the PDF fixes — real headless-Chromium print-to-PDF comparisons) across Thai, English, and Japanese, at both desktop and mobile widths.*

@@ -211,6 +211,26 @@
   @media (max-width:900px){ .process-grid{grid-template-columns:repeat(3,1fr);} }
   @media (max-width:560px){ .process-grid{grid-template-columns:repeat(2,1fr);} }
 
+  /* ---------- HOW TO USE ---------- */
+  #howto{background:var(--bg-soft);}
+  .howto-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;}
+  @media (max-width:700px){ .howto-grid{grid-template-columns:repeat(2,1fr);} }
+  .howto-step{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px 18px;box-shadow:var(--shadow);position:relative;}
+  .howto-step .step-num{
+    position:absolute;top:-10px;left:16px;width:24px;height:24px;border-radius:50%;
+    background:var(--ink);color:#fff;font-family:'Fredoka',sans-serif;font-weight:600;font-size:12.5px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .howto-emoji{font-size:24px;margin-bottom:10px;display:block;}
+  .howto-step-title{font-weight:700;font-size:14px;margin-bottom:6px;}
+  .howto-step-desc{font-size:12.5px;color:var(--ink-soft);line-height:1.5;}
+  .howto-example{
+    background:linear-gradient(135deg,#F2EDFB,#EAF5FC);border:1px solid #D9CFF2;border-radius:18px;
+    padding:22px 26px;max-width:760px;margin:0 auto;
+  }
+  .howto-example-title{font-weight:700;font-size:14.5px;margin-bottom:10px;color:#5B3E99;}
+  .howto-example-body{font-size:13.5px;color:var(--ink);line-height:1.85;}
+
   /* ---------- CLUSTER CARDS ---------- */
   .cluster{
     background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
@@ -620,6 +640,7 @@
       JP Uni Match<span class="mono" style="font-weight:400;color:var(--ink-soft);font-size:11px;" data-i18n="nav.tagline">for Thai students</span>
     </div>
     <div class="navlinks">
+      <a href="#howto" data-i18n="nav.howto">How to use</a>
       <a href="#how" data-i18n="nav.how">How it works</a>
       <a href="#planner" data-i18n="nav.planner">Find your match</a>
       <a href="#compare" data-i18n="nav.compare">Compare</a>
@@ -769,6 +790,26 @@
     </div>
   </div>
 </header>
+
+<section id="howto">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow" data-i18n="howto.eyebrow">Quick start</div>
+      <h2 class="section-title" data-i18n="howto.title">New here? Here's how to use it</h2>
+      <p class="section-desc" data-i18n="howto.desc">Four simple steps — try it yourself using the example below.</p>
+    </div>
+    <div class="howto-grid">
+      <div class="howto-step reveal"><span class="step-num">1</span><span class="howto-emoji">🎯</span><div class="howto-step-title" data-i18n="howto.s1.title">Take the quiz</div><div class="howto-step-desc" data-i18n="howto.s1.desc">Scroll down to the quiz and answer 4 quick questions about your budget, field, city vibe, and goals.</div></div>
+      <div class="howto-step reveal"><span class="step-num">2</span><span class="howto-emoji">🔍</span><div class="howto-step-title" data-i18n="howto.s2.title">Browse & filter</div><div class="howto-step-desc" data-i18n="howto.s2.desc">Explore the 6 archetypes, or use the search box and chips like "English Taught" to narrow things down.</div></div>
+      <div class="howto-step reveal"><span class="step-num">3</span><span class="howto-emoji">⭐</span><div class="howto-step-title" data-i18n="howto.s3.title">Star your favorites</div><div class="howto-step-desc" data-i18n="howto.s3.desc">Tap the star on any university card that catches your eye — it'll show up in your shortlist.</div></div>
+      <div class="howto-step reveal"><span class="step-num">4</span><span class="howto-emoji">🖨️</span><div class="howto-step-title" data-i18n="howto.s4.title">Compare & export</div><div class="howto-step-desc" data-i18n="howto.s4.desc">Check the side-by-side comparison, then print/save as PDF or download a text file to share.</div></div>
+    </div>
+    <div class="howto-example reveal">
+      <div class="howto-example-title" data-i18n="howto.example.title">📌 Try it yourself: Ammy's example</div>
+      <div class="howto-example-body" data-i18n-html="howto.example.body">Ammy has about $1,200/month to spend, wants to study Engineering, likes a suburban vibe, and hopes to work in Japan's tech industry after graduating.<br>She answers the quiz → gets matched to <b>Golden Route</b> (STEM-heavy, moderate cost).<br>She stars 2 universities from that group she likes the look of.<br>She scrolls to <b>🌟 Compare your shortlist</b> to see them side by side, then taps <b>🖨️ Print / Save as PDF</b> to show her parents.</div>
+    </div>
+  </div>
+</section>
 
 <section id="how">
   <div class="wrap">
@@ -2101,7 +2142,7 @@ let lastMatch = null;
 // ================== LANGUAGE ENGINE ==================
 const I18N = {
   en:{
-    'nav.tagline':'for Thai students','nav.how':'How it works','nav.planner':'Find your match','nav.compare':'Compare','nav.clusters':'Explore archetypes','nav.validation':'Why trust it',
+    'nav.tagline':'for Thai students','nav.howto':'How to use','nav.how':'How it works','nav.planner':'Find your match','nav.compare':'Compare','nav.clusters':'Explore archetypes','nav.validation':'Why trust it',
     'hero.pill':'🎓 Built from real research data · Published at IJIET (2026)',
     'hero.title':'Stop guessing.<br><span class="grad-text">Find your Japan university match</span> in minutes.',
     'hero.subtitle':"40 Japanese universities with real Thai-Japan ties, sorted into 6 clear archetypes using data science — so you can shortlist schools that actually fit your budget, field, and vibe, not just their global ranking.",
@@ -2109,6 +2150,13 @@ const I18N = {
     'stat.uni':'Universities studied','stat.archetypes':'Clear archetypes','stat.traits':'Traits proven distinct','stat.ari':'Validation score (ARI)',
     'fx.note':'All costs on this page (living expenses, etc.) are shown in <strong>US dollars (USD)</strong>. Quick reference: <strong>$1 ≈ ฿36</strong> — exchange rates shift, so check today\'s rate before budgeting.',
     'hero.you':'You','hero.figCaption':'Six paths, one goal — a Japanese university that actually fits you.','hero.figHint':'👆 Tap an archetype to jump straight to it',
+    'howto.eyebrow':'Quick start','howto.title':"New here? Here's how to use it",'howto.desc':'Four simple steps — try it yourself using the example below.',
+    'howto.s1.title':'Take the quiz','howto.s1.desc':'Scroll down to the quiz and answer 4 quick questions about your budget, field, city vibe, and goals.',
+    'howto.s2.title':'Browse & filter','howto.s2.desc':'Explore the 6 archetypes, or use the search box and chips like "English Taught" to narrow things down.',
+    'howto.s3.title':'Star your favorites','howto.s3.desc':"Tap the star on any university card that catches your eye — it'll show up in your shortlist.",
+    'howto.s4.title':'Compare & export','howto.s4.desc':'Check the side-by-side comparison, then print/save as PDF or download a text file to share.',
+    'howto.example.title':"📌 Try it yourself: Ammy's example",
+    'howto.example.body':"Ammy has about $1,200/month to spend, wants to study Engineering, likes a suburban vibe, and hopes to work in Japan's tech industry after graduating.<br>She answers the quiz → gets matched to <b>Golden Route</b> (STEM-heavy, moderate cost).<br>She stars 2 universities from that group she likes the look of.<br>She scrolls to <b>🌟 Compare your shortlist</b> to see them side by side, then taps <b>🖨️ Print / Save as PDF</b> to show her parents.",
     'how.eyebrow':'How the sorting works','how.title':'Six steps, zero guesswork','how.desc':'Real data science — not vibes or rankings — built this shortlist tool.',
     'how.s1.title':'Gather data','how.s1.desc':'5 public sources: MEXT, researchmap, admission scores, reviews, living costs',
     'how.s2.title':'Clean it up','how.s2.desc':'Normalize 43 features so nothing unfairly dominates',
@@ -2153,7 +2201,7 @@ const I18N = {
     'footer.note':'Unofficial visual summary made for prospective Thai applicants. Read the full paper for complete methodology.'
   },
   th:{
-    'nav.tagline':'สำหรับนักเรียนไทย','nav.how':'หลักการทำงาน','nav.planner':'ทำแบบทดสอบ','nav.compare':'เปรียบเทียบ','nav.clusters':'ดูกลุ่มมหาวิทยาลัย','nav.validation':'ความน่าเชื่อถือ',
+    'nav.tagline':'สำหรับนักเรียนไทย','nav.howto':'วิธีใช้งาน','nav.how':'หลักการทำงาน','nav.planner':'ทำแบบทดสอบ','nav.compare':'เปรียบเทียบ','nav.clusters':'ดูกลุ่มมหาวิทยาลัย','nav.validation':'ความน่าเชื่อถือ',
     'hero.pill':'🎓 จัดทำจากข้อมูลงานวิจัยจริง · ตีพิมพ์ในวารสาร IJIET (2026)',
     'hero.title':'เลิกเดาสุ่ม<br><span class="grad-text">ค้นหามหาวิทยาลัยญี่ปุ่นที่ใช่สำหรับคุณ</span>ได้ภายในไม่กี่นาที',
     'hero.subtitle':'รวมมหาวิทยาลัยญี่ปุ่น 40 แห่งที่มีสายสัมพันธ์กับไทยอย่างเป็นทางการ จัดกลุ่มเป็น 6 รูปแบบด้วยการวิเคราะห์ข้อมูลจริง ช่วยให้คุณคัดมหาวิทยาลัยที่เหมาะกับงบ สาขาที่สนใจ และไลฟ์สไตล์ของตัวเอง ไม่ใช่แค่ดูอันดับโลกเพียงอย่างเดียว',
@@ -2161,6 +2209,13 @@ const I18N = {
     'stat.uni':'มหาวิทยาลัยที่ศึกษา','stat.archetypes':'กลุ่มที่ชัดเจน','stat.traits':'ลักษณะที่ต่างกันจริง','stat.ari':'คะแนนความแม่นยำ (ARI)',
     'fx.note':'ค่าใช้จ่ายทั้งหมดในหน้านี้ (เช่น ค่าครองชีพ) แสดงเป็น<strong>ดอลลาร์สหรัฐ (USD)</strong> อัตราคร่าว ๆ สำหรับอ้างอิง: <strong>1 ดอลลาร์ ≈ 36 บาท</strong> — อัตราแลกเปลี่ยนเปลี่ยนแปลงได้ทุกวัน ควรเช็กอัตราปัจจุบันก่อนวางแผนงบประมาณ',
     'hero.you':'คุณ','hero.figCaption':'หกเส้นทาง เป้าหมายเดียวกัน — มหาวิทยาลัยญี่ปุ่นที่เหมาะกับคุณจริง ๆ','hero.figHint':'👆 แตะเลือกกลุ่มที่สนใจ เพื่อไปดูรายละเอียดทันที',
+    'howto.eyebrow':'เริ่มต้นใช้งาน','howto.title':'เพิ่งเข้ามาใช่ไหม? นี่คือวิธีใช้เครื่องมือนี้','howto.desc':'แค่ 4 ขั้นตอนง่าย ๆ — ลองทำตามตัวอย่างด้านล่างดูได้เลย',
+    'howto.s1.title':'ทำแบบทดสอบ','howto.s1.desc':'เลื่อนลงไปที่แบบทดสอบ แล้วตอบ 4 คำถามสั้น ๆ เกี่ยวกับงบประมาณ สาขาที่สนใจ บรรยากาศเมือง และเป้าหมายของคุณ',
+    'howto.s2.title':'เลือกดูและกรอง','howto.s2.desc':'สำรวจทั้ง 6 กลุ่ม หรือใช้ช่องค้นหาและปุ่มกรอง เช่น "สอนภาษาอังกฤษ" เพื่อคัดตัวเลือกให้แคบลง',
+    'howto.s3.title':'กดดาวเก็บที่ชอบ','howto.s3.desc':'แตะดาวบนการ์ดมหาวิทยาลัยที่ถูกใจ แล้วมันจะไปโผล่ในรายการที่เลือกไว้ของคุณ',
+    'howto.s4.title':'เปรียบเทียบและบันทึก','howto.s4.desc':'ดูตารางเปรียบเทียบแบบเคียงข้างกัน แล้วพิมพ์/บันทึกเป็น PDF หรือดาวน์โหลดเป็นไฟล์ข้อความเพื่อแชร์ต่อ',
+    'howto.example.title':'📌 ลองทำตามตัวอย่างนี้ดู: กรณีของแอมมี่',
+    'howto.example.body':'แอมมี่มีงบประมาณราว 1,200 ดอลลาร์สหรัฐต่อเดือน อยากเรียนวิศวกรรมศาสตร์ ชอบบรรยากาศชานเมือง และหวังจะได้ทำงานสายเทคโนโลยีในญี่ปุ่นหลังเรียนจบ<br>เธอตอบแบบทดสอบ → ได้รับการจับคู่กับกลุ่ม <b>Golden Route</b> (เน้น STEM ค่าครองชีพปานกลาง)<br>เธอกดดาวเก็บมหาวิทยาลัย 2 แห่งจากกลุ่มนั้นที่ถูกใจ<br>จากนั้นเลื่อนไปที่ <b>🌟 เปรียบเทียบรายการที่เลือกไว้</b> เพื่อดูเทียบกัน แล้วกด <b>🖨️ พิมพ์ / บันทึกเป็น PDF</b> เพื่อส่งให้พ่อแม่ดู',
     'how.eyebrow':'หลักการจัดกลุ่ม','how.title':'หกขั้นตอน ไม่ต้องเดา','how.desc':'เครื่องมือนี้สร้างจากกระบวนการวิเคราะห์ข้อมูลจริง ไม่ใช่ความรู้สึกส่วนตัวหรือการจัดอันดับทั่วไป',
     'how.s1.title':'เก็บข้อมูล','how.s1.desc':'รวบรวมจาก 5 แหล่งข้อมูลสาธารณะ ได้แก่ MEXT, researchmap, คะแนนสอบเข้า, รีวิว และค่าครองชีพ',
     'how.s2.title':'ปรับข้อมูลให้เท่ากัน','how.s2.desc':'ปรับค่าตัวแปรทั้ง 43 ตัวให้อยู่สเกลเดียวกัน ไม่ให้ตัวไหนมีน้ำหนักเกินสัดส่วน',
@@ -2205,7 +2260,7 @@ const I18N = {
     'footer.note':'สรุปข้อมูลแบบไม่เป็นทางการ ทำขึ้นเพื่อผู้สมัครชาวไทยที่สนใจ อ่านบทความฉบับเต็มเพื่อดูวิธีวิจัยแบบละเอียด'
   },
   ja:{
-    'nav.tagline':'タイの学生向け','nav.how':'仕組み','nav.planner':'マッチ診断','nav.compare':'比較','nav.clusters':'タイプを見る','nav.validation':'信頼性について',
+    'nav.tagline':'タイの学生向け','nav.howto':'使い方','nav.how':'仕組み','nav.planner':'マッチ診断','nav.compare':'比較','nav.clusters':'タイプを見る','nav.validation':'信頼性について',
     'hero.pill':'🎓 実際の研究データから作成 · IJIET掲載（2026年）',
     'hero.title':'もう迷わない。<br><span class="grad-text">あなたにぴったりの日本の大学</span>を数分で見つけよう。',
     'hero.subtitle':'タイと確かなつながりを持つ日本の40大学を、データサイエンスで6つの明確なタイプに分類。世界ランキングだけでなく、予算・分野・雰囲気に本当に合う大学を絞り込めます。',
@@ -2213,6 +2268,13 @@ const I18N = {
     'stat.uni':'調査した大学数','stat.archetypes':'明確なタイプ数','stat.traits':'統計的に異なる特徴','stat.ari':'妥当性スコア（ARI）',
     'fx.note':'このページの費用（生活費など）はすべて<strong>米ドル（USD）</strong>で表示されています。目安として：<strong>1ドル ≈ 36バーツ</strong> — 為替レートは変動するため、予算を立てる際は最新のレートを確認してください。',
     'hero.you':'あなた','hero.figCaption':'6つの道、目指す先はひとつ — あなたに本当に合う日本の大学。','hero.figHint':'👆 タイプをタップすると詳細にジャンプします',
+    'howto.eyebrow':'はじめに','howto.title':'初めての方へ — 使い方はこちら','howto.desc':'たったの4ステップです。下の例を参考に、実際に試してみましょう',
+    'howto.s1.title':'診断に答える','howto.s1.desc':'下にスクロールして診断へ進み、予算・分野・都市の雰囲気・目標について4つの質問に答えます。',
+    'howto.s2.title':'見て回る・絞り込む','howto.s2.desc':'6つのタイプを見て回るか、検索ボックスや「英語開講」などのフィルターで絞り込みます。',
+    'howto.s3.title':'お気に入りに追加','howto.s3.desc':'気になる大学カードの星マークをタップすると、お気に入りリストに追加されます。',
+    'howto.s4.title':'比較して保存','howto.s4.desc':'並べて比較を確認し、印刷/PDF保存やテキストファイルのダウンロードで共有できます。',
+    'howto.example.title':'📌 実際に試してみよう：あるタイの学生の例',
+    'howto.example.body':'アミーさんは毎月約1,200ドルの予算があり、工学を学びたく、郊外の雰囲気が好きで、卒業後は日本のテクノロジー業界で働きたいと考えています。<br>診断に答える → <b>ゴールデンルート</b>（工学系が強く、生活費は中程度）にマッチ<br>そのグループから気に入った大学を2校お気に入りに追加<br><b>🌟 お気に入りを比較</b>で並べて確認し、<b>🖨️ 印刷 / PDFで保存</b>して両親に見せる',
     'how.eyebrow':'分類の仕組み','how.title':'6つのステップ、勘に頼らない','how.desc':'このツールは雰囲気やランキングではなく、本物のデータサイエンスから作られています。',
     'how.s1.title':'データを集める','how.s1.desc':'MEXT、researchmap、入試難易度、レビュー、生活費という5つの公開情報源から収集',
     'how.s2.title':'データを整える','how.s2.desc':'43の特徴量を正規化し、どの指標も不当に大きな影響を持たないようにする',
