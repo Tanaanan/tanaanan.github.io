@@ -16,7 +16,12 @@
     --rule: #dedcd4;
     --accent: #2a5c63;
     --accent-soft: #e8eeee;
-    --card-hover: #f1efe9;
+    --card-hover: #f8eef1;
+    --sakura: #f3b7c8;
+    --sakura-deep: #d86a8c;
+    --sakura-core: #e76f95;
+    --sakura-edge: #fff3f6;
+    --sakura-soft: #fdf1f5;
     --max: 700px;
   }
 
@@ -27,7 +32,12 @@
     --rule: #33352f;
     --accent: #7fd4c9;
     --accent-soft: #1f2b2a;
-    --card-hover: #1e2022;
+    --card-hover: #241f23;
+    --sakura: #e59ab2;
+    --sakura-deep: #f0a6bd;
+    --sakura-core: #d9708f;
+    --sakura-edge: #f7d3de;
+    --sakura-soft: #2a2025;
   }
 
   @media (prefers-color-scheme: dark) {
@@ -38,7 +48,12 @@
       --rule: #33352f;
       --accent: #7fd4c9;
       --accent-soft: #1f2b2a;
-      --card-hover: #1e2022;
+      --card-hover: #241f23;
+      --sakura: #e59ab2;
+      --sakura-deep: #f0a6bd;
+    --sakura-core: #d9708f;
+    --sakura-edge: #f7d3de;
+      --sakura-soft: #2a2025;
     }
   }
 
@@ -107,7 +122,57 @@
     max-width: var(--max);
     margin: 0 auto;
     padding: 0 20px 64px;
+    position: relative;
+    z-index: 1;
   }
+
+  /* ---------- sakura decoration ---------- */
+  body { position: relative; background-image: radial-gradient(ellipse 60% 40% at 100% 0%, var(--sakura-soft), transparent 70%); background-repeat: no-repeat; }
+
+  .branch {
+    position: absolute;
+    top: 0;
+    right: 0;
+    /* sits in the side margin, only grazing the content column */
+    width: min(340px, calc((100vw - var(--max)) / 2 + 20px));
+    height: auto;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.95;
+  }
+  .branch .twig { stroke: #6e4f43; fill: none; stroke-linecap: round; }
+  .branch .bud { fill: var(--sakura-deep); }
+  .branch .stamen circle { fill: #c2456b; }
+  .branch .stamen path { stroke: #c2456b; stroke-width: 0.6; fill: none; stroke-linecap: round; }
+  .branch .bloom { fill: var(--sakura); }
+  .branch .bloom-deep { fill: var(--sakura-deep); }
+
+  .petals {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .petal {
+    position: absolute;
+    top: -30px;
+    width: var(--s);
+    height: calc(var(--s) * 1.05);
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-7 -1 14 13'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='1' x2='0' y2='0'%3E%3Cstop offset='0' stop-color='%23e76f95'/%3E%3Cstop offset='0.6' stop-color='%23f6b0c3'/%3E%3Cstop offset='1' stop-color='%23fde6ed'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23g)' d='M0 12 C-2 10 -6.6 7 -5.9 3.3 C-5.5 1.3 -3 1 -1.6 2.2 L0 3.9 L1.6 2.2 C3 1 5.5 1.3 5.9 3.3 C6.6 7 2 10 0 12Z'/%3E%3C/svg%3E") center / contain no-repeat;
+    opacity: 0;
+    will-change: transform, opacity;
+    animation: petal-fall var(--t) linear var(--d) infinite;
+  }
+  @keyframes petal-fall {
+    0%   { transform: translate3d(0, -5vh, 0) rotate(0deg); opacity: 0; }
+    8%   { opacity: 0.75; }
+    50%  { transform: translate3d(calc(var(--x) * 0.5), 55vh, 0) rotate(220deg); }
+    92%  { opacity: 0.6; }
+    100% { transform: translate3d(var(--x), 108vh, 0) rotate(480deg); opacity: 0; }
+  }
+
+
 
   /* ---------- top nav ---------- */
   .topnav {
@@ -145,29 +210,34 @@
   .hero {
     display: flex;
     align-items: center;
-    gap: 32px;
+    gap: 40px;
     padding: 40px 0 20px;
   }
   .hero-photo {
-    flex: 0 0 132px;
-    width: 132px;
-    height: 132px;
+    flex: 0 0 200px;
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
     overflow: hidden;
     background: var(--accent-soft);
+    border: 3px solid var(--sakura);
+    box-shadow: 0 0 0 4px var(--sakura-soft), 0 6px 18px -6px var(--sakura-deep);
   }
   .hero-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .hero-text h1 {
-    font-size: 28px;
-    margin: 0 0 4px;
+    font-size: 34px;
+    line-height: 1.2;
+    margin: 0 0 6px;
     letter-spacing: -0.01em;
   }
   .hero-text .role {
     color: var(--muted);
-    font-size: 15px;
-    margin: 0 0 14px;
+    font-size: 16.5px;
+    margin: 0 0 16px;
   }
-  .bio { margin: 0 0 16px; max-width: 62ch; }
+  .bio { margin: 0 0 12px; max-width: 60ch; font-size: 17px; line-height: 1.75; }
+  .bio-lead { font-size: 18px; font-weight: 500; }
+  .bio b { color: var(--accent); font-weight: 600; }
 
   .links {
     display: flex;
@@ -231,13 +301,25 @@
   }
 
   h2.section-heading {
-    font-size: 13px;
+    font-size: 16px;
+    font-weight: 700;
     text-transform: none;
-    letter-spacing: 0.02em;
-    color: var(--muted);
+    letter-spacing: 0.01em;
+    color: var(--ink);
     margin: 0 0 18px;
     padding-bottom: 8px;
     border-bottom: 1px solid var(--rule);
+    border-image: linear-gradient(90deg, var(--sakura-deep), var(--rule) 45%) 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h2.section-heading::before {
+    content: "";
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-10 -10 20 20'%3E%3Cg fill='%23f0a6bd'%3E%3Cellipse cy='-5' rx='3.4' ry='5'/%3E%3Cellipse cy='-5' rx='3.4' ry='5' transform='rotate(72)'/%3E%3Cellipse cy='-5' rx='3.4' ry='5' transform='rotate(144)'/%3E%3Cellipse cy='-5' rx='3.4' ry='5' transform='rotate(216)'/%3E%3Cellipse cy='-5' rx='3.4' ry='5' transform='rotate(288)'/%3E%3C/g%3E%3Ccircle r='1.4' fill='%23c2456b'/%3E%3C/svg%3E") center / contain no-repeat;
   }
 
   .item {
@@ -254,6 +336,27 @@
   .item-meta { color: var(--muted); font-size: 14.5px; margin-top: 2px; }
   .item-desc { color: var(--ink); opacity: 0.85; margin-top: 6px; font-size: 15px; }
   .item-footnote { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+  .pub-group {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted); margin: 28px 0 14px; padding-bottom: 6px; border-bottom: 1px solid var(--rule);
+  }
+  .pub-group:first-of-type { margin-top: 8px; }
+  .pub-venue { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin-top: 6px; font-size: 14.5px; }
+  .pub-journal { font-style: italic; color: var(--ink); }
+  .pub-sub { color: var(--muted); font-size: 13.5px; }
+  .pub-badge {
+    font-size: 11.5px; font-weight: 600; padding: 1px 7px; border-radius: 4px;
+    background: var(--accent-soft); color: var(--accent); border: 1px solid var(--rule);
+  }
+  .pub-badge-data { text-transform: uppercase; letter-spacing: 0.05em; font-size: 10.5px; }
+  .pub-badge-award { font-weight: 600; }
+  .pub-badge-scholar { text-transform: uppercase; letter-spacing: 0.05em; font-size: 10.5px; }
+  .pub-role { margin-top: 2px; }
+  .pub-role .pub-journal { font-style: normal; }
+  .item-desc ul.bullets li { opacity: 1; }
+  .pub-status { font-size: 12px; font-weight: 600; color: var(--accent); margin-right: 6px; }
+  .pub-status-review { color: var(--muted); }
 
   ul.bullets {
     margin: 8px 0 0;
@@ -295,15 +398,22 @@
 
   @media (max-width: 560px) {
     .hero { flex-direction: column; text-align: center; gap: 18px; }
-    .bio { max-width: none; }
+    .bio { max-width: none; text-align: left; }
+    .hero-photo { flex-basis: 170px; width: 170px; height: 170px; }
+    .hero-text h1 { font-size: 30px; }
     .links { justify-content: center; }
     .topnav { justify-content: center; }
     .item { margin-left: -8px; margin-right: -8px; padding: 10px 8px; }
     .to-top { right: 14px; bottom: 14px; }
   }
 
+  @media (max-width: 899px) {
+    .branch { display: none; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
+    .petals { display: none; }
     section.reveal {
       opacity: 1;
       transform: none;
@@ -311,10 +421,66 @@
     }
   }
 </style>
+<noscript><style>section.reveal { opacity: 1; transform: none; }</style></noscript>
 </head>
 
 <body>
   <div class="progress-bar" id="progressBar"></div>
+
+  <div class="petals" id="petals" aria-hidden="true"></div>
+
+  <!-- Sakura branch (decorative) -->
+  <svg class="branch" viewBox="0 0 360 200" aria-hidden="true" focusable="false">
+    <defs>
+      <radialGradient id="petalGrad" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="11">
+        <stop offset="0" style="stop-color: var(--sakura-core)"/>
+        <stop offset="0.5" style="stop-color: var(--sakura)"/>
+        <stop offset="1" style="stop-color: var(--sakura-edge)"/>
+      </radialGradient>
+      <symbol id="blossom" viewBox="-12 -12 24 24">
+        <g id="petal">
+          <path fill="url(#petalGrad)" stroke="var(--sakura-deep)" stroke-opacity="0.35" stroke-width="0.3"
+                d="M0 0 C-2 -2 -6.6 -5 -5.9 -8.7 C-5.5 -10.7 -3 -11 -1.6 -9.8 L0 -8.1 L1.6 -9.8 C3 -11 5.5 -10.7 5.9 -8.7 C6.6 -5 2 -2 0 0Z"/>
+          <path d="M0 -1.5 L0 -6.5 M0 -3 L-1.8 -5.4 M0 -3 L1.8 -5.4" stroke="var(--sakura-deep)" stroke-opacity="0.45" stroke-width="0.35" stroke-linecap="round" fill="none"/>
+        </g>
+        <use href="#petal" transform="rotate(72)"/>
+        <use href="#petal" transform="rotate(144)"/>
+        <use href="#petal" transform="rotate(216)"/>
+        <use href="#petal" transform="rotate(288)"/>
+        <g class="stamen">
+          <path d="M0 0 L-1.8 -3.6 M0 0 L0.4 -4 M0 0 L2.2 -3.4 M0 0 L-3.4 -1.2 M0 0 L3.6 -0.6 M0 0 L-0.8 3.8 M0 0 L2.4 3 M0 0 L-3 2.4"/>
+          <circle r="1.1"/>
+        </g>
+      </symbol>
+    </defs>
+
+    <!-- branches -->
+    <path class="twig" stroke-width="9"  d="M375 -6 C 330 6, 285 28, 240 54"/>
+    <path class="twig" stroke-width="6"  d="M240 54 C 205 74, 160 90, 128 108"/>
+    <path class="twig" stroke-width="3.5" d="M128 108 C 112 117, 100 124, 88 134"/>
+    <path class="twig" stroke-width="3.5" d="M300 22 C 292 46, 278 68, 258 88"/>
+    <path class="twig" stroke-width="3"   d="M250 48 C 238 36, 214 28, 192 20"/>
+    <path class="twig" stroke-width="3"   d="M182 84 C 178 108, 162 128, 142 146"/>
+    <path class="twig" stroke-width="2"   d="M142 146 C 132 150, 124 150, 116 148"/>
+    <path class="twig" stroke-width="2"   d="M214 70 C 222 86, 226 100, 224 112"/>
+    <path class="twig" stroke-width="2"   d="M335 8 C 342 26, 340 40, 332 52"/>
+
+    <!-- buds -->
+    <g class="bud">
+      <circle cx="224" cy="116" r="3.6"/><circle cx="332" cy="56" r="3.2"/>
+      <circle cx="116" cy="147" r="3"/><circle cx="196" cy="24" r="3.2"/>
+    </g>
+
+    <!-- blossoms -->
+    <g class="bloom"><use href="#blossom" x="241" y="73" width="34" height="34"/></g>
+    <g class="bloom-deep"><use href="#blossom" x="175" y="3" width="30" height="30"/></g>
+    <g class="bloom"><use href="#blossom" x="124" y="131" width="32" height="32"/></g>
+    <g class="bloom-deep"><use href="#blossom" x="70" y="118" width="32" height="32"/></g>
+    <g class="bloom"><use href="#blossom" x="248" y="28" width="24" height="24"/></g>
+    <g class="bloom"><use href="#blossom" x="190" y="60" width="26" height="26"/></g>
+    <g class="bloom-deep"><use href="#blossom" x="282" y="6" width="22" height="22"/></g>
+    <g class="bloom"><use href="#blossom" x="160" y="78" width="22" height="22"/></g>
+  </svg>
 
   <div class="wrap">
 
@@ -333,26 +499,31 @@
     <!-- Hero -->
     <header class="hero">
       <div class="hero-photo">
-        <a href="images/tanaanan.webp">
-          <img src="images/tanaanan.webp" alt="Portrait of Tanaanan Chalermpan">
+        <a href="images/tanaanan.jpg">
+          <img src="images/tanaanan.jpg" alt="Portrait of Tanaanan Chalermpan">
         </a>
       </div>
       <div class="hero-text">
         <h1>Tanaanan Chalermpan</h1>
         <p class="role">Undergraduate AI Researcher, Kasetsart University</p>
+        <p class="bio bio-lead">
+          I am an undergraduate researcher in Artificial Intelligence at Kasetsart University, focused on
+          <b>resource-constrained applied AI</b> — building interpretable, lightweight models for real-world
+          healthcare deployment.
+        </p>
         <p class="bio">
-          I am Tanaanan Chalermpan (M), an undergraduate researcher in Artificial Intelligence at Kasetsart
-          University, focused on resource-constrained applied AI — building interpretable, lightweight models
-          for real-world healthcare deployment. Since my first year, I have pursued continuous research
-          experience across NECTEC, AIIH, and KU-HCAI, contributing first-authored work spanning clinical
-          deployment and statistical methodology. I am committed to interdisciplinary research and knowledge
-          dissemination in AI's responsible and practical use.
+          Since my first year, I have pursued continuous research experience across NECTEC, AIIH, and KU-HCAI,
+          contributing first-authored work spanning clinical deployment and statistical methodology.
+        </p>
+        <p class="bio">
+          I am committed to interdisciplinary research and knowledge dissemination in AI's responsible and
+          practical use.
         </p>
         <p class="links">
           <a href="mailto:mjsalyjoh@gmail.com">Email</a><span class="sep">/</span>
           <a href="https://dblp.org/pid/422/7898.html">DBLP</a><span class="sep">/</span>
           <a href="https://scholar.google.com/citations?user=aBo9SSwAAAAJ&hl=en">Google Scholar</a><span class="sep">/</span>
-          <a href="https://orcid.org/my-orcid?orcid=0009-0003-0587-7813">ORCID</a><span class="sep">/</span>
+          <a href="https://orcid.org/0009-0003-0587-7813">ORCID</a><span class="sep">/</span>
           <a href="https://www.researchgate.net/profile/Tanaanan-Chalermpan">ResearchGate</a><span class="sep">/</span>
           <a href="https://drive.google.com/drive/folders/14lDk2zQsHE1Ug96M2cBLJoHDUWxIlSg7?usp=sharing">CV</a>
         </p>
@@ -376,7 +547,7 @@
       <h2 class="section-heading">Education</h2>
       <div class="item">
         <div class="item-title">Kasetsart University, Bangkok, Thailand</div>
-        <div class="item-meta">B.S. in Computer Science (GPA: 3.33/4.00) &nbsp;|&nbsp; Jun 2023 – Mar 2027</div>
+        <div class="pub-venue pub-role"><span class="pub-journal">B.S. in Computer Science (GPA: 3.33/4.00)</span><span class="pub-sub">Jun 2023 – Mar 2027</span></div>
         <div class="item-desc">
           Concentrations: Artificial Intelligence, Image Processing, Data Science, Computer-aided Diagnosis, Social Science
         </div>
@@ -387,16 +558,22 @@
     <section class="reveal" id="publications">
       <h2 class="section-heading">Publications</h2>
 
+      <h3 class="pub-group">Manuscripts</h3>
+
       <div class="item">
         <div class="item-title">Robust and Efficient Blood Loss Estimation Using Color Features and Gradient Boosting Trees</div>
         <div class="item-meta">
           <b>Tanaanan Chalermpan</b>, Duangrat Gansawat, Kantip Kiratiratanapruk, Sanparith Marukatat,
           Natatikarn Jareonrattanadaechakul, Wannipa Nusupa, Urai Boonta, Wariya Sukhupragarn,
           Tanyong Pipanmekaporn, Sirianong Namwongprom, Visit Siripuwanan, Sarach Tuomchomtam
-          &nbsp;|&nbsp; Discover Artificial Intelligence (Q1, Computer Vision and Pattern Recognition, 2025)
+        </div>
+        <div class="pub-venue">
+          <span class="pub-badge pub-badge-q1">Q1</span>
+          <span class="pub-journal">Discover Artificial Intelligence</span>
+          <span class="pub-sub">Computer Vision and Pattern Recognition · 2025</span>
         </div>
         <div class="item-desc">
-          Dec. 12, 2025 &nbsp;·&nbsp; <a href="https://doi.org/10.1007/s44163-025-00619-9">DOI: 10.1007/s44163-025-00619-9</a>
+          <span class="pub-status pub-status-pub">Published</span> Dec. 12, 2025 &nbsp;·&nbsp; <a href="https://doi.org/10.1007/s44163-025-00619-9">DOI: 10.1007/s44163-025-00619-9</a>
         </div>
       </div>
 
@@ -404,46 +581,87 @@
         <div class="item-title">Profiling Japanese Universities for Thai Students' Decision Support Through Hierarchical Clustering</div>
         <div class="item-meta">
           <b>Tanaanan Chalermpan</b>, Nakarin Israngkura Na Ayudhaya, Sarach Tuomchomtam
-          &nbsp;|&nbsp; International Journal of Information and Education Technology (Q2, Education, 2025)
         </div>
-        <div class="item-desc">2026 &nbsp;·&nbsp; Article in press</div>
-      </div>
-
-      <div class="item">
-        <div class="item-title">Japanese Universities with Thai Offices Data</div>
-        <div class="item-meta">Chalermpan, Tanaanan et al. &nbsp;|&nbsp; Zenodo</div>
-        <div class="item-desc">
-          Dec. 28, 2025 &nbsp;·&nbsp; <a href="https://doi.org/10.5281/zenodo.18073128">DOI: 10.5281/zenodo.18073128</a>
+        <div class="pub-venue">
+          <span class="pub-badge pub-badge-q2">Q2</span>
+          <span class="pub-journal">International Journal of Information and Education Technology</span>
+          <span class="pub-sub">Education · 2025</span>
         </div>
+        <div class="item-desc"><span class="pub-status pub-status-press">In press</span> Jul. 9, 2026</div>
       </div>
 
       <div class="item">
         <div class="item-title">Public Perception Meets Economic Data: An Analysis of Online Sentiment and Economic Indicators in Thailand</div>
         <div class="item-meta">
           Nakarin Israngkura Na Ayudhaya, <b>Tanaanan Chalermpan</b>, Sarach Tuomchomtam
-          &nbsp;|&nbsp; ECTI Transactions on Computer and Information Technology (ECTI-CIT)
         </div>
-        <div class="item-desc">2026 &nbsp;·&nbsp; Under review, submitted</div>
+        <div class="pub-venue">
+          <span class="pub-badge pub-badge-q3">Q3</span>
+          <span class="pub-journal">ECTI Transactions on Computer and Information Technology</span>
+          <span class="pub-sub">Information Systems and Management · 2025</span>
+        </div>
+        <div class="item-desc"><span class="pub-status pub-status-press">In press</span> Oct. 15, 2026</div>
       </div>
 
       <div class="item">
         <div class="item-title">Radiomic Triage of BI-RADS 0: Interpretable Logistic Regression for Resource-Constrained Mammography</div>
         <div class="item-meta">
           <b>Tanaanan Chalermpan</b>, Pheemmapong Rodvaree, Sarach Tuomchomtam
-          &nbsp;|&nbsp; International Journal of Image, Graphics and Signal Processing (IJIGSP)
         </div>
-        <div class="item-desc">2026 &nbsp;·&nbsp; Under review, submitted</div>
+        <div class="pub-venue">
+          <span class="pub-journal">International Journal of Image, Graphics and Signal Processing (IJIGSP)</span>
+        </div>
+        <div class="item-desc"><span class="pub-status pub-status-review">Under review</span> 2026 &nbsp;·&nbsp; Submitted</div>
       </div>
 
       <div class="item">
+        <div class="item-title">Forecasting provincial hypertension burden in Thailand, 2017-2025: a benchmark against lightweight models using open health data</div>
+        <div class="item-meta">
+          <b>Tanaanan Chalermpan</b>
+        </div>
+        <div class="pub-venue">
+          <span class="pub-journal">ASEAN Journal of Scientific and Technological Reports (AJSTR)</span>
+        </div>
+        <div class="item-desc"><span class="pub-status pub-status-review">Under review</span> 2026 &nbsp;·&nbsp; Submitted</div>
+      </div>
+
+      <h3 class="pub-group">Data publications</h3>
+
+      <div class="item">
+        <div class="item-title">Province-level hypertension patients and registered population by age group, Thailand, fiscal years 2017–2025</div>
+        <div class="item-meta"><b>Tanaanan Chalermpan</b></div>
+        <div class="pub-venue">
+          <span class="pub-badge pub-badge-data">Dataset</span>
+          <span class="pub-journal">Zenodo</span>
+        </div>
+        <div class="item-desc">
+          Oct. 2, 2026 &nbsp;·&nbsp; <a href="https://doi.org/10.5281/zenodo.23096107">DOI: 10.5281/zenodo.23096107</a>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-title">Japanese Universities with Thai Offices Data</div>
+        <div class="item-meta"><b>Tanaanan Chalermpan</b>, Sarach Tuomchomtam</div>
+        <div class="pub-venue">
+          <span class="pub-badge pub-badge-data">Dataset</span>
+          <span class="pub-journal">Zenodo</span>
+        </div>
+        <div class="item-desc">
+          Dec. 28, 2025 &nbsp;·&nbsp; <a href="https://doi.org/10.5281/zenodo.18073128">DOI: 10.5281/zenodo.18073128</a>
+        </div>
+      </div>
+
+      <!-- <div class="item">
         <div class="item-title">MangaTVL: A Polygon-Aware Pipeline for English-to-Thai Manga Translation with Reference-Free Evaluation</div>
         <div class="item-meta">
           <b>Tanaanan Chalermpan</b><sup>†</sup>, Patiput Ukham<sup>†</sup>, Sarach Tuomchomtam
-          &nbsp;|&nbsp; IAES International Journal of Artificial Intelligence (IJ-AI)
         </div>
-        <div class="item-desc">2026 &nbsp;·&nbsp; Under review, submitted</div>
+        <div class="pub-venue">
+          <span class="pub-journal">IAES International Journal of Artificial Intelligence (IJ-AI)</span>
+        </div>
+        <div class="item-desc"><span class="pub-status pub-status-review">Under review</span> 2026 &nbsp;·&nbsp; Submitted</div>
         <div class="item-footnote"><sup>†</sup>Equal contribution.</div>
-      </div>
+      </div> -->
     </section>
 
     <!-- Projects -->
@@ -477,7 +695,7 @@
 
       <div class="item">
         <div class="item-title">Human-Centered AI Laboratory (KU-HCAI)</div>
-        <div class="item-meta">Lab Manager / Artificial Intelligence Researcher &nbsp;|&nbsp; Nov 2024 – Present</div>
+        <div class="pub-venue pub-role"><span class="pub-journal">Lab Manager / Artificial Intelligence Researcher</span><span class="pub-sub">Nov 2024 – Present</span></div>
         <div class="item-desc">
           <ul class="bullets">
             <li>Conduct research on profiling Japanese universities to support Thai student admission decisions.</li>
@@ -489,7 +707,7 @@
 
       <div class="item">
         <div class="item-title">Artificial Intelligence Technology and Innovation Center for Health (AIIH)</div>
-        <div class="item-meta">Medical AI Researcher (Partnership with Phramongkutklao Hospital) &nbsp;|&nbsp; Jan 2026 – Sep 2026</div>
+        <div class="pub-venue pub-role"><span class="pub-journal">Medical AI Researcher (Partnership with Phramongkutklao Hospital)</span><span class="pub-sub">Jan 2026 – Sep 2026</span></div>
         <div class="item-desc">
           <ul class="bullets">
             <li>Developed an interpretable, GPU-free BI-RADS 0 mammography triage classifier for resource-constrained edge deployment.</li>
@@ -544,7 +762,7 @@
 
       <div class="item">
         <div class="item-title">Department of Computer Science, Kasetsart University</div>
-        <div class="item-meta">Lecturer &nbsp;|&nbsp; Sep 2026</div>
+        <div class="pub-venue pub-role"><span class="pub-journal">Lecturer</span><span class="pub-sub">Sep 2026</span></div>
         <div class="item-desc">
           <ul class="bullets">
             <li>Taught high school teachers and students from Surasakmontree School on "Practical Computer Vision with Deep Learning."</li>
@@ -554,7 +772,7 @@
 
       <div class="item">
         <div class="item-title">Kasetsart University Research and Development Institute (KU-DRI)</div>
-        <div class="item-meta">Workshop Facilitator &nbsp;|&nbsp; Mar 2026</div>
+        <div class="pub-venue pub-role"><span class="pub-journal">Workshop Facilitator</span><span class="pub-sub">Mar 2026</span></div>
         <div class="item-desc">
           <ul class="bullets">
             <li>Instructed researchers and lecturers at Kasetsart University on AI-assisted research writing techniques.</li>
@@ -564,7 +782,7 @@
 
       <div class="item">
         <div class="item-title">Human-Centered AI Laboratory (KU-HCAI), Kasetsart University</div>
-        <div class="item-meta">Lab Manager / Artificial Intelligence Researcher &nbsp;|&nbsp; Nov 2024 – Present</div>
+        <div class="pub-venue pub-role"><span class="pub-journal">Lab Manager / Artificial Intelligence Researcher</span><span class="pub-sub">Nov 2024 – Present</span></div>
         <div class="item-desc">
           <ul class="bullets">
             <li>Managed lab session knowledge sharing on scientific report writing and AI pipeline development.</li>
@@ -574,7 +792,7 @@
 
       <div class="item">
         <div class="item-title">Generative Artificial Intelligence (01418263), Kasetsart University</div>
-        <div class="item-meta">Teaching Assistant &nbsp;|&nbsp; Nov 2025 – Mar 2026</div>
+        <div class="pub-venue pub-role"><span class="pub-journal">Teaching Assistant</span><span class="pub-sub">Nov 2025 – Mar 2026</span></div>
         <div class="item-desc">
           <ul class="bullets">
             <li>Assisted the professor in lab sessions and mentored undergraduates on fundamental generative AI concepts, data structures, and debugging best practices.</li>
@@ -587,7 +805,7 @@
         <div class="org-stints">
           <div>
             <div class="stint-role">Teaching Assistant</div>
-            <div class="stint-meta">Jun 2026 – Nov 2026</div>
+            <div class="stint-meta">Jun 2026 – Oct 2026</div>
             <ul class="bullets">
               <li>Assisted the professor in lab sessions and mentored undergraduates on fundamental machine learning concepts, data structures, and debugging best practices.</li>
             </ul>
@@ -604,7 +822,7 @@
 
       <div class="item">
         <div class="item-title">National Electronics and Computer Technology Center (NECTEC)</div>
-        <div class="item-meta">Teaching Assistant &nbsp;|&nbsp; 2024 (2 months)</div>
+        <div class="pub-venue pub-role"><span class="pub-journal">Teaching Assistant</span><span class="pub-sub">2024 (2 months)</span></div>
         <div class="item-desc">
           <ul class="bullets">
             <li>Cooperated on "Kidbright Innovation by Alumni," part of the Specialized High School Education Development Program in Robotics, Artificial Intelligence, and Coding (RAC).</li>
@@ -616,36 +834,81 @@
     <!-- Honors -->
     <section class="reveal" id="honors">
       <h2 class="section-heading">Honors &amp; Awards</h2>
-      <ul class="plain">
-        <li>
-          <strong>Scopus Q1 Undergraduate Research Publication Award</strong> — Faculty of Science, Kasetsart University (Mar 2026).
-          Awarded in official recognition of exceptional academic achievement for publishing a first-authored/co-authored
-          research article in a top-quartile (Q1) international journal (Discover Artificial Intelligence, Springer Nature)
-          during undergraduate studies.
-        </li>
-        <li>
-          <strong>STEAMs Fully-Funded Scholarship</strong> — a fully-funded scholarship for high-potential students in
-          science and scientific projects, sponsored by the Ministry of Education (MOE) and Kasetsart University.
-        </li>
-        <li>
-          <strong>Thailand New Gen Inventors Award (Gold Medal)</strong> — developed a system for analyzing and diagnosing
-          the health of durian trees, in collaboration with the Faculty of Natural Resources, Prince of Songkhla University.
-        </li>
-        <li>
-          <strong>KidBright Developer Conference (First Runner-Up)</strong> — developed a water level monitoring system
-          in collaboration with the Royal Irrigation Department, Angthong province.
-        </li>
-        <li>
-          <strong>Computer Software Projects Competition (Sillapa 70) — First Prize</strong> — Ministry of Education (MOE).
-          A system for analyzing and diagnosing the health of durian trees (Ver. 1) using object detection and image
-          processing (2022).
-        </li>
-        <li>
-          <strong>Scientific Projects for High School Students Competition — First Prize</strong> — STEAMs Co-Creation
-          Project, Health and Medical Field, Kasetsart University. Antigen test kit and identification card
-          classification system using object detection and natural language processing (2022).
-        </li>
-      </ul>
+
+      <h3 class="pub-group">Awards</h3>
+
+      <div class="item">
+        <div class="item-title">Scopus Q1 Undergraduate Research Publication Award</div>
+        <div class="pub-venue">
+          <span class="pub-badge pub-badge-award">Award</span>
+          <span class="pub-journal">Faculty of Science, Kasetsart University</span>
+          <span class="pub-sub">Mar 2026</span>
+        </div>
+        <div class="item-desc">
+          Recognition for publishing a first-authored/co-authored research article in a top-quartile (Q1)
+          international journal (Discover Artificial Intelligence, Springer Nature) during undergraduate studies.
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-title">Thailand New Gen Inventors Award</div>
+        <div class="pub-venue">
+          <span class="pub-badge pub-badge-award">Gold Medal</span>
+          <span class="pub-journal">Thailand New Gen Inventors</span>
+        </div>
+        <div class="item-desc">
+          Developed a system for analyzing and diagnosing the health of durian trees, in collaboration with the
+          Faculty of Natural Resources, Prince of Songkhla University.
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-title">KidBright Developer Conference</div>
+        <div class="pub-venue">
+          <span class="pub-badge pub-badge-award">First Runner-Up</span>
+          <span class="pub-journal">KidBright Developer Conference</span>
+        </div>
+        <div class="item-desc">
+          Developed a water level monitoring system in collaboration with the Royal Irrigation Department, Angthong province.
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-title">Computer Software Projects Competition (Sillapa 70)</div>
+        <div class="pub-venue">
+          <span class="pub-badge pub-badge-award">First Prize</span>
+          <span class="pub-journal">Ministry of Education (MOE)</span>
+          <span class="pub-sub">2022</span>
+        </div>
+        <div class="item-desc">
+          A system for analyzing and diagnosing the health of durian trees (Ver. 1) using object detection and image processing.
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-title">Scientific Projects for High School Students Competition</div>
+        <div class="pub-venue">
+          <span class="pub-badge pub-badge-award">First Prize</span>
+          <span class="pub-journal">STEAMs Co-Creation Project, Health and Medical Field, Kasetsart University</span>
+          <span class="pub-sub">2022</span>
+        </div>
+        <div class="item-desc">
+          Antigen test kit and identification card classification system using object detection and natural language processing.
+        </div>
+      </div>
+
+      <h3 class="pub-group">Scholarships</h3>
+
+      <div class="item">
+        <div class="item-title">STEAMs Fully-Funded Scholarship</div>
+        <div class="pub-venue">
+          <span class="pub-badge pub-badge-scholar">Scholarship</span>
+          <span class="pub-journal">Ministry of Education (MOE) &amp; Kasetsart University</span>
+        </div>
+        <div class="item-desc">
+          Fully-funded scholarship for high-potential students in science and scientific projects.
+        </div>
+      </div>
     </section>
 
     <!-- Training -->
@@ -654,7 +917,7 @@
 
       <div class="item">
         <div class="item-title">AI Builders Gen 2 (VISTEC, DELL, AWS)</div>
-        <div class="item-meta">Graduate &nbsp;|&nbsp; 2021 – 2022</div>
+        <div class="pub-venue pub-role"><span class="pub-journal">Graduate</span><span class="pub-sub">2021 – 2022</span></div>
         <div class="item-desc">
           <ul class="bullets">
             <li>Graduated with the topic "ATK-OCR Classification (AOC): Antigen Test Kit and Identification Card
@@ -665,7 +928,7 @@
 
       <div class="item">
         <div class="item-title">Prince of Songkhla University</div>
-        <div class="item-meta">Participant &nbsp;|&nbsp; 2021 – 2022</div>
+        <div class="pub-venue pub-role"><span class="pub-journal">Participant</span><span class="pub-sub">2021 – 2022</span></div>
         <div class="item-desc">
           <ul class="bullets">
             <li>Participated in "Python Programming and Introduction to AI with Python," Department of Computer Engineering.</li>
@@ -675,7 +938,7 @@
 
       <div class="item">
         <div class="item-title">NSTDA and NECTEC</div>
-        <div class="item-meta">Participant &nbsp;|&nbsp; 2020</div>
+        <div class="pub-venue pub-role"><span class="pub-journal">Participant</span><span class="pub-sub">2020</span></div>
         <div class="item-desc">
           <ul class="bullets">
             <li>Fulfilled all requirements, seminars, and hands-on workshops on "Fundamental Principles of Artificial Intelligence."</li>
@@ -706,6 +969,23 @@
 <script>
 (function () {
   "use strict";
+
+  /* ---------- falling sakura petals ---------- */
+  var petalHost = document.getElementById("petals");
+  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (petalHost && !reduceMotion) {
+    var count = window.innerWidth < 600 ? 9 : 16;
+    for (var i = 0; i < count; i++) {
+      var p = document.createElement("span");
+      p.className = "petal";
+      p.style.left = (Math.random() * 100).toFixed(1) + "%";
+      p.style.setProperty("--s", (9 + Math.random() * 9).toFixed(1) + "px");
+      p.style.setProperty("--t", (32 + Math.random() * 20).toFixed(1) + "s");
+      p.style.setProperty("--d", (-Math.random() * 50).toFixed(1) + "s");
+      p.style.setProperty("--x", (Math.random() * 160 - 40).toFixed(0) + "px");
+      petalHost.appendChild(p);
+    }
+  }
 
   /* ---------- theme toggle ---------- */
   var root = document.documentElement;

@@ -612,16 +612,63 @@
 
   .reveal{opacity:0;transform:translateY(16px);transition:opacity .5s ease, transform .5s ease;}
   .reveal.in{opacity:1;transform:translateY(0);}
+
+  /* ---------- sakura touch (matches index.html) ---------- */
+  :root{--sakura:#f3b7c8;--sakura-deep:#d86a8c;--sakura-core:#e76f95;--sakura-edge:#fff3f6;--sakura-soft:#fdf1f5;}
+  body{background-image:radial-gradient(ellipse 55% 35% at 100% 0%, var(--sakura-soft), transparent 70%);background-repeat:no-repeat;}
+  /* ---------- sakura decoration ---------- */
+
+  
+  .branch .twig { stroke: #6e4f43; fill: none; stroke-linecap: round; }
+  .branch .bud { fill: var(--sakura-deep); }
+  .branch .stamen circle { fill: #c2456b; }
+  .branch .stamen path { stroke: #c2456b; stroke-width: 0.6; fill: none; stroke-linecap: round; }
+  .branch .bloom { fill: var(--sakura); }
+  .branch .bloom-deep { fill: var(--sakura-deep); }
+
+  .petals {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .petal {
+    position: absolute;
+    top: -30px;
+    width: var(--s);
+    height: calc(var(--s) * 1.05);
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-7 -1 14 13'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='1' x2='0' y2='0'%3E%3Cstop offset='0' stop-color='%23e76f95'/%3E%3Cstop offset='0.6' stop-color='%23f6b0c3'/%3E%3Cstop offset='1' stop-color='%23fde6ed'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23g)' d='M0 12 C-2 10 -6.6 7 -5.9 3.3 C-5.5 1.3 -3 1 -1.6 2.2 L0 3.9 L1.6 2.2 C3 1 5.5 1.3 5.9 3.3 C6.6 7 2 10 0 12Z'/%3E%3C/svg%3E") center / contain no-repeat;
+    opacity: 0;
+    will-change: transform, opacity;
+    animation: petal-fall var(--t) linear var(--d) infinite;
+  }
+  @keyframes petal-fall {
+    0%   { transform: translate3d(0, -5vh, 0) rotate(0deg); opacity: 0; }
+    8%   { opacity: 0.75; }
+    50%  { transform: translate3d(calc(var(--x) * 0.5), 55vh, 0) rotate(220deg); }
+    92%  { opacity: 0.6; }
+    100% { transform: translate3d(var(--x), 108vh, 0) rotate(480deg); opacity: 0; }
+  }
+  .petals{z-index:-1;}
+  .hero-branch{position:absolute;top:0;right:0;width:min(300px,26vw);height:auto;pointer-events:none;z-index:0;opacity:.6;}
+  @media (max-width:1000px){.hero-branch{display:none;}}
+  .sitebar{border-bottom:1px solid transparent !important;border-image:linear-gradient(90deg,var(--line) 40%,var(--sakura-deep)) 1;}
+  .sitebar a{color:var(--ink-soft);transition:color .15s;}
+  .sitebar a:hover,.sitebar a:focus-visible{color:var(--sakura-deep);text-decoration:underline !important;}
+  .sitebar strong{color:var(--ink);}
+  @media (prefers-reduced-motion: reduce){.petals{display:none;}}
 </style>
 </head>
 <body>
+<div class="petals" id="petals" aria-hidden="true"></div>
 
 <!-- Top Breadcrumb Navigation -->
-<div style="background-color: var(--bg-soft); border-bottom: 1px solid var(--line); padding: 12px 24px; text-align: right; font-family: 'Inter', sans-serif; font-size: 14px;">
+<div class="sitebar" style="background-color: var(--bg-soft); border-bottom: 1px solid var(--line); padding: 12px 24px; text-align: right; font-family: 'Inter', sans-serif; font-size: 14px;">
   <div class="wrap" style="padding: 0;">
     <a href="index.html" style="text-decoration: none; font-weight: 600;">Home</a> &nbsp;/&nbsp; 
     <a href="experience.html" style="text-decoration: none;">Experience Gallery</a> &nbsp;/&nbsp; 
-    <strong>Japan U Match</strong>
+    <strong>Japan U Match</strong> &nbsp;/&nbsp; <a href="unix-os-lecture.html" style="text-decoration: none;">Unix OS Lecture</a>
   </div>
 </div>
 
@@ -659,6 +706,7 @@
   <div class="hero-blob b1"></div>
   <div class="hero-blob b2"></div>
   <div class="hero-blob b3"></div>
+  <svg class="branch hero-branch" viewBox="0 0 360 200" aria-hidden="true" focusable="false"><defs><radialGradient id="petalGrad" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="11"><stop offset="0" style="stop-color: var(--sakura-core)"/><stop offset="0.5" style="stop-color: var(--sakura)"/><stop offset="1" style="stop-color: var(--sakura-edge)"/></radialGradient><symbol id="blossom" viewBox="-12 -12 24 24"><g id="petal"><path fill="url(#petalGrad)" stroke="var(--sakura-deep)" stroke-opacity="0.35" stroke-width="0.3"d="M0 0 C-2 -2 -6.6 -5 -5.9 -8.7 C-5.5 -10.7 -3 -11 -1.6 -9.8 L0 -8.1 L1.6 -9.8 C3 -11 5.5 -10.7 5.9 -8.7 C6.6 -5 2 -2 0 0Z"/><path d="M0 -1.5 L0 -6.5 M0 -3 L-1.8 -5.4 M0 -3 L1.8 -5.4" stroke="var(--sakura-deep)" stroke-opacity="0.45" stroke-width="0.35" stroke-linecap="round" fill="none"/></g><use href="#petal" transform="rotate(72)"/><use href="#petal" transform="rotate(144)"/><use href="#petal" transform="rotate(216)"/><use href="#petal" transform="rotate(288)"/><g class="stamen"><path d="M0 0 L-1.8 -3.6 M0 0 L0.4 -4 M0 0 L2.2 -3.4 M0 0 L-3.4 -1.2 M0 0 L3.6 -0.6 M0 0 L-0.8 3.8 M0 0 L2.4 3 M0 0 L-3 2.4"/><circle r="1.1"/></g></symbol></defs><!-- branches --><path class="twig" stroke-width="9"  d="M375 -6 C 330 6, 285 28, 240 54"/><path class="twig" stroke-width="6"  d="M240 54 C 205 74, 160 90, 128 108"/><path class="twig" stroke-width="3.5" d="M128 108 C 112 117, 100 124, 88 134"/><path class="twig" stroke-width="3.5" d="M300 22 C 292 46, 278 68, 258 88"/><path class="twig" stroke-width="3"   d="M250 48 C 238 36, 214 28, 192 20"/><path class="twig" stroke-width="3"   d="M182 84 C 178 108, 162 128, 142 146"/><path class="twig" stroke-width="2"   d="M142 146 C 132 150, 124 150, 116 148"/><path class="twig" stroke-width="2"   d="M214 70 C 222 86, 226 100, 224 112"/><path class="twig" stroke-width="2"   d="M335 8 C 342 26, 340 40, 332 52"/><!-- buds --><g class="bud"><circle cx="224" cy="116" r="3.6"/><circle cx="332" cy="56" r="3.2"/><circle cx="116" cy="147" r="3"/><circle cx="196" cy="24" r="3.2"/></g><!-- blossoms --><g class="bloom"><use href="#blossom" x="241" y="73" width="34" height="34"/></g><g class="bloom-deep"><use href="#blossom" x="175" y="3" width="30" height="30"/></g><g class="bloom"><use href="#blossom" x="124" y="131" width="32" height="32"/></g><g class="bloom-deep"><use href="#blossom" x="70" y="118" width="32" height="32"/></g><g class="bloom"><use href="#blossom" x="248" y="28" width="24" height="24"/></g><g class="bloom"><use href="#blossom" x="190" y="60" width="26" height="26"/></g><g class="bloom-deep"><use href="#blossom" x="282" y="6" width="22" height="22"/></g><g class="bloom"><use href="#blossom" x="160" y="78" width="22" height="22"/></g></svg>
   <div class="wrap">
     <div class="pill" data-i18n="hero.pill">🎓 Built from real research data · Published at IJIET (2026)</div>
     <h1 class="title" data-i18n-html="hero.title">Stop guessing.<br><span class="grad-text">Find your Japan university match</span> in minutes.</h1>
@@ -2367,5 +2415,23 @@ try{ const saved = localStorage.getItem('jpUniMatchLang'); if(saved==='en' || sa
 setLanguage(initialLang);
 </script>
 
+<script>(function(){"use strict";
+/* ---------- falling sakura petals ---------- */
+  var petalHost = document.getElementById("petals");
+  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (petalHost && !reduceMotion) {
+    var count = window.innerWidth < 600 ? 9 : 16;
+    for (var i = 0; i < count; i++) {
+      var p = document.createElement("span");
+      p.className = "petal";
+      p.style.left = (Math.random() * 100).toFixed(1) + "%";
+      p.style.setProperty("--s", (9 + Math.random() * 9).toFixed(1) + "px");
+      p.style.setProperty("--t", (32 + Math.random() * 20).toFixed(1) + "s");
+      p.style.setProperty("--d", (-Math.random() * 50).toFixed(1) + "s");
+      p.style.setProperty("--x", (Math.random() * 160 - 40).toFixed(0) + "px");
+      petalHost.appendChild(p);
+    }
+  }
+})();</script>
 </body>
 </html>

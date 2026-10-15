@@ -1,4 +1,4 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Unix Operating System</title><meta name="data-notion-page-icon" content="💽"/><link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ctext%20y%3D%22.9em%22%20font-size%3D%2290%22%3E%F0%9F%92%BD%3C%2Ftext%3E%3C%2Fsvg%3E"/><style>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Unix Operating System</title><meta name="data-notion-page-icon" content="💽"/><link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ctext%20y%3D%22.9em%22%20font-size%3D%2290%22%3E%F0%9F%92%BD%3C%2Ftext%3E%3C%2Fsvg%3E"/><style>
 /* cspell:disable-file */
 /* webkit printing magic: print all background colors */
 html {
@@ -888,7 +888,141 @@ pre.code:hover .copy-btn, pre.code:focus-within .copy-btn { opacity: 1; }
 @media (max-width: 640px) {
 	.copy-btn { opacity: 1; }
 }
-</style></head><body><div style="padding: 10px 20px; font-family: sans-serif;"><a href="index.html" style="text-decoration: none; color: #333; font-weight: bold;">&larr; Back to Home</a></div><article id="bc257692-529e-4e49-bf91-47b723fc8ecb" class="page sans" data-notion-page-icon="💽"><header><img class="page-cover-image" src="https://app.notion.com/images/page-cover/nasa_eagle_in_lunar_orbit.jpg" style="object-position:center 40%"/><div class="page-header-icon page-header-icon-with-cover"><span class="icon" data-emoji="💽"></span></div><h1 class="page-title" dir="auto">Unix Operating System</h1><p class="page-description" dir="auto" style="font-style: italic; color: #555;">Note: This lecture is summarized from the &quot;Unix Operating System and Shell Programming Class&quot; by Dr. Chavalit SRISATHAPORNPHAT, Department of Computer Science, Faculty of Science, Kasetsart University, Thailand.</p></header><div class="page-body"><h2 id="5ca9f992-9fc8-4732-8d81-5c380a2d01b3" class="" dir="auto">Basic Shell Commands</h2><h3 id="423811d8-4300-4187-ae10-1dc117b4ef5b" class="" dir="auto">Redirection</h3><figure id="1eb0a656-edcd-4385-b8b8-e8b6cc911a43" class="image" data-notion-image="Unix_OS_Lecture_images/image.png" dir="ltr"><a href="Unix_OS_Lecture_images/image.png"><img style="width:511px" src="Unix_OS_Lecture_images/image.png"/></a></figure><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js" integrity="sha512-whYhDwtTmlC/NpZlCr6PSsAaLOrfjVg/iXAnC4H/dtiHawpShhT2SlIMbpIhT/IL/NrpdMm+Hq2C13+VKpHTYw==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><pre id="520c180a-fed4-480b-9b28-a53157e44c37" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">&gt; (redirection) | 1&gt;... (redirection stdout) 
+</style><style id="sakura-theme">
+/* ---- Sakura theme (matches index.html) ---- */
+:root {
+	--bg: #faf9f6; --ink: #1b1b1b; --muted: #6b6b68; --rule: #dedcd4;
+	--accent: #2a5c63; --accent-soft: #e8eeee; --border: #dedcd4;
+	--sakura: #f3b7c8; --sakura-deep: #d86a8c; --sakura-core: #e76f95; --sakura-edge: #fff3f6; --sakura-soft: #fdf1f5;
+	--code-bg: #fbf3f6; --code-ink: #b4416a; --panel: #ffffff;
+}
+:root[data-theme="dark"] {
+	--bg: #16181a; --ink: #eceae5; --muted: #9a9994; --rule: #33352f;
+	--accent: #7fd4c9; --accent-soft: #1f2b2a; --border: #33352f;
+	--sakura: #e59ab2; --sakura-deep: #f0a6bd; --sakura-core: #d9708f; --sakura-edge: #f7d3de; --sakura-soft: #2a2025;
+	--code-bg: #1f1a1e; --code-ink: #f0a6bd; --panel: #1d1f21;
+}
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) {
+		--bg: #16181a; --ink: #eceae5; --muted: #9a9994; --rule: #33352f;
+		--accent: #7fd4c9; --accent-soft: #1f2b2a; --border: #33352f;
+		--sakura: #e59ab2; --sakura-deep: #f0a6bd; --sakura-core: #d9708f; --sakura-edge: #f7d3de; --sakura-soft: #2a2025;
+		--code-bg: #1f1a1e; --code-ink: #f0a6bd; --panel: #1d1f21;
+	}
+}
+html { scroll-behavior: smooth; background: var(--bg); }
+html body {
+	background: var(--bg); color: var(--ink);
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+	font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased;
+	transition: background .2s ease, color .2s ease;
+}
+@media only screen { html body { color: var(--ink); } }
+html body > article, html body > .topnav { position: relative; z-index: 1; white-space: normal; }
+html body > article { white-space: pre-wrap; }
+
+/* top nav */
+.topnav { display: flex; align-items: center; justify-content: flex-end; gap: 4px; flex-wrap: wrap; padding: 0 0 6px; font-size: 14px; font-family: inherit; }
+html body .topnav a { color: var(--muted); padding: 4px 2px; text-decoration: none; }
+html body .topnav a:hover { color: var(--accent); text-decoration: underline; }
+html body .topnav a.current { color: var(--ink); font-weight: 600; }
+.topnav .sep { color: var(--rule); padding: 4px 2px; }
+.theme-toggle {
+	margin-left: 10px; width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--rule);
+	background: var(--bg); color: var(--ink); cursor: pointer; display: inline-flex; align-items: center;
+	justify-content: center; font-size: 14px; line-height: 1; flex: 0 0 auto;
+}
+.theme-toggle:hover { background: var(--sakura-soft); border-color: var(--sakura-deep); }
+@media (max-width: 1399px) { .topnav { padding-left: 56px; } }
+
+/* title, cover, headings */
+html body .page-title { font-size: 2.2rem; line-height: 1.2; color: var(--ink); }
+.page-cover-image { border-radius: 14px; box-shadow: 0 0 0 3px var(--sakura-soft), 0 0 0 4px var(--sakura), 0 12px 28px -14px var(--sakura-deep); }
+html body .page-description { color: var(--muted) !important; font-size: .95rem; }
+.page-description + * { }
+header::after {
+	content: ""; display: block; height: 2px; margin: 1.2em 0 .4em;
+	background: linear-gradient(90deg, var(--sakura-deep), var(--rule) 55%, transparent);
+}
+html body h2 { color: var(--ink); }
+html body h3 { color: var(--accent); }
+.lecture-section { border-bottom: 1px solid var(--rule); }
+.lecture-section > h2:hover { background: var(--sakura-soft); }
+.lecture-section > h2::before { color: var(--sakura-deep); }
+html body .lecture-section > h2 { display: flex; }
+h2[dir]:not(.lecture-section > h2)::before { }
+
+/* links, inline code, code blocks, quotes, rules */
+html body a { color: var(--accent); text-decoration-color: var(--sakura-deep); text-underline-offset: 3px; }
+html body a:hover { color: var(--sakura-deep); }
+html body code { background: var(--sakura-soft); color: var(--code-ink); }
+html body .code { background: var(--code-bg); color: var(--ink); border: 1px solid var(--rule); border-left: 3px solid var(--sakura-deep); border-radius: 10px; }
+html body .code > code { background: none; color: inherit; }
+.copy-btn { color: var(--muted); border-color: var(--rule); background: var(--bg); }
+.copy-btn:hover { color: var(--sakura-deep); border-color: var(--sakura-deep); }
+html body blockquote { border-left: 3px solid var(--sakura-deep); background: var(--sakura-soft); border-radius: 0 10px 10px 0; padding: .5em 1em; margin: 1em 0; }
+hr { border-bottom-color: var(--rule); }
+ul > li::marker { color: var(--sakura-deep); }
+th { color: var(--muted); }
+table, th, td { border-color: var(--rule); }
+
+/* study-guide widgets */
+#reading-progress { background: linear-gradient(90deg, var(--sakura-deep), var(--accent)); }
+#toc-toggle { background: var(--panel); color: var(--ink); border-color: var(--rule); }
+#toc-toggle:hover { border-color: var(--sakura-deep); background: var(--sakura-soft); }
+#toc-sidebar { background: var(--panel); border-right-color: var(--rule); color: var(--ink); }
+#toc-sidebar h4 { color: var(--muted); }
+#toc-search { background: var(--bg); color: var(--ink); border-color: var(--rule); }
+#toc-search:focus { border-color: var(--sakura-deep); box-shadow: 0 0 0 3px var(--sakura-soft); }
+#toc-sidebar a { color: var(--ink); }
+#toc-sidebar a:hover, #toc-sidebar a.active { background: var(--sakura-soft); color: var(--sakura-deep); }
+.section-toolbar button { background: var(--panel); color: var(--ink); border-color: var(--rule); }
+.section-toolbar button:hover { background: var(--sakura-soft); border-color: var(--sakura-deep); color: var(--sakura-deep); }
+#back-to-top { background: var(--sakura-deep); color: var(--bg); }
+#back-to-top:hover { background: var(--accent); }
+
+/* sakura decoration */
+/* ---------- sakura decoration ---------- */
+
+  
+  .branch .twig { stroke: #6e4f43; fill: none; stroke-linecap: round; }
+  .branch .bud { fill: var(--sakura-deep); }
+  .branch .stamen circle { fill: #c2456b; }
+  .branch .stamen path { stroke: #c2456b; stroke-width: 0.6; fill: none; stroke-linecap: round; }
+  .branch .bloom { fill: var(--sakura); }
+  .branch .bloom-deep { fill: var(--sakura-deep); }
+
+  .petals {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .petal {
+    position: absolute;
+    top: -30px;
+    width: var(--s);
+    height: calc(var(--s) * 1.05);
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-7 -1 14 13'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='1' x2='0' y2='0'%3E%3Cstop offset='0' stop-color='%23e76f95'/%3E%3Cstop offset='0.6' stop-color='%23f6b0c3'/%3E%3Cstop offset='1' stop-color='%23fde6ed'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23g)' d='M0 12 C-2 10 -6.6 7 -5.9 3.3 C-5.5 1.3 -3 1 -1.6 2.2 L0 3.9 L1.6 2.2 C3 1 5.5 1.3 5.9 3.3 C6.6 7 2 10 0 12Z'/%3E%3C/svg%3E") center / contain no-repeat;
+    opacity: 0;
+    will-change: transform, opacity;
+    animation: petal-fall var(--t) linear var(--d) infinite;
+  }
+  @keyframes petal-fall {
+    0%   { transform: translate3d(0, -5vh, 0) rotate(0deg); opacity: 0; }
+    8%   { opacity: 0.75; }
+    50%  { transform: translate3d(calc(var(--x) * 0.5), 55vh, 0) rotate(220deg); }
+    92%  { opacity: 0.6; }
+    100% { transform: translate3d(var(--x), 108vh, 0) rotate(480deg); opacity: 0; }
+  }
+.branch {
+	position: absolute; top: 0; right: 0; width: min(300px, calc((100vw - 900px) / 2 + 20px));
+	height: auto; pointer-events: none; z-index: 0; opacity: .95;
+}
+@media (min-width: 1400px) { .branch { width: min(300px, calc(100vw - 1200px)); } }
+@media (max-width: 1099px) { .branch { display: none; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .petals { display: none; } }</style></head><body><div class="petals" id="petals" aria-hidden="true"></div><svg class="branch" viewBox="0 0 360 200" aria-hidden="true" focusable="false"><defs><radialGradient id="petalGrad" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="11"><stop offset="0" style="stop-color: var(--sakura-core)"/><stop offset="0.5" style="stop-color: var(--sakura)"/><stop offset="1" style="stop-color: var(--sakura-edge)"/></radialGradient><symbol id="blossom" viewBox="-12 -12 24 24"><g id="petal"><path fill="url(#petalGrad)" stroke="var(--sakura-deep)" stroke-opacity="0.35" stroke-width="0.3"d="M0 0 C-2 -2 -6.6 -5 -5.9 -8.7 C-5.5 -10.7 -3 -11 -1.6 -9.8 L0 -8.1 L1.6 -9.8 C3 -11 5.5 -10.7 5.9 -8.7 C6.6 -5 2 -2 0 0Z"/><path d="M0 -1.5 L0 -6.5 M0 -3 L-1.8 -5.4 M0 -3 L1.8 -5.4" stroke="var(--sakura-deep)" stroke-opacity="0.45" stroke-width="0.35" stroke-linecap="round" fill="none"/></g><use href="#petal" transform="rotate(72)"/><use href="#petal" transform="rotate(144)"/><use href="#petal" transform="rotate(216)"/><use href="#petal" transform="rotate(288)"/><g class="stamen"><path d="M0 0 L-1.8 -3.6 M0 0 L0.4 -4 M0 0 L2.2 -3.4 M0 0 L-3.4 -1.2 M0 0 L3.6 -0.6 M0 0 L-0.8 3.8 M0 0 L2.4 3 M0 0 L-3 2.4"/><circle r="1.1"/></g></symbol></defs><!-- branches --><path class="twig" stroke-width="9"  d="M375 -6 C 330 6, 285 28, 240 54"/><path class="twig" stroke-width="6"  d="M240 54 C 205 74, 160 90, 128 108"/><path class="twig" stroke-width="3.5" d="M128 108 C 112 117, 100 124, 88 134"/><path class="twig" stroke-width="3.5" d="M300 22 C 292 46, 278 68, 258 88"/><path class="twig" stroke-width="3"   d="M250 48 C 238 36, 214 28, 192 20"/><path class="twig" stroke-width="3"   d="M182 84 C 178 108, 162 128, 142 146"/><path class="twig" stroke-width="2"   d="M142 146 C 132 150, 124 150, 116 148"/><path class="twig" stroke-width="2"   d="M214 70 C 222 86, 226 100, 224 112"/><path class="twig" stroke-width="2"   d="M335 8 C 342 26, 340 40, 332 52"/><!-- buds --><g class="bud"><circle cx="224" cy="116" r="3.6"/><circle cx="332" cy="56" r="3.2"/><circle cx="116" cy="147" r="3"/><circle cx="196" cy="24" r="3.2"/></g><!-- blossoms --><g class="bloom"><use href="#blossom" x="241" y="73" width="34" height="34"/></g><g class="bloom-deep"><use href="#blossom" x="175" y="3" width="30" height="30"/></g><g class="bloom"><use href="#blossom" x="124" y="131" width="32" height="32"/></g><g class="bloom-deep"><use href="#blossom" x="70" y="118" width="32" height="32"/></g><g class="bloom"><use href="#blossom" x="248" y="28" width="24" height="24"/></g><g class="bloom"><use href="#blossom" x="190" y="60" width="26" height="26"/></g><g class="bloom-deep"><use href="#blossom" x="282" y="6" width="22" height="22"/></g><g class="bloom"><use href="#blossom" x="160" y="78" width="22" height="22"/></g></svg><nav class="topnav" aria-label="Site"><a href="index.html">Home</a><span class="sep">/</span><a href="experience.html">Experience Gallery</a><span class="sep">/</span><a href="japan-university-match.html">Japan U Match</a><span class="sep">/</span><a href="unix-os-lecture.html" class="current">Unix OS Lecture</a><button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">&#9789;</button></nav><article id="bc257692-529e-4e49-bf91-47b723fc8ecb" class="page sans" data-notion-page-icon="💽"><header><img class="page-cover-image" src="https://app.notion.com/images/page-cover/nasa_eagle_in_lunar_orbit.jpg" style="object-position:center 40%"/><div class="page-header-icon page-header-icon-with-cover"><span class="icon" data-emoji="💽"></span></div><h1 class="page-title" dir="auto">Unix Operating System</h1><p class="page-description" dir="auto" style="font-style: italic; color: #555;">Note: This lecture is summarized from the &quot;Unix Operating System and Shell Programming Class&quot; by Dr. Chavalit SRISATHAPORNPHAT, Department of Computer Science, Faculty of Science, Kasetsart University, Thailand.</p></header><div class="page-body"><h2 id="5ca9f992-9fc8-4732-8d81-5c380a2d01b3" class="" dir="auto">Basic Shell Commands</h2><h3 id="423811d8-4300-4187-ae10-1dc117b4ef5b" class="" dir="auto">Redirection</h3><figure id="1eb0a656-edcd-4385-b8b8-e8b6cc911a43" class="image" data-notion-image="Unix_OS_Lecture_images/image.png" dir="ltr"><a href="Unix_OS_Lecture_images/image.png"><img style="width:511px" src="Unix_OS_Lecture_images/image.png"/></a></figure><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js" integrity="sha512-whYhDwtTmlC/NpZlCr6PSsAaLOrfjVg/iXAnC4H/dtiHawpShhT2SlIMbpIhT/IL/NrpdMm+Hq2C13+VKpHTYw==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><pre id="520c180a-fed4-480b-9b28-a53157e44c37" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">&gt; (redirection) | 1&gt;... (redirection stdout) 
 | 2&gt;... (redirection stderr) </code></pre><pre id="4c1ce3bf-6fd5-4d1b-9df3-4f5348058a5a" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">wc &lt; file1.txt (redirection input)</code></pre><pre id="d8afe377-1cc5-40a9-ad93-c05111730721" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">ls -l file1 noFile 1&gt;out.txt 2&gt;&amp;1 (Redirecting to one file)</code></pre><h3 id="cd96d4be-5775-49cc-ba30-855e0cf6f892" class="" dir="auto">TEE</h3><ul id="9aa63c7d-ef6a-4001-903e-73f19b593521" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Copy stdin to stdout and to file(s)<figure id="e0058727-2306-4ad4-9c8c-b25385824f32" class="image" data-notion-image="Unix_OS_Lecture_images/image%201.png" dir="ltr"><a href="Unix_OS_Lecture_images/image%201.png"><img style="width:679.984375px" src="Unix_OS_Lecture_images/image%201.png"/></a></figure></li></ul><p id="660ec065-1da2-461e-bf2f-d52311f94d21" class="" dir="auto">
 </p><pre id="e2da044c-fe65-4488-aa57-d9e9c2b9304c" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">ls -l file99 1&gt;/dev/null 2&gt;&amp;1 // ส่งstdin stderr 
 เข้าใน trash /dev/null</code></pre><h3 id="1e38b552-d997-42fe-b736-b739e4aaee22" class="" dir="auto">Prevent overwriting</h3><pre id="f1910d7d-0203-4429-9b1b-3d8adfc80c45" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set -o noclobber</code></pre><h3 id="1c17ed72-45a3-43aa-9ee6-7fa65cf9fdd5" class="" dir="auto">Shell variables</h3><pre id="dba66035-339a-40f4-8410-fe6044ada0df" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">Stored data -&gt; variable=value
@@ -1222,4 +1356,43 @@ done</code></pre><h3 id="12c11418-d55d-808b-a551-cfc48c7f8e04" class="" dir="aut
 	}
 })();
 </script>
-</body></html>
+<script>
+(function () {
+	"use strict";
+	var root = document.documentElement;
+	var themeBtn = document.getElementById("themeToggle");
+	var stored = null;
+	try { stored = localStorage.getItem("theme"); } catch (e) {}
+	if (stored === "dark" || stored === "light") root.setAttribute("data-theme", stored);
+	function currentTheme() {
+		if (root.getAttribute("data-theme") === "dark") return "dark";
+		if (root.getAttribute("data-theme") === "light") return "light";
+		return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+	}
+	function syncIcon() { if (themeBtn) themeBtn.textContent = currentTheme() === "dark" ? "\u2600" : "\u263D"; }
+	syncIcon();
+	if (themeBtn) themeBtn.addEventListener("click", function () {
+		var next = currentTheme() === "dark" ? "light" : "dark";
+		root.setAttribute("data-theme", next);
+		try { localStorage.setItem("theme", next); } catch (e) {}
+		syncIcon();
+	});
+
+	/* ---------- falling sakura petals ---------- */
+  var petalHost = document.getElementById("petals");
+  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (petalHost && !reduceMotion) {
+    var count = window.innerWidth < 600 ? 9 : 16;
+    for (var i = 0; i < count; i++) {
+      var p = document.createElement("span");
+      p.className = "petal";
+      p.style.left = (Math.random() * 100).toFixed(1) + "%";
+      p.style.setProperty("--s", (9 + Math.random() * 9).toFixed(1) + "px");
+      p.style.setProperty("--t", (32 + Math.random() * 20).toFixed(1) + "s");
+      p.style.setProperty("--d", (-Math.random() * 50).toFixed(1) + "s");
+      p.style.setProperty("--x", (Math.random() * 160 - 40).toFixed(0) + "px");
+      petalHost.appendChild(p);
+    }
+  }
+})();
+</script></body></html>
